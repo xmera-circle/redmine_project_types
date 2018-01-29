@@ -1,0 +1,28 @@
+# German strings go here for Rails i18n
+de:
+  # Berechtigungen
+  permission_view_project_types: Objekttypen ansehen
+  permission_manage_project_types: Objekttypen verwalten
+  
+  # Objektmodul
+  project_module_project_types: Objekttypen
+  
+  # Labels
+  label_project_type_plural: Objekttypen
+  label_project_type_new: Neuer Typ
+  label_project_type_name: Bezeichnung
+  label_project_type_description: Beschreibung
+  label_project_type_default_is_public: Neue Objekte dieses Objekttypen sind standardmäßig öffentlich
+  label_project_type_default_modules: Standardmäßig aktivierte Module für neue Objekte dieses Objekttypen
+  label_project_type_default_trackers: Standardmäßig aktivierte Tracker für neue Objekte dieses Objekttypen
+  label_project_type_sequential_project_identifiers: Fortlaufende Objektkennungen generieren
+  label_project_type_new_project_user_role_ids: Rolle, die einem Nicht-Administrator zugeordnet wird, der ein Objekt dieses Objekttyps erstellt
+  label_project_type: Objekttyp
+  label_project_new_default_values: Neues Objekt - Standardwerte
+  
+  # Fehlermeldungen
+  error_unable_delete_project_type: Der Objekttyp konnte nicht gelöscht werden, da es verbundene Objekte gibt.
+
+  # Schaltflächen
+  button_default_values: Standardwerte bearbeiten
+  

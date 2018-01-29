@@ -1,0 +1,10 @@
+<%= title [l(:label_project_type_plural), project_types_path], @project_type.name %>
+
+<%= labelled_form_for @project_type do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+  <%= submit_tag l(:button_save) %>
+<% end %>
+
+
+ 
+  

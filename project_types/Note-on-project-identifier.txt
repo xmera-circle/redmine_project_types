@@ -1,0 +1,14 @@
+Fortlaufende Projektkennung für jeden Prototyp
+
+i)   Die Tabelle ProjectTypes enthält eine Spalte identifier:boolean.
+ii)  Die Datei lib/project_patch.rb enthält eine Instanzmethode namens project_types_next_identifier, die auskommentiert ist.
+iii) Die Methode project_types_default_values (ebenfalls in lib/project_patch.rb) enthält auskommentierten Code, der den 
+	 Identifier des entsprechenden Projektes mit dem zum Projekt-Typen gehörenden Identifier überschreibt, sofern für den 
+	 Projekt-Typen die Spalte identifier auf true gesetzt ist.
+
+Problematik:
+a) Gibt es noch kein Projekt des Projekt-Typs mit einem Identifier, kann der Identifier nicht erstellt werden, da er sich
+   immer auf den letzten Wert bezieht.
+b) Das Formular für ein neues Projekt zeigt stets den (globalen) Standard-Identifier an, auch wenn der Projekt-Typ einen 
+   anderen vorsieht. Die Anpassung würde erst nach dem Speichern erfolgen. Dann kann der User jedoch selbst auch keine 
+   Anpassungen unter Standardwerte bearbeiten machen.

@@ -1,0 +1,24 @@
+default_tracker_001:
+  id: 1
+  project_type_id: 1
+  tracker_id: 1
+  
+default_tracker_002:
+  id: 2
+  project_type_id: 1
+  tracker_id: 2
+
+default_tracker_003:
+  id: 3
+  project_type_id: 1
+  tracker_id: 3
+
+default_tracker_004:
+  id: 4
+  project_type_id: 2
+  tracker_id: 2
+
+default_tracker_005:
+  id: 5
+  project_type_id: 2
+  tracker_id: 3

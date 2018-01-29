@@ -1,0 +1,9 @@
+<%= error_messages_for 'projects_project_type' %>
+
+<div class="box tabular">
+<%= f.fields_for :projects_project_type do |type|%>
+<p> <%= type.label(:project_type_id,l(:label_project_type))%>
+	<%= type.collection_select(:project_type_id, ::ProjectType.all.collect, :id, :name, {:include_blank => "--- #{l(:actionview_instancetag_blank_option)} ---"} )%> 
+</p>
+<% end %>
+</div>

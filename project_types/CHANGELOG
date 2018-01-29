@@ -1,0 +1,13 @@
+0.1.3 (2017-12-03):
+	* labels from Objekt-Typ adjusted to Objekttyp
+0.1.2 (2017-11-26):
+	* requires redmine 3.3.2 or higher
+0.1.1 (2017-11-23):
+	* adds html options to menu methods in order to display the icon correctly
+	* deactivates the main menu with self.main_menu = false in the corresponding controller
+	* main_menu deactivation is commented out for running the plugin in redmine version 3.3.2
+	
+0.1.1 (2017-05-03):
+	* renames all project related labels to object
+0.1.0 (2017-04-28):
+	* initial alpha version

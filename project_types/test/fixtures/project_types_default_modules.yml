@@ -1,0 +1,24 @@
+default_module_001:
+  id: 1
+  project_type_id: 1
+  name: "issue-tracking"
+  
+default_module_002:
+  id: 2
+  project_type_id: 1
+  name: "time-tracking"
+
+default_module_003:
+  id: 3
+  project_type_id: 1
+  name: "wiki"
+
+default_module_004:
+  id: 4
+  project_type_id: 2
+  name: "boards"
+
+default_module_005:
+  id: 5
+  project_type_id: 2
+  name: "news"

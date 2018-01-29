@@ -1,0 +1,35 @@
+<div class="contextual">
+	<%= link_to l(:label_project_type_new), new_project_type_path, :class => 'icon icon-add' %>
+</div>
+
+
+<h2><%= l(:label_project_type_plural) %></h2>
+
+<% if @project_types.empty? %>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% else %>
+	<table class="list project_types">
+	  <thead><tr>
+	  <th><%=l(:label_project_type_name)%></th>
+	  <th></th>
+	  <th></th>
+	  </tr></thead>
+	  <tbody>
+	<% for type in @project_types %>
+	  <tr class="<%= cycle("odd", "even") %>">
+	  <td class="name"><%= link_to type.name, edit_project_type_path(type) %></td>
+	  <td class="buttons">
+	    <%= reorder_handle(type) %>
+	    <%= delete_link project_type_path(type) %>
+	  </td>
+	  </tr>
+	<% end %>
+  	  </tbody>
+	</table>
+<% end %>
+
+<% html_title(l(:label_project_type_plural)) -%>
+
+<%= javascript_tag do %>
+  $(function() { $("table.project_types tbody").positionedItems(); });
+<% end %>
