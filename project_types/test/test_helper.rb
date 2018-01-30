@@ -27,4 +27,4 @@ class ProjectType::TestCase
   
 end
 
-require File.expand_path(File.dirname(__FILE__) + '/../test/functional/projects_controller_patch_test')
+#require File.expand_path(File.dirname(__FILE__) + '/../test/functional/projects_controller_patch_test')
