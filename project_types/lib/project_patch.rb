@@ -27,6 +27,8 @@ module ProjectPatch
   end
   
   module ClassMethods
+    include Redmine::SafeAttributes
+    safe_attributes 'projects_project_type_attributes: [:id, :project_type_id]'
     
   end # module ClassMethods
   
@@ -80,7 +82,7 @@ module ProjectPatch
       else
         add_default_member_without_project_type_default(user)
       end
-    end  
+    end
     
     def type
       ProjectType.find(self.projects_project_type.project_type_id)

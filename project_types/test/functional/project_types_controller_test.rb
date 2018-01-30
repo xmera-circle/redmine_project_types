@@ -153,7 +153,7 @@ class ProjectTypesControllerTest < ActionController::TestCase
     assert_no_difference 'ProjectType.count' do
       delete :destroy, :id => 1
     end
-    assert_match "Unable to delete project type due to related projects", flash[:error]
+    assert_equal 'Unable to delete object type due to related objects', flash[:error].to_s
   end
  
 end

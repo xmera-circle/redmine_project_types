@@ -2,12 +2,11 @@ require 'redmine'
 
 # Patches to the Redmine core
 require 'project_patch'
-require 'projects_controller_patch'
+
 
 
 ActionDispatch::Callbacks.to_prepare do
   Project.send :include, ProjectPatch unless Project.included_modules.include? ProjectPatch
-  ProjectsController.send :include, ProjectsControllerPatch unless ProjectsController.included_modules.include? ProjectsControllerPatch
 end
 
 # Plugin registration
@@ -25,10 +24,11 @@ Redmine::Plugin.register :project_types do
     
   }, :partial => 'settings/project_types_settings'
   
-#  project_module :project_types do
+  project_module :project_types do
 #    permission :view_project_types, {:project_types => [:index, :show]}
 #    permission :manage_project_types, {:project_types => [:index, :show, :new, :create, :destroy]}
-#  end
+#    permission :select_project_modules, {:project_types => :modules}, :require => :member
+  end
   
   menu :admin_menu, :project_types, { :controller => 'project_types', :action => 'index' }, :caption => :label_project_type_plural, :html => {:class => 'icon icon-plugins'}
 end
