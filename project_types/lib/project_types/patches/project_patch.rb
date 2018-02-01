@@ -29,8 +29,6 @@ module ProjectTypes
           # Associatons
           has_one :projects_project_type, dependent: :destroy
           accepts_nested_attributes_for :projects_project_type
-          # Callbacks
-          after_create :project_types_default_values
           # Core Extensions (for class methods) --- no method defined yet
           # self.singleton_class.send(:alias_method, :project_types_next_identifier, :next_identifier)
           # Core Extensions (for instance methods)
@@ -43,10 +41,10 @@ module ProjectTypes
       end
       # Collects all instance methods
       module InstanceMethods
-        # Callback method running after creating a new project
-        # which sets all the attributes, e.g., projects default 
+        # Sets all the attributes, e.g., projects default 
         # modules, and trackers, w.r.t. the underlying project type
         def project_types_default_values
+
           if self.projects_project_type.present? 
             if self.projects_project_type.project_type_id.present?
               # Delete all multi choice attributes first
