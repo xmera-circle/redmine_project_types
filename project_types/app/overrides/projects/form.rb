@@ -16,11 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# Project Types Libraries
-
-# Plugins patches
-require 'project_types/patches/project_patch'
-require 'project_types/patches/projects_controller_patch'
-
-# Plugins hook listener
-require 'project_types/hooks/view_projects_form_top_hook_listener'
+# Target is redmines app/views/projects/_form.html.erb file
+Deface::Override.new(
+  virtual_path: 'projects/_form',
+  name: 'add-project-type',
+  insert_top: 'div.box.tabular',
+  text: "<%= call_hook(:view_projects_form_top, :project => @project, :f => f) %>",
+  namespaced: true
+)
