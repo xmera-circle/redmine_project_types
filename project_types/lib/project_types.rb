@@ -20,3 +20,4 @@
 
 # Plugins patches
 require 'project_types/patches/project_patch'
+require 'project_types/patches/projects_controller_patch'

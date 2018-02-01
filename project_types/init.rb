@@ -49,3 +49,4 @@ project_types_overwrite_dir = "#{Redmine::Plugin.directory}/project_types/app/ov
 unless Rails.application.paths['app/overrides'].include?(project_types_overwrite_dir)
   Rails.application.paths['app/overrides'] << project_types_overwrite_dir
 end
+

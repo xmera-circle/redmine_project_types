@@ -18,6 +18,8 @@
 
 class ProjectsProjectType < ActiveRecord::Base
   unloadable
+  
+  include Redmine::SafeAttributes
    
   # Associated models
   belongs_to :project
@@ -27,5 +29,6 @@ class ProjectsProjectType < ActiveRecord::Base
   validates_uniqueness_of :project_id
   
   self.primary_key = :project_id
+ 
 
 end

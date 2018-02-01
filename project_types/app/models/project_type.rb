@@ -18,7 +18,7 @@
 
 class ProjectType < ActiveRecord::Base
   unloadable
-  
+  include Redmine::SafeAttributes
   # Associated models
   has_many :projects_project_types
   has_many :projects, :through => :projects_project_types
@@ -44,5 +44,5 @@ class ProjectType < ActiveRecord::Base
   def self.relation_order
     self.sorted.to_a
   end
-  
+
 end

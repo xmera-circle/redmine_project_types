@@ -39,8 +39,7 @@ module ProjectTypes
       end
       # Collects all class methods
       module ClassMethods
-        include Redmine::SafeAttributes
-        safe_attributes 'projects_project_type_attributes: [:id, :project_type_id]'   
+
       end
       # Collects all instance methods
       module InstanceMethods
