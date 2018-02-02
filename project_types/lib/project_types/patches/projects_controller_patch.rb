@@ -39,8 +39,10 @@ module ProjectTypes
         def update_with_project_type_selection
           @project.safe_attributes = params[:project]
           if @project.save
-            @project.update(project_params)
-            @project.project_types_default_values
+            if params[:project][:projects_project_type_attributes]
+              @project.update(project_params) 
+              @project.project_types_default_values
+            end
             respond_to do |format|
             format.html {
               flash[:notice] = l(:notice_successful_update)
@@ -69,8 +71,10 @@ module ProjectTypes
           @project.safe_attributes = params[:project]
       
           if @project.save
-            @project.update(project_params)
-            @project.project_types_default_values
+            if params[:project][:projects_project_type_attributes]
+              @project.update(project_params) 
+              @project.project_types_default_values
+            end
             unless User.current.admin?
               @project.add_default_member(User.current)
             end
