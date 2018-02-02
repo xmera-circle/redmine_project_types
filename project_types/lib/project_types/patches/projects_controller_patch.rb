@@ -34,12 +34,12 @@ module ProjectTypes
         end
         
         # Updates nested attributes (projects_project_types_attributes)
-        # with nested_params by using strong parameters
+        # with project_params by using strong parameters
         # and assigns projects project type default values
         def update_with_project_type_selection
           @project.safe_attributes = params[:project]
           if @project.save
-            @project.update(nested_params)
+            @project.update(project_params)
             @project.project_types_default_values
             respond_to do |format|
             format.html {
@@ -60,7 +60,7 @@ module ProjectTypes
         end
         
         # Creates nested attributes (projects_project_types_attributes)
-        # with nested_params by using strong parameters
+        # with project_params by using strong parameters
         # and assigns projects project type default values
         def create_with_project_type_selection
           @issue_custom_fields = IssueCustomField.sorted.to_a
@@ -69,7 +69,7 @@ module ProjectTypes
           @project.safe_attributes = params[:project]
       
           if @project.save
-            @project.update(nested_params)
+            @project.update(project_params)
             @project.project_types_default_values
             unless User.current.admin?
               @project.add_default_member(User.current)
@@ -104,7 +104,7 @@ module ProjectTypes
         end
         
         # Uses strong parameters for nested attributes and others
-        def nested_params
+        def project_params
           params.require(:project).permit(:name, 
                                           :description,
                                           :homepage,
