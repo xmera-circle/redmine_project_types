@@ -104,6 +104,9 @@ module ProjectTypes
         end
         
         # Uses strong parameters for nested attributes and others
+        # ommit :inherit_members and enabled_module_names: [] since
+        # there are special rules defined in project.rb which would
+        # be ignored
         def project_params
           params.require(:project).permit(:name, 
                                           :description,
@@ -111,9 +114,9 @@ module ProjectTypes
                                           :is_public,
                                           :parent_id,
                                           :identifier,
-                                          :inherit_members,
+                                       #   :inherit_members,
                                           :default_version_id,
-                                          enabled_module_names:[],
+                                       #   enabled_module_names:[],
                                           :custom_field_values => [projects_custom_field_ids],
                                           issue_custom_field_ids:[],
                                           tracker_ids:[],
