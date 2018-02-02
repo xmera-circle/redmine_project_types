@@ -152,8 +152,8 @@ Used for when a non-admin user creates a project.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Callback method running after creating a new project which sets all the
-attributes, e.g., projects default  modules, and trackers, w.r.t.</p>
+<p>Sets all the attributes, e.g., projects default  modules, and trackers,
+w.r.t.</p>
 </div></span>
   
 </li>
@@ -349,6 +349,9 @@ Used for when a non-admin user creates a project</p>
       <pre class="lines">
 
 
+79
+80
+81
 82
 83
 84
@@ -362,13 +365,10 @@ Used for when a non-admin user creates a project</p>
 92
 93
 94
-95
-96
-97
-98</pre>
+95</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 82</span>
+      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 79</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_default_member_with_project_type_default'>add_default_member_with_project_type_default</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_projects_project_type'>projects_project_type</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span> 
@@ -404,9 +404,8 @@ Used for when a non-admin user creates a project</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Callback method running after creating a new project which sets all the
-attributes, e.g., projects default  modules, and trackers, w.r.t. the
-underlying project type</p>
+<p>Sets all the attributes, e.g., projects default  modules, and trackers,
+w.r.t. the underlying project type</p>
 
 
   </div>
@@ -420,6 +419,10 @@ underlying project type</p>
       <pre class="lines">
 
 
+46
+47
+48
+49
 50
 51
 52
@@ -445,15 +448,13 @@ underlying project type</p>
 72
 73
 74
-75
-76
-77
-78</pre>
+75</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_project_types_default_values'>project_types_default_values</span>
+
   <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_projects_project_type'>projects_project_type</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span> 
     <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_projects_project_type'>projects_project_type</span><span class='period'>.</span><span class='id identifier rubyid_project_type_id'>project_type_id</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
       <span class='comment'># Delete all multi choice attributes first
@@ -502,12 +503,12 @@ underlying project type</p>
       <pre class="lines">
 
 
-104
-105
-106</pre>
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 104</span>
+      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 101</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_relations'>relations</span>
   <span class='const'>ProjectsRelation</span><span class='period'>.</span><span class='id identifier rubyid_relations'>relations</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
@@ -554,12 +555,12 @@ underlying project type</p>
       <pre class="lines">
 
 
-108
-109
-110</pre>
+105
+106
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_relations?'>relations?</span>
   <span class='const'>ProjectsRelation</span><span class='period'>.</span><span class='id identifier rubyid_relations?'>relations?</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
@@ -584,12 +585,12 @@ underlying project type</p>
       <pre class="lines">
 
 
-112
-113
-114</pre>
+109
+110
+111</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 112</span>
+      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 109</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_relations_down'>relations_down</span>
   <span class='const'>ProjectsRelation</span><span class='period'>.</span><span class='id identifier rubyid_relations_down'>relations_down</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
@@ -636,12 +637,12 @@ underlying project type</p>
       <pre class="lines">
 
 
-116
-117
-118</pre>
+113
+114
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 116</span>
+      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 113</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_relations_down?'>relations_down?</span>
   <span class='const'>ProjectsRelation</span><span class='period'>.</span><span class='id identifier rubyid_relations_down?'>relations_down?</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
@@ -666,12 +667,12 @@ underlying project type</p>
       <pre class="lines">
 
 
-120
-121
-122</pre>
+117
+118
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 120</span>
+      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 117</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_relations_up'>relations_up</span>
   <span class='const'>ProjectsRelation</span><span class='period'>.</span><span class='id identifier rubyid_relations_up'>relations_up</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
@@ -718,12 +719,12 @@ underlying project type</p>
       <pre class="lines">
 
 
-124
-125
-126</pre>
+121
+122
+123</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 124</span>
+      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 121</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_relations_up?'>relations_up?</span>
   <span class='const'>ProjectsRelation</span><span class='period'>.</span><span class='id identifier rubyid_relations_up?'>relations_up?</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
@@ -748,12 +749,12 @@ underlying project type</p>
       <pre class="lines">
 
 
-100
-101
-102</pre>
+97
+98
+99</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'lib/project_types/patches/project_patch.rb', line 97</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_type'>type</span>
   <span class='const'><span class='object_link'><a href="../../../ProjectType.html" title="ProjectType (class)">ProjectType</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_projects_project_type'>projects_project_type</span><span class='period'>.</span><span class='id identifier rubyid_project_type_id'>project_type_id</span><span class='rparen'>)</span>
@@ -768,7 +769,7 @@ underlying project type</p>
 </div>
 
       <div id="footer">
-  Generated on Tue Jan 30 15:46:11 2018 by
+  Generated on Fri Feb  2 10:17:07 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.12 (ruby-2.3.3).
 </div>
