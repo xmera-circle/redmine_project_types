@@ -26,6 +26,7 @@
 <p><%= f.check_box :identifier, :label => :setting_sequential_project_identifiers %></p>
 <p><%= f.check_box :is_public %></p>
 <p><%= label(:project_types, :default_user_role_id,l(:label_project_type_new_project_user_role_ids))%><%= f.collection_select(:default_user_role_id, Role.find_all_givable.collect, :id, :name, :include_blank => "--- #{l(:actionview_instancetag_blank_option)} ---") %> </p>
+<%= call_hook(:view_project_types_form_middle, :project => @project, :f => f) %>
 </div>
 
 <div class="box tabular">

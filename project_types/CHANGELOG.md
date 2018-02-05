@@ -7,11 +7,14 @@ Changelog for Project Types
     Code Refactoring
     Licence Text
     Markdown Files
+    Project View Modification with Deface
+    Compatability with Redmine 3.4.4
     
 * [MODIFIED]: adjusts folders and files to meet a better structure
-               for patching redmine core
+              for patching redmine core
 * [ADDED]: adds the licence text to all relevant files
 * [MODIFIED]: adjusts the CHANGELOG and README to .md-files
+* [ADDED]: uses deface to place a call hook into the project view
 
 
 0.1.4 *2017-12-03*
