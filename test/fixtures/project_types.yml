@@ -6,7 +6,6 @@ project_type_001:
   position: 1
   default_user_role_id: 3
   identifier: true
-  related_to: 2
 
 project_type_002:
   id: 2
@@ -16,7 +15,6 @@ project_type_002:
   position: 2
   default_user_role_id: 2
   identifier: false
-  related_to: 3
   
 project_type_003:
   id: 3
