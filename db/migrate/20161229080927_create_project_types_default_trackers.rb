@@ -17,10 +17,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class CreateProjectTypesDefaultTrackers < ActiveRecord::Migration
-  def change
+  def self.up
     create_table :project_types_default_trackers do |t|
       t.integer :project_type_id
       t.integer :tracker_id
     end
+  end
+  
+  def self.down
+    drop_table :project_types_default_trackers
   end
 end

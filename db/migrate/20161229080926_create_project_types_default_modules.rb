@@ -17,13 +17,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class CreateProjectTypesDefaultModules < ActiveRecord::Migration
-  def change
+  def self.up
     create_table :project_types_default_modules do |t|
       t.integer :project_type_id
       t.string :name, :null => false
     end
     add_index :project_types_default_modules, :project_type_id
     
+  end
+  
+  def self.down
+    remove_index :project_types_default_modules, :project_type_id
+    drop_table :project_types_default_modules
   end
   
 end

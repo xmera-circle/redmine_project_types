@@ -17,7 +17,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class AddIndexToProjectType < ActiveRecord::Migration
-  def change
+  def self.up
     add_index :project_types, :default_user_role_id
   end
+  
+  def self.down
+    remove_index :project_types, :default_user_role_id
+  end
+  
 end

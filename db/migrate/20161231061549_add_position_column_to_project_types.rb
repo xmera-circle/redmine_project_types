@@ -17,7 +17,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class AddPositionColumnToProjectTypes < ActiveRecord::Migration
-  def change
+  def self.up
     add_column :project_types, :position, :integer
- end
+  end
+ 
+  def self.down
+    remove_column :project_types, :position
+  end
 end
