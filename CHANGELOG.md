@@ -5,10 +5,14 @@ Changelog for Project Types
 ------------------
 
 		Redmine 3.4.6 Support
+		Redmine DMSF 1.6.1 Support
+		Depreciation of alias_method_chain in Rails 5.1
 		Object Creation
 		
 * [FIXED]: Disables enabled module names and tracker if project types plugin is
 					 enabled and a new object should be created.
+* [FIXED]: Fixes intersection with Redmine DMSF version 1.6.1. See #157.
+* [MODIFIED]: Changes patching method from alias_method_chain to prepend.
 
 0.2.0 *2018-01-30*
 ------------------
