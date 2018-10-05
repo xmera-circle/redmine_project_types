@@ -24,3 +24,17 @@ Deface::Override.new(
   text: "<%= call_hook(:view_projects_form_top, :project => @project, :f => f) %>",
   namespaced: true
 )
+Deface::Override.new(
+  virtual_path: 'projects/_form',
+  name: 'disable-enabled-module-names',
+  replace: "erb[silent]:contains('if @project.new_record? && @project.safe_attribute?')",
+  text: "<% if @project.new_record? && @project.safe_attribute?('enabled_module_names') && !Redmine::Plugin.installed?('project_types') %>",
+  namespaced: true
+)
+Deface::Override.new(
+  virtual_path: 'projects/_form',
+  name: 'disable-trackers',
+  replace: "erb[silent]:contains('if @project.new_record? || @project.module_enabled?')",
+  text: "<% if !Redmine::Plugin.installed?('project_types') && (@project.new_record? || @project.module_enabled?('issue_tracking')) ||  (!@project.new_record? && @project.module_enabled?('issue_tracking'))%>",
+  namespaced: true
+)

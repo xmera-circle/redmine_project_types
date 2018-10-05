@@ -1,10 +1,14 @@
 Changelog for Project Types
 ===========================
 
-0.2.1 *2018-09-27*
+0.2.1 *2018-10-xx*
 ------------------
 
 		Redmine 3.4.6 Support
+		Object Creation
+		
+* [FIXED]: Disables enabled module names and tracker if project types plugin is
+					 enabled and a new object should be created.
 
 0.2.0 *2018-01-30*
 ------------------
