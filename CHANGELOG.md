@@ -1,6 +1,11 @@
 Changelog for Project Types
 ===========================
 
+0.2.1 *2018-09-27*
+------------------
+
+		Redmine 3.4.6 Support
+
 0.2.0 *2018-01-30*
 ------------------
 
@@ -8,7 +13,7 @@ Changelog for Project Types
     Licence Text
     Markdown Files
     Project View Modification with Deface
-    Compatability with Redmine 3.4.4
+    Redmine 3.4.4 Support
     
 * [MODIFIED]: adjusts folders and files to meet a better structure
               for patching redmine core

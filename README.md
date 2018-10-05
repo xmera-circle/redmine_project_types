@@ -1,7 +1,7 @@
 Project Types Plugin
 ====================
 
-The current version of Project Types Plugin is **0.2.0**.
+The current version of Project Types Plugin is **0.2.1**.
 
 Project Types is a plugin for xmera:isms based on Redmine. It allows to define individual project types.
 
@@ -47,8 +47,8 @@ Before installing ensure that the Redmine instance is stopped.
 1. Run a migration with: `RAILS_ENV=production rake redmine:plugins:migrate NAME=project_types`
 1. Restart the web server.
 
-Uninstalling DMSF Modifications
--------------------------------
+Uninstalling
+------------
 
 Before uninstalling the Project Types Plugin, please ensure that the Redmine instance is stopped.
 
