@@ -1,4 +1,4 @@
-# Redmine plugin for Modifications of Redmine DMSF Plugin.
+# Redmine plugin for xmera:isms called Project Types Plugin.
 #
 # Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
 #
