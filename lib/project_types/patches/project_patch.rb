@@ -121,6 +121,10 @@ module ProjectTypes
         def relations_up?
           ProjectsRelation.relations_up?(self)
         end
+        
+        def project_type_id
+          self.projects_project_type.project_type_id
+        end
       end
     end
   end

@@ -21,9 +21,10 @@ class ProjectTypesController < ApplicationController
   
   include ActiveModel::Dirty
   include ProjectTypesHelper
- 
+  
+  # Enables the sidebar with admin menu
   layout 'admin'
- # self.main_menu = false # enable for redmine version 3.4.3
+  self.main_menu = false # enable for redmine 3.4
  
   before_filter :require_admin, :except => :index
   before_filter :require_admin_or_api_request, :only => :index
@@ -74,12 +75,12 @@ class ProjectTypesController < ApplicationController
 
      if @project_type.update_attributes(project_type_params)    
 
-         if @project_type.previous_changes[:position].nil?
-           create_multi_default_modules(@project_types_default_modules, project_types_default_module_params)
-           create_multi_default_trackers(@project_types_default_trackers, project_types_default_tracker_params)
-         end
+       if @project_type.previous_changes[:position].nil?
+         create_multi_default_modules(@project_types_default_modules, project_types_default_module_params)
+         create_multi_default_trackers(@project_types_default_trackers, project_types_default_tracker_params)
+       end
 
-        respond_to do |format|
+      respond_to do |format|
         format.html {
           flash[:notice] = l(:notice_successful_update)
           redirect_to project_types_path(:page => params[:page])
