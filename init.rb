@@ -16,10 +16,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# Refers to the plugins list of requirements
-require_dependency File.dirname(__FILE__) + '/lib/project_types.rb'
+require_dependency 'project_types'
 
-# Plugin registration
 Redmine::Plugin.register :project_types do
   name 'Project Types Plugin'
   author 'Liane Hampe'
@@ -42,8 +40,7 @@ Redmine::Plugin.register :project_types do
   menu :admin_menu, :project_types, { controller: 'project_types', action: 'index' }, caption: :label_project_type_plural, html: { class: 'icon icon-plugins' }
 end
 
-# Adds the project types app/overrides directory to Rails'
-# search paths for deface overrides
+# Adds the project types app/overrides directory to Rails' search paths for deface overrides
 Rails.application.paths['app/overrides'] ||= []
 project_types_overwrite_dir = "#{Redmine::Plugin.directory}/project_types/app/overrides".freeze
 unless Rails.application.paths['app/overrides'].include?(project_types_overwrite_dir)
