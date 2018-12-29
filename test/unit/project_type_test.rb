@@ -19,17 +19,8 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class ProjectTypeTest < ActiveSupport::TestCase
-  # The fixtures method allows us to include fixtures from Redmine core's
-  # test suite (for example, :issues, :roles, :users, :projects, and so on)
-  fixtures :projects, :members, :member_roles, :roles, :users
-  
-  # plugin_fixtures: This is the method we monkey-patched into the various 
-  # TestCase classes so that we could interact with Redmine's fixtures as 
-  # well as our own custom fixtures.
-  # The usage of plugin_fixtures requires some code in the plugins 
-  # test_helper.rb
-  #plugin_fixtures :project_types, :projects_project_types
 
+  fixtures :projects, :members, :member_roles, :roles, :users
   ProjectType::TestCase.create_fixtures(Redmine::Plugin.find(:project_types).directory + '/test/fixtures/', [:project_types, :projects_project_types])
 
   test "should not save project type without name" do
