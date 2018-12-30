@@ -25,7 +25,6 @@ Redmine::Plugin.register :project_types do
   version '0.2.1'
   url 'http://example.com/path/to/plugin'
   author_url 'http://example.com/about'
-  directory "#{Redmine::Plugin.directory}/xmera_ms/plugins/project_types" unless Redmine::Plugin.registered_plugins[:xmera_ms].nil?
   
   requires_redmine version_or_higher: '3.3.2'
 
