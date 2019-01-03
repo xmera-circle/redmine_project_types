@@ -1,6 +1,16 @@
 Changelog for Project Types
 ===========================
 
+0.2.2 *2019-01-03*
+------------------
+
+		Redmine Main Menu
+    Requirements
+		
+* [MODIFIED]: Disables Redmine main menu when in admin area of project types.
+* [MODIFIED]: Reworked some requirements of loading other files.
+
+
 0.2.1 *2018-12-01*
 ------------------
 
