@@ -1,6 +1,14 @@
 Changelog for Project Types
 ===========================
 
+0.2.3 *2019-01-14*
+------------------
+
+		Migrations
+		
+* [MODIFIED]: Modifies migration files migrating only if table not exists.
+
+
 0.2.2 *2019-01-03*
 ------------------
 

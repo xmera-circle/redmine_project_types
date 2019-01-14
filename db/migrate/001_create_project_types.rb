@@ -18,13 +18,17 @@
 
 class CreateProjectTypes < ActiveRecord::Migration
   def self.up
-    create_table :project_types do |t|
-      t.string :name
-      t.text :description
+    unless table_exists?(:project_types)
+      create_table :project_types do |t|
+        t.string :name
+        t.text :description
+      end
     end
   end
   
   def self.down
-    drop_table :project_types
+    if table_exists?(:project_types)
+      drop_table :project_types
+    end
   end
 end

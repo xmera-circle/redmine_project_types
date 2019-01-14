@@ -18,17 +18,20 @@
 
 class CreateProjectTypesDefaultModules < ActiveRecord::Migration
   def self.up
-    create_table :project_types_default_modules do |t|
-      t.integer :project_type_id
-      t.string :name, :null => false
+    unless table_exists?(:project_types_default_modules)
+      create_table :project_types_default_modules do |t|
+        t.integer :project_type_id
+        t.string :name, :null => false
+      end
+      add_index :project_types_default_modules, :project_type_id
     end
-    add_index :project_types_default_modules, :project_type_id
-    
   end
   
   def self.down
-    remove_index :project_types_default_modules, :project_type_id
-    drop_table :project_types_default_modules
+    if table_exists?(:project_types_default_modules)
+      remove_index :project_types_default_modules, :project_type_id
+      drop_table :project_types_default_modules
+    end
   end
   
 end

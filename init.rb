@@ -22,7 +22,7 @@ Redmine::Plugin.register :project_types do
   name 'Project Types Plugin'
   author 'Liane Hampe'
   description 'This is a plugin for defining project types with individual project default settings.'
-  version '0.2.2'
+  version '0.2.3'
   url 'http://example.com/path/to/plugin'
   author_url 'http://example.com/about'
   

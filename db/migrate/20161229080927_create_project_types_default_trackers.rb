@@ -18,13 +18,17 @@
 
 class CreateProjectTypesDefaultTrackers < ActiveRecord::Migration
   def self.up
-    create_table :project_types_default_trackers do |t|
-      t.integer :project_type_id
-      t.integer :tracker_id
+    unless table_exists?(:project_types_default_trackers)
+      create_table :project_types_default_trackers do |t|
+        t.integer :project_type_id
+        t.integer :tracker_id
+      end
     end
   end
   
   def self.down
-    drop_table :project_types_default_trackers
+    if table_exists?(:project_types_default_trackers)
+      drop_table :project_types_default_trackers
+    end
   end
 end
