@@ -18,10 +18,10 @@
 
 class AddIndexToProjectTypesDefaultTracker < ActiveRecord::Migration
   def self.up
-    add_index :project_types_default_trackers, :project_type_id
+    add_index :project_types_default_trackers, :project_type_id unless index_exists?(:project_types_default_trackers, :project_type_id)
   end
   
   def self.down
-    remove_index :project_types_default_trackers, :project_type_id
+    remove_index :project_types_default_trackers, :project_type_id if index_exists?(:project_types_default_trackers, :project_type_id)
   end
 end

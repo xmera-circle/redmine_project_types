@@ -18,10 +18,10 @@
 
 class AddIdentifierColumnToProjectTypes < ActiveRecord::Migration
   def self.up
-    add_column :project_types, :identifier, :boolean
+    add_column :project_types, :identifier, :boolean unless column_exists?(:project_types, :identifier)
   end
   
   def self.down
-    remove_column :project_types, :identifier
+    remove_column :project_types, :identifier if column_exists?(:project_types, :identifier)
   end
 end

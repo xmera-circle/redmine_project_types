@@ -18,11 +18,11 @@
 
 class AddIndexToProjectType < ActiveRecord::Migration
   def self.up
-    add_index :project_types, :default_user_role_id
+    add_index :project_types, :default_user_role_id unless index_exists?(:project_types, :default_user_role_id)
   end
   
   def self.down
-    remove_index :project_types, :default_user_role_id
+    remove_index :project_types, :default_user_role_id if index_exists?(:project_types, :default_user_role_id)
   end
   
 end

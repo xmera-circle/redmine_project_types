@@ -18,10 +18,10 @@
 
 class AddPositionColumnToProjectTypes < ActiveRecord::Migration
   def self.up
-    add_column :project_types, :position, :integer
+    add_column :project_types, :position, :integer unless column_exists?(:project_types, :position)
   end
  
   def self.down
-    remove_column :project_types, :position
+    remove_column :project_types, :position if column_exists?(:project_types, :position)
   end
 end

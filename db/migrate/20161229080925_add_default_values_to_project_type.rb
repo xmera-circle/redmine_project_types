@@ -18,12 +18,12 @@
 
 class AddDefaultValuesToProjectType < ActiveRecord::Migration
   def self.up
-    add_column :project_types, :is_public, :boolean, :default => false, :null => false
-    add_column :project_types, :default_user_role_id, :integer, foreign_key: true
+    add_column :project_types, :is_public, :boolean, :default => false, :null => false unless column_exists?(:project_types, :is_public)
+    add_column :project_types, :default_user_role_id, :integer, foreign_key: true unless column_exists?(:project_types, :default_user_role_id)
   end
   
   def self.down
-    remove_column :project_types, :is_public
-    remove_column :project_types, :default_user_role_id
+    remove_column :project_types, :is_public if column_exists?(:project_types, :is_public)
+    remove_column :project_types, :default_user_role_id if column_exists?(:project_types, :default_user_role_id)
   end
 end
