@@ -1,6 +1,6 @@
-# Redmine plugin for xmera:isms called Project Types Plugin
+# Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
+# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 
 # Plugins patches
 require 'project_types/patches/project_patch'
+require 'project_types/patches/tracker_patch'
 require 'project_types/patches/projects_controller_patch'
 
 # Plugins hook listener

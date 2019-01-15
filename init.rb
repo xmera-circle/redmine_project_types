@@ -1,6 +1,6 @@
-# Redmine plugin for xmera:isms called Custom Footer Plugin
+# Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
+# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,12 +30,6 @@ Redmine::Plugin.register :project_types do
 
   settings default: {},
            partial: 'settings/project_types_settings'
-
-#  project_module :project_types do
-#    permission :view_project_types, {:project_types => [:index, :show]}
-#    permission :manage_project_types, {:project_types => [:index, :show, :new, :create, :destroy]}
-#    permission :select_project_modules, {:project_types => :modules}, :require => :member
-#  end
 
   menu :admin_menu, :project_types, { controller: 'project_types', action: 'index' }, caption: :label_project_type_plural, html: { class: 'icon icon-plugins' }
 end

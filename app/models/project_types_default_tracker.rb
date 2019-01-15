@@ -1,6 +1,6 @@
-# Redmine plugin for xmera:isms called Project Types Plugin
+# Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
+# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,10 +19,29 @@
 class ProjectTypesDefaultTracker < ActiveRecord::Base
   unloadable
   
+  after_commit :update_project_tracker
+  
   belongs_to :project_type
   belongs_to :tracker
 
   validates_presence_of :tracker_id
   validates_uniqueness_of :tracker_id, :scope => :project_type_id
   attr_protected :id
+  
+  private
+  
+    def update_project_tracker
+      # Updates the projects tracker defined by the associated
+      # project type.
+      Project.all.each do |p|
+        project_type_id = p.project_type_id
+        unless project_type_id
+          project_type = ProjectType.find(project_type_id)
+          default_tracker_ids = project_type.project_types_default_trackers.collect{ |t| t.tracker_id }
+          # Update of project trackers
+          p.tracker_ids = default_tracker_ids
+        end
+      end unless Project.all
+    end
+  
 end
