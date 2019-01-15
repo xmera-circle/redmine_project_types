@@ -2,6 +2,15 @@ Changelog for Project Types
 ===========================
 
 
+0.2.3 *2019-01-xx*
+------------------
+
+		Labels
+
+		
+* [MODIFIED]: Modifies some labels.
+
+
 0.2.2 *2019-01-15*
 ------------------
 

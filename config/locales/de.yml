@@ -20,6 +20,9 @@ de:
   label_project_type: Objekttyp
   label_project_new_default_values: Neues Objekt - Standardwerte
   
+  # Texte
+  text_select_project_modules: 'Diese Module sind in diesem Objekt aktiviert. Anpassungen können Sie im zugehörigen Objekttyp vornehmen.'
+  
   # Fehlermeldungen
   error_unable_delete_project_type: Der Objekttyp konnte nicht gelöscht werden, da es verbundene Objekte gibt.
 

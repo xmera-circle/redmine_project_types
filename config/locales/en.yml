@@ -20,6 +20,9 @@ en:
   label_project_type: Object Type
   label_project_new_default_values: New Object - Default Values
 
+  # Texts
+  text_select_project_modules: 'These modules are activated in this object. For modifications go to the corresponding object type settings.'
+  
   # Error messages
   error_unable_delete_project_type: Unable to delete object type due to related objects
   
