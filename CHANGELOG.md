@@ -1,22 +1,16 @@
 Changelog for Project Types
 ===========================
 
-0.2.3 *2019-01-14*
-------------------
-
-		Migrations
-		
-* [MODIFIED]: Modifies migration files migrating only if table not exists.
-
-
-0.2.2 *2019-01-03*
+0.2.2 *2019-01-15*
 ------------------
 
 		Redmine Main Menu
     Requirements
+    Mitrations
 		
 * [MODIFIED]: Disables Redmine main menu when in admin area of project types.
 * [MODIFIED]: Reworked some requirements of loading other files.
+* [MODIFIED]: Modifies migration files migrating only if table not exists.
 
 
 0.2.1 *2018-12-01*
