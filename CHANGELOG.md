@@ -9,16 +9,16 @@ Changelog for Project Types
     Requirements
     Mitrations
     Copyright Year
-    Display of Module, Trackers, Custom Fields
+    Projects Modules, Trackers, Custom Fields
 
 		
 * [MODIFIED]: Disables Redmine main menu when in admin area of project types.
 * [MODIFIED]: Reworked some requirements of loading other files.
 * [MODIFIED]: Modifies migration files migrating only if table not exists.
 * [MODIFIED]: Adjusts copyright year to 2019.
-* [MODIFIED]: Disables settings of module and tracker in project settings and
+* [MODIFIED]: Sets settings of module and tracker in project settings to read only and
               synchronizes the respective ids for the project based on project type.
-* [MODIFIED]: Disables project mapping in custom field settings and synchronizes
+* [MODIFIED]: Sets project mapping in custom field settings to read only and synchronizes
               the fields for the project based on the assigned trackers.
 
 

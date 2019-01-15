@@ -19,9 +19,26 @@
 class ProjectTypesDefaultModule < ActiveRecord::Base
   unloadable
   
+  after_commit :update_project_module
+  
   belongs_to :project_type
   
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :project_type_id
   attr_protected :id
+  
+  private
+  
+    def update_project_module
+      # Updates the projects tracker defined by the associated
+      Project.all.each do |p|
+        project_type_id = p.project_type_id 
+        if project_type_id
+          project_type = ProjectType.find(project_type_id)
+          default_module_names = project_type.project_types_default_modules.collect{ |t| t.name }
+          # Update of project modules
+          p.enabled_module_names = default_module_names
+        end
+      end if Project.all
+    end
 end

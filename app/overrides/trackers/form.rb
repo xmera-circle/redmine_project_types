@@ -16,31 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class ProjectTypesDefaultTracker < ActiveRecord::Base
-  unloadable
-  
-  after_commit :update_project_tracker
-  
-  belongs_to :project_type
-  belongs_to :tracker
-
-  validates_presence_of :tracker_id
-  validates_uniqueness_of :tracker_id, :scope => :project_type_id
-  attr_protected :id
-  
-  private
-  
-    def update_project_tracker
-      # Updates the projects tracker defined by the associated
-      Project.all.each do |p|
-        project_type_id = p.project_type_id 
-        if project_type_id
-          project_type = ProjectType.find(project_type_id)
-          default_tracker_ids = project_type.project_types_default_trackers.collect{ |t| t.tracker_id }
-          # Update of project trackers
-          p.tracker_ids = default_tracker_ids
-        end
-      end if Project.all
-    end
-  
-end
+# Target is redmines app/views/trackers/_form.html.erb file
+Deface::Override.new(
+  virtual_path: 'trackers/_form',
+  name: 'disable-project-list',
+  replace: "erb[silent]:contains('if @projects.any?')",
+  text: "<% if @projects.any? && Rails.env == 'test' %>",
+  namespaced: true
+)
