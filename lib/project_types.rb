@@ -19,9 +19,12 @@
 # Project Types Libraries
 
 # Plugins patches
+require 'project_types/patches/custom_field_patch'
 require 'project_types/patches/project_patch'
-require 'project_types/patches/tracker_patch'
 require 'project_types/patches/projects_controller_patch'
+require 'project_types/patches/tracker_patch'
 
 # Plugins hook listener
 require 'project_types/hooks/view_projects_form_top_hook_listener'
+
+

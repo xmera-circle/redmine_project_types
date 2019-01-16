@@ -19,7 +19,7 @@
 class ProjectTypesDefaultModule < ActiveRecord::Base
   unloadable
   
-  after_commit :update_project_module
+  after_commit :sync_project_module
   
   belongs_to :project_type
   
@@ -29,7 +29,7 @@ class ProjectTypesDefaultModule < ActiveRecord::Base
   
   private
   
-    def update_project_module
+    def sync_project_module
       # Updates the projects tracker defined by the associated
       Project.all.each do |p|
         project_type_id = p.project_type_id 

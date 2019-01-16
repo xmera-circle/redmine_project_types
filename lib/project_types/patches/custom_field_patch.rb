@@ -18,7 +18,7 @@
 
 module ProjectTypes
   module Patches
-    module TrackerPatch
+    module CustomFieldPatch
       # Calls the prepended modules on the class. Without this 
       # method the after_commit would be called on the module
       # what raises an error since the method is unknown for the
@@ -37,12 +37,14 @@ module ProjectTypes
         private
   
         def sync_project_custom_fields
-          # Updates the projects tracker defined by the associated
+          # Updates the projects custom fields defined by the associated
           # project type.
           Project.all.each do |p|
-            if p.tracker_ids.include?(self.id)
+            intersection = p.tracker_ids & self.tracker_ids  
+            unless intersection.empty?
               # Update of project custom fields
-              p.issue_custom_field_ids = self.custom_field_ids
+              union = p.issue_custom_field_ids << self.id
+              p.issue_custom_field_ids = union.uniq
             end
           end if Project.all
         end
@@ -53,7 +55,7 @@ end
 
 # Apply patch
 Rails.configuration.to_prepare do
-  unless Tracker.included_modules.include?(ProjectTypes::Patches::TrackerPatch)
-    Tracker.prepend(ProjectTypes::Patches::TrackerPatch)
+  unless CustomField.included_modules.include?(ProjectTypes::Patches::CustomFieldPatch)
+    CustomField.prepend(ProjectTypes::Patches::CustomFieldPatch)
   end
 end
