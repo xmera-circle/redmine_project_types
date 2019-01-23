@@ -21,7 +21,7 @@ Deface::Override.new(
   virtual_path: 'projects/settings/_modules',
   name: 'readonly-module-names',
   replace: "p label",
-  text: "<p><label><%= check_box_tag 'enabled_module_names[]', m, @project.module_enabled?(m), :id => nil, :readonly => true -%>
+  text: "<p><label><%= check_box_tag 'enabled_module_names[]', m, @project.module_enabled?(m), :id => nil, :disabled => true -%>
  <%= l_or_humanize(m, :prefix => 'project_module_') %></label></p>",
   namespaced: true
 )

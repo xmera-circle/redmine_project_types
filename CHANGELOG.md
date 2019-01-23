@@ -6,10 +6,11 @@ Changelog for Project Types
 ------------------
 
 		Labels
-    
+    Projects Modules
 
 		
 * [MODIFIED]: Modifies some labels.
+*	[MODIFIED]: Changes readonly attribute for project modules into disabled.
 
 
 0.2.2 *2019-01-15*
