@@ -6,6 +6,7 @@ Changelog for Project Types
 ------------------
 
 		Labels
+    
 
 		
 * [MODIFIED]: Modifies some labels.
