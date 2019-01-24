@@ -39,14 +39,16 @@ module ProjectTypes
         def sync_project_custom_fields
           # Updates the projects custom fields defined by the associated
           # project type.
-          Project.all.each do |p|
-            intersection = p.tracker_ids & self.tracker_ids  
-            unless intersection.empty?
-              # Update of project custom fields
-              union = p.issue_custom_field_ids << self.id
-              p.issue_custom_field_ids = union.uniq
-            end
-          end if Project.all
+          if ["IssueCustomField"].include?(self.class.to_s) && ProjectType.any?
+            Project.all.each do |p|
+              intersection = p.tracker_ids & self.tracker_ids  
+              unless intersection.empty?
+                # Update of project custom fields
+                union = p.issue_custom_field_ids << self.id
+                p.issue_custom_field_ids = union.uniq
+              end
+            end if Project.all
+          end
         end
       end
     end
