@@ -123,7 +123,7 @@ class ProjectTypesControllerTest < ActionController::TestCase
                                    default_user_role_id: 3, 
                                    position: 1)
     
-    
+
     patch :update, :id => project_type.id, project_type: { id: project_type.id, 
                                                            name: name_new, 
                                                            description: description_new, 
@@ -131,7 +131,7 @@ class ProjectTypesControllerTest < ActionController::TestCase
                                                            default_user_role_id: default_user_role_id_new},
                                            project_types_default_module: { project_type_id: project_type.id,
                                                                            name: [modulename1,modulename2, modulename3]},
-                                           project_types_default_tracker: { project_type_id: 1,
+                                           project_types_default_tracker: { project_type_id: project_type.id,
                                                      tracker_id: [trackerid1,trackerid2,trackerid3]}
   
     assert_equal name_new, project_type.reload.name

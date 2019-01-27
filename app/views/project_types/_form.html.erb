@@ -29,10 +29,10 @@
 <%= call_hook(:view_project_types_form_middle, :project => @project, :f => f) %>
 </div>
 
-<div class="box tabular">
+<div class="box tabular" id="default-modules">
 <p><%= default_modules_multiselect(@project_type.id, Redmine::AccessControl.available_project_modules.collect {|m| [l_or_humanize(m, :prefix => "project_module_"), m.to_s] }, :label_project_type_default_modules ) %></p>
 </div>
 
-<div class="box tabular">
+<div class="box tabular" id="default-trackers">
 <p><%= default_trackers_multiselect(@project_type.id, Tracker.sorted.collect {|t| [t.name, t.id] }, :label_project_type_default_trackers ) %></p>
 </div>

@@ -31,16 +31,15 @@ class ProjectTypesDefaultTracker < ActiveRecord::Base
   private
   
     def sync_project_tracker
-      # Updates the projects tracker defined by the associated
+      # Updates the projects tracker defined by the associated project type
       Project.all.each do |p|
-        project_type_id = p.project_type_id 
-        if project_type_id
-          project_type = ProjectType.find(project_type_id)
-          default_tracker_ids = project_type.project_types_default_trackers.collect{ |t| t.tracker_id }
-          # Update of project trackers
-          p.tracker_ids = default_tracker_ids
-        end
-      end if Project.all
+        project_type_id = p.project_type_id if ProjectsProjectType.all.map(&:project_id).include?(p.id)
+        return if project_type_id.nil?
+        project_type = ProjectType.find(project_type_id)
+        default_tracker_ids = project_type.project_types_default_trackers.collect{ |t| t.tracker_id }
+        # Update of project trackers
+        p.tracker_ids = default_tracker_ids
+      end if (Project.any? && ProjectType.any?)
     end
   
 end
