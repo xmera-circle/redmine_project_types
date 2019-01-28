@@ -33,21 +33,17 @@ Deface::Override.new(
 )
 Deface::Override.new(
   virtual_path: 'projects/_form',
-  name: 'readonly-trackers',
+  name: 'disabled-trackers',
   replace: "erb[loud]:contains('@project.trackers.to_a.include?(tracker)')",
-  text: "<%= check_box_tag 'project[tracker_ids][]', tracker.id, @project.trackers.to_a.include?(tracker), :id => nil, :readonly => true %>",
-  #replace: "erb[silent]:contains('if @project.new_record? || @project.module_enabled?')",
-  #text: "<% if (@project.new_record? || @project.module_enabled?('issue_tracking')) && (Rails.env == 'test') %>",
+  text: "<%= check_box_tag 'project[tracker_ids][]', tracker.id, @project.trackers.to_a.include?(tracker), :id => nil, :disabled => true %>",
   namespaced: true
 )
 Deface::Override.new(
   virtual_path: 'projects/_form',
-  name: 'readonly-custom-fields',
+  name: 'disabled-custom-fields',
   replace: "erb[loud]:contains('@project.all_issue_custom_fields.include?')",
   text: "<%= check_box_tag 'project[issue_custom_field_ids][]', custom_field.id, (@project.all_issue_custom_fields.include? custom_field),
         :disabled => (custom_field.is_for_all? ? 'disabled' : nil),
-        :id => nil, :readonly => true %>",
-  #replace: "erb[silent]:contains('if @project.new_record? || @project.module_enabled?')",
-  #text: "<% if (@project.new_record? || @project.module_enabled?('issue_tracking')) && (Rails.env == 'test') %>",
+        :id => nil, :disabled => true %>",
   namespaced: true
 )

@@ -46,8 +46,9 @@ module ProjectTypes
                 # Update of project custom fields
                 union = p.issue_custom_field_ids << self.id
                 p.issue_custom_field_ids = union.uniq
+               # self.project_ids << p.id
               end
-            end if Project.all
+            end if Project.any?
           end
         end
       end

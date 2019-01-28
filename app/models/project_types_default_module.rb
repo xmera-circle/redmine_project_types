@@ -31,6 +31,8 @@ class ProjectTypesDefaultModule < ActiveRecord::Base
   
     def sync_project_module
       # Updates the projects module defined by the associated project type
+      # Note: The synchronisation in one way. That is, there is no possibility to alter
+      # the module choice in project configuration.
       Project.all.each do |p|
         project_type_id = p.project_type_id if ProjectsProjectType.all.map(&:project_id).include?(p.id)
         return if project_type_id.nil?
