@@ -35,15 +35,29 @@ module ProjectTypes
 
       module InstanceMethods 
         private
-  
+        # The assignment of custom fields to projects by the user is not displayed
+        # anymore. See app/overrides/custom_fields/form.
+        # Instead the assignment is executed automatically in background based
+        # on the tracker.
+        # The relation is project -> project type -> tracker <-custom field.
+        # That is, with every changing in the relation between custom fields and tracker
+        # the relation between custom fields and projects needs to be synchronised.
+        # The whole chain is: project -> project type -> tracker <-> custom field.
+        # The following method defines: project -> project type -> tracker <- custom field.
+        # 
         def sync_project_custom_fields
-          # Updates the projects custom fields defined by the associated
-          # project type.
+          # There are several types of custom fields. Relevant are only IssueCustomFields.
+          # Each project has many trackers and many custom fields.
+          # The relation project -> tracker (p.tracker_ids) is maintained by project_types_default_tracker.rb.
+          # Therefore, p.tracker_ids is reliable.
           if ["IssueCustomField"].include?(self.class.to_s) && ProjectType.any?
             Project.all.each do |p|
-              intersection = p.tracker_ids & self.tracker_ids  
-              unless intersection.empty?
-                # Update of project custom fields
+              intersection = p.tracker_ids & self.tracker_ids
+              if intersection.empty?
+                # Check whether to delete previously assigned custom fields of the project
+                #self.project_ids.delete(p.id)
+              else
+                # Update of projects custom fields
                 union = p.issue_custom_field_ids << self.id
                 p.issue_custom_field_ids = union.uniq
                # self.project_ids << p.id

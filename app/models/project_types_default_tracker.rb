@@ -31,7 +31,10 @@ class ProjectTypesDefaultTracker < ActiveRecord::Base
   private
   
     def sync_project_tracker
-      # Updates the projects tracker defined by the associated project type
+      # The assignment of tracker to projects by the user within the project config 
+      # is not enabled anymore. See app/overrides/projects/settings/form.
+      # Instead the assignment is executed automatically in background based
+      # on the project types which has the respective tracker defined.
       Project.all.each do |p|
         project_type_id = p.project_type_id if ProjectsProjectType.all.map(&:project_id).include?(p.id)
         return if project_type_id.nil?

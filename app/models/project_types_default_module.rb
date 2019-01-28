@@ -30,9 +30,10 @@ class ProjectTypesDefaultModule < ActiveRecord::Base
   private
   
     def sync_project_module
-      # Updates the projects module defined by the associated project type
-      # Note: The synchronisation in one way. That is, there is no possibility to alter
-      # the module choice in project configuration.
+      # The assignment of modules to projects by the user within the project config 
+      # is not enabled anymore. See app/overrides/projects/settings/form.
+      # Instead the assignment is executed automatically in background based
+      # on the project types which has the respective module defined.
       Project.all.each do |p|
         project_type_id = p.project_type_id if ProjectsProjectType.all.map(&:project_id).include?(p.id)
         return if project_type_id.nil?
