@@ -1,30 +1,30 @@
 # English strings go here for Rails i18n
 en:
   # Permissions
-  permission_view_project_types: View Object Types
-  permission_manage_project_types: Manage Object Types
+  permission_view_project_types: View Project Types
+  permission_manage_project_types: Manage Project Types
   
-  # Object module
-  project_module_project_types: Object Types
+  # Project module
+  project_module_project_types: Project Types
   
   # Labels
-  label_project_type_plural: Object Types
+  label_project_type_plural: Project Types
   label_project_type_new: New Type
   label_project_type_name: Name
   label_project_type_description: Description
-  label_project_type_default_is_public: New objects of this object type are public by default
-  label_project_type_default_modules: Default enabled modules for new objects of this object type
-  label_project_type_default_trackers: Default trackers for new objects of this object type
-  label_project_type_sequential_project_identifiers: Generate sequential object identifiers
-  label_project_type_new_project_user_role_ids: Role given to a non-admin user who creates a object of this object type
-  label_project_type: Object Type
-  label_project_new_default_values: New Object - Default Values
+  label_project_type_default_is_public: New projects of this project type are public by default
+  label_project_type_default_modules: Default enabled modules for new projects of this project type
+  label_project_type_default_trackers: Default trackers for new projects of this project type
+  label_project_type_sequential_project_identifiers: Generate sequential project identifiers
+  label_project_type_new_project_user_role_ids: Role given to a non-admin user who creates a project of this project type
+  label_project_type: Project Type
+  label_project_new_default_values: New Project - Default Values
 
   # Texts
   text_select_project_modules: 'Activated modules'
   
   # Error messages
-  error_unable_delete_project_type: Unable to delete object type due to related objects
+  error_unable_delete_project_type: Unable to delete project type due to related projects
   
   # Buttons
   button_default_values: Edit default values
