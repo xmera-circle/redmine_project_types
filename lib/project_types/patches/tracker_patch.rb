@@ -56,8 +56,7 @@ module ProjectTypes
               # Update of project custom fields
               p.issue_custom_field_ids = self.custom_field_ids
             end
-          #end if Project.any?
-          end if Project.all
+          end if Project.any?
         end
       end
     end

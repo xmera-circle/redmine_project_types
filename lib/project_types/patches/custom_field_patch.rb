@@ -55,12 +55,10 @@ module ProjectTypes
               intersection = p.tracker_ids & self.tracker_ids
               if intersection.empty?
                 # Check whether to delete previously assigned custom fields of the project
-                #self.project_ids.delete(p.id)
+                self.project_ids.delete(p.id)
               else
                 # Update of projects custom fields
-                union = p.issue_custom_field_ids << self.id
-                p.issue_custom_field_ids = union.uniq
-               # self.project_ids << p.id
+                self.project_ids << p.id
               end
             end if Project.any?
           end
