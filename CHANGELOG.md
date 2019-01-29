@@ -4,9 +4,9 @@ Changelog for Project Types
 0.2.4 *2019-xx-xx*
 ------------------
 
-    Topic
+    Plugin Settings
 
-* [Tag]: Description
+* [DELETED]: Deletes all plugin settings related code, files, dirs.
 
 
 0.2.3 *2019-01-28*
