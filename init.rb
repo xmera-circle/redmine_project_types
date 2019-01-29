@@ -28,9 +28,6 @@ Redmine::Plugin.register :project_types do
   
   requires_redmine version_or_higher: '3.3.2'
 
-  settings default: {},
-           partial: 'settings/project_types_settings'
-
   menu :admin_menu, :project_types, { controller: 'project_types', action: 'index' }, caption: :label_project_type_plural, html: { class: 'icon icon-plugins' }
 end
 
