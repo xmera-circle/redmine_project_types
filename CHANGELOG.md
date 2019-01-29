@@ -2,20 +2,22 @@ Changelog for Project Types
 ===========================
 
 
-0.2.3 *2019-01-xx*
+0.2.3 *2019-01-28*
 ------------------
 
 		Labels
     Projects Modules
     Project Type Assignment
     Projects Modules, Trackers, Custom Fields
+    Internationalisation
 
 		
 * [MODIFIED]: Modifies some labels.
 *	[MODIFIED]: Changes readonly attribute for project modules into disabled.
 * [ADDED]: Adds a HTML required tag to the drop down list for project types when creating a new
           project.
-*[MODIFIED]: Fixes synchronisation in project modules, trackers, and custom fields.
+* [MODIFIED]: Fixes/refactors synchronisation in project modules, trackers, and custom fields.
+* [MODIEFIED]: Adjusts all translations to project instead of object.
 
 
 
