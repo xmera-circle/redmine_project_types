@@ -1,7 +1,7 @@
 Changelog for Project Types
 ===========================
 
-0.2.4 *2019-xx-xx*
+0.2.4 *2019-02-09*
 ------------------
 
     Plugin Settings
