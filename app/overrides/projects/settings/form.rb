@@ -20,7 +20,8 @@
 Deface::Override.new(
   virtual_path: 'projects/settings/_modules',
   name: 'disabled-module-names',
-  replace: "fieldset",
-  partial: "projects/settings/module_names",
+  set_attributes: "fieldset",
+  attributes: {disabled: true},
+  #partial: "projects/settings/module_names",
   namespaced: true
 )
