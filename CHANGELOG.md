@@ -1,6 +1,14 @@
 Changelog for Project Types
 ===========================
 
+0.2.5 *2019-02-13*
+------------------
+
+    Enabled Modules
+
+* [MODIFIED]: Modifies the plugin settings modules view with deface by replacing
+              <fieldset> with a partial.
+
 0.2.4 *2019-02-09*
 ------------------
 
