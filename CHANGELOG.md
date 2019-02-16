@@ -1,13 +1,18 @@
 Changelog for Project Types
 ===========================
 
-0.2.5 *2019-02-13*
+0.2.5 *2019-02-14*
 ------------------
 
     Enabled Modules
 
-* [MODIFIED]: Modifies the plugin settings modules view with deface by replacing
-              <fieldset> with a partial.
+* [ADDED]: Adds form views/projects/settings/_modules.html.erb which overwrites
+           the same view in Redmine Core. 
+* [DELETED]: Deletes views/overrides/projects/settings since it is not working with
+             <fieldset> HTML tag.
+* [DELETED]:  Removes :issue_tracking module from enabled module list in project
+              configurations.
+
 
 0.2.4 *2019-02-09*
 ------------------
