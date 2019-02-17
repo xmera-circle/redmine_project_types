@@ -53,8 +53,8 @@ module ProjectTypes
           # Therefore, p.tracker_ids is reliable.
           Project.all.each do |p|
             if p.tracker_ids.include?(self.id)
-              # Update of project custom fields
-              p.issue_custom_field_ids = self.custom_field_ids
+              # Update of project custom fields as long as the custom field is new for the project
+              p.issue_custom_field_ids << self.custom_field_ids unless (p.issue_custom_field_ids & self.custom_field_ids).empty?
             end
           end if Project.any?
         end
