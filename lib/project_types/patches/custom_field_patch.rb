@@ -50,15 +50,16 @@ module ProjectTypes
           # Each project has many trackers and many custom fields.
           # The relation project -> tracker (p.tracker_ids) is maintained by project_types_default_tracker.rb.
           # Therefore, p.tracker_ids is reliable.
-          if ["IssueCustomField"].include?(self.class.to_s) && ProjectType.any?
+          if ["IssueCustomField"].include?(self.class.to_s) && ProjectType.any?     
             Project.all.each do |p|
+              byebug
               intersection = p.tracker_ids & self.tracker_ids
               if intersection.empty?
                 # Check whether to delete previously assigned custom fields of the project
                 self.project_ids.delete(p.id)
               else
                 # Update of projects custom fields
-                self.project_ids << p.id
+                self.project_ids += [p.id] unless self.project_ids.include?(p.id)
               end
             end if Project.any?
           end
