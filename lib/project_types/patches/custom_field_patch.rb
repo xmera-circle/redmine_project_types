@@ -52,7 +52,6 @@ module ProjectTypes
           # Therefore, p.tracker_ids is reliable.
           if ["IssueCustomField"].include?(self.class.to_s) && ProjectType.any?     
             Project.all.each do |p|
-              byebug
               intersection = p.tracker_ids & self.tracker_ids
               if intersection.empty?
                 # Check whether to delete previously assigned custom fields of the project
