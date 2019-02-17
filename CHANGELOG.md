@@ -5,6 +5,7 @@ Changelog for Project Types
 ------------------
 
     Enabled Modules
+    Custom Field Synchronization
 
 * [ADDED]: Adds form views/projects/settings/_modules.html.erb which overwrites
            the same view in Redmine Core. 
@@ -12,6 +13,8 @@ Changelog for Project Types
              <fieldset> HTML tag.
 * [DELETED]:  Removes :issue_tracking module from enabled module list in project
               configurations.
+
+* [MODIFIED]: Fixes projects custom field synchronization in tracker_patch.rb.
 
 
 0.2.4 *2019-02-09*
