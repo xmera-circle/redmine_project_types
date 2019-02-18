@@ -19,7 +19,9 @@
 class ProjectTypesDefaultTracker < ActiveRecord::Base
   unloadable
   
+  # Callbacks
   after_commit :sync_project_tracker
+  after_commit :sync_project_custom_fields
   
   belongs_to :project_type
   belongs_to :tracker
@@ -51,5 +53,33 @@ class ProjectTypesDefaultTracker < ActiveRecord::Base
         end
       end if (Project.any? && ProjectType.any?)
     end
+    
+    def sync_project_custom_fields
+      # Each project has many trackers and many custom fields.
+      # The relation project -> tracker (self.projects, p.tracker_ids) is maintained by project_types_default_tracker.rb.
+      # Therefore, p.tracker_ids is reliable.
+      Project.all.each do |p|
+        # Checks whether the project has the current project type at all
+        if p.project_type_id == self.project_type_id
+          # Distinction of cases
+          a = p.issue_custom_field_ids
+          b = self.tracker.custom_field_ids
+          # Case 1: a is real subset of b <=> b-a != {} <=> Add the custom fields of b-a.
+          # Case 2: b is real subset of a <=> b-a  = {} <=> Delete the custom fields of a-b if a-b != {} AND a-b .
+          diff = b-a
+          case diff.empty?
+            when false
+              # Add the custom fields of diff to the current project
+              p.issue_custom_field_ids += diff
+              p.issue_custom_field_ids.flatten!
+            when true
+              # Delete the custom fields of a-b of the current project unless a-b is empty and a-b does not belong to other trackers
+              # a = a - (a-b) = a - a + b = b
+              #p.issue_custom_field_ids = self.tracker.custom_field_ids unless (a-b).empty?
+          end              
+        end
+      end if Project.any?
+    end
+  
   
 end

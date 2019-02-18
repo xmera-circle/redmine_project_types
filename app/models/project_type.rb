@@ -24,14 +24,14 @@ class ProjectType < ActiveRecord::Base
   has_many :projects, :through => :projects_project_types
   
   has_many :trackers, :through => :project_types_default_trackers
-  has_many :project_types_default_trackers, :dependent => :delete_all
-  
+  has_many :project_types_default_trackers, :dependent => :delete_all 
   has_many :project_types_default_modules, :dependent => :delete_all
+  has_many :issue_custom_fields, :through => :trackers
     
   # Validations
   validates_presence_of :name
   validates_uniqueness_of :name
-  
+   
   attr_protected :id
   acts_as_positioned
 
