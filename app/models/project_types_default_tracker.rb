@@ -35,13 +35,20 @@ class ProjectTypesDefaultTracker < ActiveRecord::Base
       # is not enabled anymore. See app/overrides/projects/settings/form.
       # Instead the assignment is executed automatically in background based
       # on the project types which has the respective tracker defined.
+      # @note self is the current default tracker to be saved. 
       Project.all.each do |p|
-        project_type_id = p.project_type_id if ProjectsProjectType.all.map(&:project_id).include?(p.id)
-        return if project_type_id.nil?
-        project_type = ProjectType.find(project_type_id)
-        default_tracker_ids = project_type.project_types_default_trackers.collect{ |t| t.tracker_id }
-        # Update of project trackers
-        p.tracker_ids = default_tracker_ids
+        # Checks whether the project has a project type at all. If not, go to the next project.
+        projects_project_type_id = p.project_type_id if ProjectsProjectType.all.map(&:project_id).include?(p.id)
+        unless projects_project_type_id.nil?
+          # Checks whether the project has the same project id as the current tracker to be saved.
+          if self.project_type_id == projects_project_type_id
+            project_type = ProjectType.find(project_type_id)
+            # Includes the saved default modules which cumulate by every tracker to save
+            default_tracker_ids = project_type.project_types_default_trackers.collect{ |t| t.tracker_id }
+            # Update of project trackers
+            p.tracker_ids = default_tracker_ids
+          end
+        end
       end if (Project.any? && ProjectType.any?)
     end
   

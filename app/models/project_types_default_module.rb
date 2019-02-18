@@ -39,6 +39,7 @@ class ProjectTypesDefaultModule < ActiveRecord::Base
         # Checks whether the project has a project type at all. If not, go to the next project.
         projects_project_type_id = p.project_type_id if ProjectsProjectType.all.map(&:project_id).include?(p.id)
         unless projects_project_type_id.nil?
+          # Checks whether the project has the same project id as the current module to be saved.
           if self.project_type_id == projects_project_type_id
             project_type = ProjectType.find(project_type_id)
             # Includes the saved default modules which cumulate by every module to save
