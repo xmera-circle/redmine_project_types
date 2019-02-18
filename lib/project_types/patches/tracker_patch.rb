@@ -52,9 +52,25 @@ module ProjectTypes
           # The relation project -> tracker (self.projects, p.tracker_ids) is maintained by project_types_default_tracker.rb.
           # Therefore, p.tracker_ids is reliable.
           Project.all.each do |p|
+            # Checks whether the project has the current tracker at all
             if p.tracker_ids.include?(self.id)
-              # Update of project custom fields as long as the custom field is new for the project
-              p.issue_custom_field_ids << self.custom_field_ids if (p.issue_custom_field_ids & self.custom_field_ids).empty?
+              # Distinction of cases
+              a = p.issue_custom_field_ids
+              b = self.custom_field_ids
+              # Case 1: a is real subset of b <=> b-a != {} <=> Add the custom fields of b-a.
+              # Case 2: b is real subset of a <=> b-a  = {} <=> Delete the custom fields of a-b if a-b != {} AND a-b .
+              diff = b-a
+              case diff.empty?
+                when false
+                  # Add the custom fields of diff to the current project
+                  p.issue_custom_field_ids += diff
+                  p.issue_custom_field_ids.flatten!
+                when true
+                  # Delete the custom fields of a-b of the current project unless a-b is empty and a-b does not belong to other trackers
+                  # a = a - (a-b) = a - a + b = b
+                  # TODO: IS IT NECESSARY TO DELETE AT ALL? If there are always CF with trackers then not!
+                  # p.issue_custom_field_ids = self.custom_field_ids unless (a-b).empty?
+              end              
             end
           end if Project.any?
         end
