@@ -7,6 +7,7 @@ Changelog for Project Types
     Enabled Modules
     Custom Field Synchronization
     Project Types Default Modules
+    Project Types Default Tracker
 
 * [ADDED]: Adds form views/projects/settings/_modules.html.erb which overwrites
            the same view in Redmine Core. 
@@ -23,6 +24,8 @@ Changelog for Project Types
 
 * [MODIFIED]: Fixes assignment of project types default module to projects with
               respective project types when saving model project_types_default_module.rb.
+
+* [MODIFIED]: The same as above for default module but for trackers.
 
 
 0.2.4 *2019-02-09*
