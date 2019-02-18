@@ -15,17 +15,14 @@ Changelog for Project Types
              <fieldset> HTML tag.
 * [DELETED]:  Removes :issue_tracking module from enabled module list in project
               configurations.
-
 * [MODIFIED]: Fixes projects custom field synchronization in tracker_patch.rb and 
               custom_field_patch.rb.
-
 * [MODIEFIED]: Excludes saving enabled module names if checkboxes are set to disabled: true
                since in that case no params[:enabled_module_names] are submitted.
-
 * [MODIFIED]: Fixes assignment of project types default module to projects with
               respective project types when saving model project_types_default_module.rb.
-
 * [MODIFIED]: The same as above for default module but for trackers.
+* [ADDED]:    Adds synchronization of custom fields in default trackers.
 
 
 0.2.4 *2019-02-09*
