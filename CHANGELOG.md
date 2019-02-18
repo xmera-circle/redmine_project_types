@@ -17,6 +17,9 @@ Changelog for Project Types
 * [MODIFIED]: Fixes projects custom field synchronization in tracker_patch.rb and 
               custom_field_patch.rb.
 
+* [MODIEFIED]: Excludes saving enabled module names if checkboxes are set to disabled: true
+               since in that case no params[:enabled_module_names] are submitted.
+
 
 0.2.4 *2019-02-09*
 ------------------
