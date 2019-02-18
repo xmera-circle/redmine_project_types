@@ -1,11 +1,12 @@
 Changelog for Project Types
 ===========================
 
-0.2.5 *2019-02-14*
+0.2.5 *2019-02-18*
 ------------------
 
     Enabled Modules
     Custom Field Synchronization
+    Project Types Default Modules
 
 * [ADDED]: Adds form views/projects/settings/_modules.html.erb which overwrites
            the same view in Redmine Core. 
@@ -19,6 +20,9 @@ Changelog for Project Types
 
 * [MODIEFIED]: Excludes saving enabled module names if checkboxes are set to disabled: true
                since in that case no params[:enabled_module_names] are submitted.
+
+* [MODIFIED]: Fixes assignment of project types default module to projects with
+              respective project types when saving model project_types_default_module.rb.
 
 
 0.2.4 *2019-02-09*
