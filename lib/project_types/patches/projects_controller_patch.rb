@@ -98,6 +98,12 @@ module ProjectTypes
           end
         end
       end
+      
+      def modules
+        @project.enabled_module_names = params[:enabled_module_names] unless params[:enabled_module_names].nil?
+        flash[:notice] = l(:notice_successful_update)
+        redirect_to settings_project_path(@project, :tab => 'modules')
+      end
     
       private
         
