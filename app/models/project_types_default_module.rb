@@ -34,13 +34,19 @@ class ProjectTypesDefaultModule < ActiveRecord::Base
       # is not enabled anymore. See app/overrides/projects/settings/form.
       # Instead the assignment is executed automatically in background based
       # on the project types which has the respective module defined.
+      # @note self is the current default module to be saved.
       Project.all.each do |p|
-        project_type_id = p.project_type_id if ProjectsProjectType.all.map(&:project_id).include?(p.id)
-        return if project_type_id.nil?
-        project_type = ProjectType.find(project_type_id)
-        default_module_names = project_type.project_types_default_modules.collect{ |t| t.name }
-        # Update of project modules
-        p.enabled_module_names = default_module_names
+        # Checks whether the project has a project type at all. If not, go to the next project.
+        projects_project_type_id = p.project_type_id if ProjectsProjectType.all.map(&:project_id).include?(p.id)
+        unless projects_project_type_id.nil?
+          if self.project_type_id == projects_project_type_id
+            project_type = ProjectType.find(project_type_id)
+            # Includes the saved default modules which cumulate by every module to save
+            default_module_names = project_type.project_types_default_modules.collect{ |t| t.name }
+            # Update of project modules
+            p.enabled_module_names = default_module_names
+          end
+        end
       end if (Project.any? && ProjectType.any?)
     end
 end
