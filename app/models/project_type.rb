@@ -17,7 +17,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class ProjectType < ActiveRecord::Base
-  unloadable
   include Redmine::SafeAttributes
   # Associated models
   has_many :projects_project_types

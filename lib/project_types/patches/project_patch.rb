@@ -26,7 +26,6 @@ module ProjectTypes
         base.extend(ClassMethods) 
         base.send(:include, InstanceMethods)
         base.class_eval do
-          unloadable # Send unloadable so it will not be unloaded in development
           # Associatons
           has_one :projects_project_type, dependent: :destroy
           accepts_nested_attributes_for :projects_project_type

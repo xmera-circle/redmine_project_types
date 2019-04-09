@@ -17,8 +17,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class ProjectTypesDefaultTracker < ActiveRecord::Base
-  unloadable
-  
   # Callbacks
   after_commit :sync_project_tracker
   after_commit :sync_project_custom_fields

@@ -17,8 +17,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class ProjectTypesDefaultModule < ActiveRecord::Base
-  unloadable
-  
   after_commit :sync_project_module
   
   belongs_to :project_type
