@@ -20,12 +20,10 @@ require File.expand_path('../../test_helper', __FILE__)
 
 class ProjectTypesControllerTest < ActionController::TestCase
   
-  include Redmine::I18n
+ include Redmine::I18n
 
  fixtures :projects, :members, :member_roles, :roles, :users
 
- #plugin_fixtures :project_types, :projects_project_types
- 
  ProjectType::TestCase.create_fixtures(Redmine::Plugin.find(:project_types).directory + '/test/fixtures/', [:project_types, :projects_project_types])
  
   # Default setting with admin user
