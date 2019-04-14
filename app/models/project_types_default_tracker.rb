@@ -35,29 +35,30 @@ class ProjectTypesDefaultTracker < ActiveRecord::Base
       # is not enabled anymore. See app/overrides/projects/settings/form.
       # Instead the assignment is executed automatically in background based
       # on the project types which has the respective tracker defined.
-      # @note self is the current default tracker to be saved. 
-      Project.all.each do |p|
-        # Checks whether the project has a project type at all. If not, go to the next project.
-        projects_project_type_id = p.project_type_id if ProjectsProjectType.all.map(&:project_id).include?(p.id)
-        unless projects_project_type_id.nil?
-          # Checks whether the project has the same project id as the current tracker to be saved.
-          if self.project_type_id == projects_project_type_id
-            project_type = ProjectType.find(project_type_id)
-            # Includes the saved default modules which cumulate by every tracker to save
-            default_tracker_ids = project_type.project_types_default_trackers.collect{ |t| t.tracker_id }
-            # Update of project trackers
-            p.tracker_ids = default_tracker_ids
-          end
+      # @note self is the current default tracker to be saved.
+      #
+      # Selects only such projects which have a project type at all 
+      Project.select{ |p| ProjectsProjectType.all.map(&:project_id).include?(p.id) }.each do |p|
+        projects_project_type_id = p.project_type_id 
+        # Checks whether the project has the same project id as the current tracker to be saved.
+        if self.project_type_id == projects_project_type_id
+          project_type = ProjectType.find(project_type_id)
+          # Includes the saved default modules which cumulate by every tracker to save
+          default_tracker_ids = project_type.project_types_default_trackers.collect{ |t| t.tracker_id }
+          # Update of project trackers
+          p.tracker_ids = default_tracker_ids
         end
-      end if (Project.any? && ProjectType.any?)
+      end if Project.any?{ |p| ProjectsProjectType.all.map(&:project_id).include?(p.id) }
     end
     
     def sync_project_custom_fields
       # Each project has many trackers and many custom fields.
       # The relation project -> tracker (self.projects, p.tracker_ids) is maintained by project_types_default_tracker.rb.
       # Therefore, p.tracker_ids is reliable.
-      Project.all.each do |p|
-        # Checks whether the project has the current project type at all
+      #
+      # Selects only such projects which have a project type at all 
+      Project.select{ |p| ProjectsProjectType.all.map(&:project_id).include?(p.id) }.each do |p|
+        # Checks whether the project has the current project type
         if p.project_type_id == self.project_type_id
           # Distinction of cases
           a = p.issue_custom_field_ids
@@ -76,7 +77,7 @@ class ProjectTypesDefaultTracker < ActiveRecord::Base
               #p.issue_custom_field_ids = self.tracker.custom_field_ids unless (a-b).empty?
           end              
         end
-      end if Project.any?
+      end if Project.any?{ |p| ProjectsProjectType.all.map(&:project_id).include?(p.id) }
     end
   
   

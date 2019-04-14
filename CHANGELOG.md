@@ -1,6 +1,16 @@
 Changelog for Project Types
 ===========================
 
+
+0.2.6 *2019-04-14*
+------------------
+
+    Custom Field Synchronization
+
+* [MODIFIED]: Fixes bug in ProjectTypesDefaultTracker#sync_project_custom_fields 
+              occuring when there are projects and project types but no assignment between them. 
+
+
 0.2.5 *2019-02-18*
 ------------------
 
