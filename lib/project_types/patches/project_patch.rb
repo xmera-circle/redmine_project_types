@@ -124,7 +124,7 @@ module ProjectTypes
         end
         
         def project_type_id
-          self.projects_project_type.project_type_id
+          self.projects_project_type.project_type_id unless self.projects_project_type.nil?
         end
         
       end

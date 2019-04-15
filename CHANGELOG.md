@@ -2,13 +2,19 @@ Changelog for Project Types
 ===========================
 
 
-0.2.6 *2019-04-14*
+0.2.6 *2019-04-15*
 ------------------
 
     Custom Field Synchronization
+    Show Projects
+    Module List
 
 * [MODIFIED]: Fixes bug in ProjectTypesDefaultTracker#sync_project_custom_fields 
-              occuring when there are projects and project types but no assignment between them. 
+              occuring when there are projects and project types but no assignment between them.
+* [MODIFIED]: Considers projects having no project type assigned so that no nil error occurs
+              when trying to show the project.
+* [MODIFIED]: Modifies module list which is displayed in project configuration to show always :roadmap
+              but :tickets only if plugin :issue_cloning is not installed.
 
 
 0.2.5 *2019-02-18*
