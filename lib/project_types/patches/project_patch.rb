@@ -1,6 +1,6 @@
-# Redmine plugin for xmera:isms called Project Types Plugin.
+# Redmine plugin for xmera called Project Types Plugin..
 #
-# Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
+# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,7 +26,6 @@ module ProjectTypes
         base.extend(ClassMethods) 
         base.send(:include, InstanceMethods)
         base.class_eval do
-          unloadable # Send unloadable so it will not be unloaded in development
           # Associatons
           has_one :projects_project_type, dependent: :destroy
           accepts_nested_attributes_for :projects_project_type
@@ -34,6 +33,7 @@ module ProjectTypes
           # self.singleton_class.send(:alias_method, :project_types_next_identifier, :next_identifier)
           # Core Extensions (for instance methods)
           alias_method_chain :add_default_member, :project_type_default
+
         end
       end
       # Collects all class methods
@@ -126,6 +126,7 @@ module ProjectTypes
         def project_type_id
           self.projects_project_type.project_type_id
         end
+        
       end
     end
   end

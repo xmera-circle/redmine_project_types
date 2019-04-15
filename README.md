@@ -1,7 +1,7 @@
 Project Types Plugin
 ====================
 
-The current version of Project Types Plugin is **0.2.3**.
+The current version of Project Types Plugin is **0.2.5**.
 
 Project Types is a plugin for xmera:isms based on Redmine. It allows to define individual project types.
 

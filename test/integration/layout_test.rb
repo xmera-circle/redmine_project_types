@@ -1,4 +1,4 @@
-# Redmine plugin for xmera:isms called Custom Footer Plugin
+# Redmine plugin for xmera called Project Types Plugin.
 #
 #  Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
 #

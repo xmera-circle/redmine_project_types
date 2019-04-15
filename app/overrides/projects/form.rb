@@ -1,6 +1,6 @@
-# Redmine plugin for xmera:isms called Project Types Plugin
+# Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
+# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,13 +28,22 @@ Deface::Override.new(
   virtual_path: 'projects/_form',
   name: 'disable-enabled-module-names',
   replace: "erb[silent]:contains('if @project.new_record? && @project.safe_attribute?')",
-  text: "<% if @project.new_record? && @project.safe_attribute?('enabled_module_names') && (!Redmine::Plugin.installed?('project_types') || Rails.env.test?) %>",
+  text: "<% if @project.new_record? && @project.safe_attribute?('enabled_module_names') && Rails.env == 'test' %>",
   namespaced: true
 )
 Deface::Override.new(
   virtual_path: 'projects/_form',
-  name: 'disable-trackers',
-  replace: "erb[silent]:contains('if @project.new_record? || @project.module_enabled?')",
-  text: "<% if ((@project.new_record? || @project.module_enabled?('issue_tracking')) && (!Redmine::Plugin.installed?('project_types') || Rails.env.test?)) || (@project.module_enabled?('issue_tracking') && Redmine::Plugin.installed?('project_types') && !Rails.env.test?) %>",
+  name: 'disabled-trackers',
+  replace: "erb[loud]:contains('@project.trackers.to_a.include?(tracker)')",
+  text: "<%= check_box_tag 'project[tracker_ids][]', tracker.id, @project.trackers.to_a.include?(tracker), :id => nil, :disabled => true %>",
+  namespaced: true
+)
+Deface::Override.new(
+  virtual_path: 'projects/_form',
+  name: 'disabled-custom-fields',
+  replace: "erb[loud]:contains('@project.all_issue_custom_fields.include?')",
+  text: "<%= check_box_tag 'project[issue_custom_field_ids][]', custom_field.id, (@project.all_issue_custom_fields.include? custom_field),
+        :disabled => (custom_field.is_for_all? ? 'disabled' : nil),
+        :id => nil, :disabled => true %>",
   namespaced: true
 )

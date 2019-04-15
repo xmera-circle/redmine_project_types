@@ -16,12 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class AddIdentifierColumnToProjectTypes < ActiveRecord::Migration
-  def self.up
-    add_column :project_types, :identifier, :boolean unless column_exists?(:project_types, :identifier)
-  end
-  
-  def self.down
-    remove_column :project_types, :identifier if column_exists?(:project_types, :identifier)
-  end
-end
+# Target is redmines app/views/trackers/_form.html.erb file
+Deface::Override.new(
+  virtual_path: 'trackers/_form',
+  name: 'disable-project-list',
+  replace: "erb[silent]:contains('if @projects.any?')",
+  text: "<% if @projects.any? && Rails.env == 'test' %>",
+  namespaced: true
+)

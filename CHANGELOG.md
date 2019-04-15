@@ -1,22 +1,85 @@
 Changelog for Project Types
 ===========================
 
-0.2.3 *2019-01-14*
+
+0.2.6 *2019-04-14*
 ------------------
 
-		Migrations
+    Custom Field Synchronization
+
+* [MODIFIED]: Fixes bug in ProjectTypesDefaultTracker#sync_project_custom_fields 
+              occuring when there are projects and project types but no assignment between them. 
+
+
+0.2.5 *2019-02-18*
+------------------
+
+    Enabled Modules
+    Custom Field Synchronization
+    Project Types Default Modules
+    Project Types Default Tracker
+
+* [ADDED]: Adds form views/projects/settings/_modules.html.erb which overwrites
+           the same view in Redmine Core. 
+* [DELETED]: Deletes views/overrides/projects/settings since it is not working with
+             <fieldset> HTML tag.
+* [DELETED]:  Removes :issue_tracking module from enabled module list in project
+              configurations.
+* [MODIFIED]: Fixes projects custom field synchronization in tracker_patch.rb and 
+              custom_field_patch.rb.
+* [MODIEFIED]: Excludes saving enabled module names if checkboxes are set to disabled: true
+               since in that case no params[:enabled_module_names] are submitted.
+* [MODIFIED]: Fixes assignment of project types default module to projects with
+              respective project types when saving model project_types_default_module.rb.
+* [MODIFIED]: The same as above for default module but for trackers.
+* [ADDED]:    Adds synchronization of custom fields in default trackers.
+
+
+0.2.4 *2019-02-09*
+------------------
+
+    Plugin Settings
+
+* [DELETED]: Deletes all plugin settings related code, files, dirs.
+
+
+0.2.3 *2019-01-28*
+------------------
+
+		Labels
+    Projects Modules
+    Project Type Assignment
+    Projects Modules, Trackers, Custom Fields
+    Internationalisation
+
 		
-* [MODIFIED]: Modifies migration files migrating only if table not exists.
+* [MODIFIED]: Modifies some labels.
+*	[MODIFIED]: Changes readonly attribute for project modules into disabled.
+* [ADDED]: Adds a HTML required tag to the drop down list for project types when creating a new
+          project.
+* [MODIFIED]: Fixes/refactors synchronisation in project modules, trackers, and custom fields.
+* [MODIEFIED]: Adjusts all translations to project instead of object.
 
 
-0.2.2 *2019-01-03*
+
+0.2.2 *2019-01-15*
 ------------------
 
 		Redmine Main Menu
     Requirements
+    Mitrations
+    Copyright Year
+    Projects Modules, Trackers, Custom Fields
+
 		
 * [MODIFIED]: Disables Redmine main menu when in admin area of project types.
 * [MODIFIED]: Reworked some requirements of loading other files.
+* [MODIFIED]: Modifies migration files migrating only if table not exists.
+* [MODIFIED]: Adjusts copyright year to 2019.
+* [MODIFIED]: Sets settings of module and tracker in project settings to read only and
+              synchronizes the respective ids for the project based on project type.
+* [MODIFIED]: Sets project mapping in custom field settings to read only and synchronizes
+              the fields for the project based on the assigned trackers.
 
 
 0.2.1 *2018-12-01*

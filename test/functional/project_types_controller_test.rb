@@ -1,6 +1,6 @@
-# Redmine plugin for xmera:isms called Project Types Plugin
+# Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
+# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,12 +20,10 @@ require File.expand_path('../../test_helper', __FILE__)
 
 class ProjectTypesControllerTest < ActionController::TestCase
   
-  include Redmine::I18n
+ include Redmine::I18n
 
  fixtures :projects, :members, :member_roles, :roles, :users
 
- #plugin_fixtures :project_types, :projects_project_types
- 
  ProjectType::TestCase.create_fixtures(Redmine::Plugin.find(:project_types).directory + '/test/fixtures/', [:project_types, :projects_project_types])
  
   # Default setting with admin user
@@ -123,7 +121,7 @@ class ProjectTypesControllerTest < ActionController::TestCase
                                    default_user_role_id: 3, 
                                    position: 1)
     
-    
+
     patch :update, :id => project_type.id, project_type: { id: project_type.id, 
                                                            name: name_new, 
                                                            description: description_new, 
@@ -131,7 +129,7 @@ class ProjectTypesControllerTest < ActionController::TestCase
                                                            default_user_role_id: default_user_role_id_new},
                                            project_types_default_module: { project_type_id: project_type.id,
                                                                            name: [modulename1,modulename2, modulename3]},
-                                           project_types_default_tracker: { project_type_id: 1,
+                                           project_types_default_tracker: { project_type_id: project_type.id,
                                                      tracker_id: [trackerid1,trackerid2,trackerid3]}
   
     assert_equal name_new, project_type.reload.name
@@ -173,7 +171,7 @@ class ProjectTypesControllerTest < ActionController::TestCase
     assert_no_difference 'ProjectType.count' do
       delete :destroy, :id => 1
     end
-    assert_equal 'Unable to delete object type due to related objects', flash[:error].to_s
+    assert_equal 'Unable to delete project type due to related projects', flash[:error].to_s
   end
  
 end

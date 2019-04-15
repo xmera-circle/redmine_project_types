@@ -1,6 +1,6 @@
-# Redmine plugin for xmera:isms called Project Types Plugin.
+# Redmine plugin for xmera called Project Types Plugin..
 #
-# Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
+# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -97,6 +97,12 @@ module ProjectTypes
             format.api  { render_validation_errors(@project) }
           end
         end
+      end
+      
+      def modules
+        @project.enabled_module_names = params[:enabled_module_names] unless params[:enabled_module_names].nil?
+        flash[:notice] = l(:notice_successful_update)
+        redirect_to settings_project_path(@project, :tab => 'modules')
       end
     
       private

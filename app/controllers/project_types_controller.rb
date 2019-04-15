@@ -1,6 +1,6 @@
-# Redmine plugin for xmera:isms called Project Types Plugin
+# Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
+# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,8 +17,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class ProjectTypesController < ApplicationController
-  unloadable
-  
   include ActiveModel::Dirty
   include ProjectTypesHelper
   
