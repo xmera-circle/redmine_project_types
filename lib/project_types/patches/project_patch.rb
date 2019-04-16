@@ -63,7 +63,7 @@ module ProjectTypes
                 self.is_public = true
                 self.save
               end
-              
+
               self.enabled_module_names = ProjectTypesDefaultModule.where(project_type_id: project_type_id).pluck(:name)
               
               if default.is_a?(Array)
