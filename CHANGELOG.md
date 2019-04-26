@@ -2,12 +2,14 @@ Changelog for Project Types
 ===========================
 
 
-0.2.6 *2019-04-15*
+0.2.6 *2019-04-23*
 ------------------
 
     Custom Field Synchronization
     Show Projects
     Module List
+    Gemfile
+    Test Fixtures
 
 * [MODIFIED]: Fixes bug in ProjectTypesDefaultTracker#sync_project_custom_fields 
               occuring when there are projects and project types but no assignment between them.
@@ -15,6 +17,8 @@ Changelog for Project Types
               when trying to show the project.
 * [MODIFIED]: Modifies module list which is displayed in project configuration to show always :roadmap
               but :tickets only if plugin :issue_cloning is not installed.
+*	[ADDED]:		Adds Gemfile with gem deface.
+* [MODIFIED]: Extends test fixtures.
 
 
 0.2.5 *2019-02-18*
