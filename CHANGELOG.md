@@ -10,6 +10,7 @@ Changelog for Project Types
     Module List
     Gemfile
     Test Fixtures
+    Redmine 3.4.10 Support.
 
 * [MODIFIED]: Fixes bug in ProjectTypesDefaultTracker#sync_project_custom_fields 
               occuring when there are projects and project types but no assignment between them.
