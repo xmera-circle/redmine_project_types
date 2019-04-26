@@ -65,7 +65,7 @@ module ProjectTypes
       # Creates nested attributes (projects_project_types_attributes)
       # with project_params by using strong parameters
       # and assigns projects project type default values
-      def create#_with_project_type_selection
+      def create
         @issue_custom_fields = IssueCustomField.sorted.to_a
         @trackers = Tracker.sorted.to_a
         @project = Project.new
