@@ -28,7 +28,7 @@ Redmine::Plugin.register :project_types do
   
   requires_redmine version_or_higher: '3.3.2'
 
-  menu :admin_menu, :project_types, { controller: 'project_types', action: 'index' }, caption: :label_project_type_plural, html: { class: 'icon icon-plugins' }
+  menu :admin_menu, :project_types, { controller: 'project_types', action: 'index' }, caption: :label_project_type_plural, html: { class: 'icon icon-types' }, first: true
 end
 
 # Adds the project types app/overrides directory to Rails' search paths for deface overrides
