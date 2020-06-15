@@ -24,8 +24,8 @@ class ProjectTypesController < ApplicationController
   layout 'admin'
   self.main_menu = false # enable for redmine 3.4
  
-  before_filter :require_admin, :except => :index
-  before_filter :require_admin_or_api_request, :only => :index
+  before_action :require_admin, :except => :index
+  before_action :require_admin_or_api_request, :only => :index
   accept_api_auth :index
 
  

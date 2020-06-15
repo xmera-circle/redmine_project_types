@@ -1,6 +1,18 @@
 Changelog for Project Types
 ===========================
 
+0.3.0 *2019-04-23*
+------------------
+
+    Custom Field Synchronization
+    Show Projects
+    Module List
+    Gemfile
+    Test Fixtures
+    Redmine 3.4.10 Support.
+
+* [MODIFIED]: Fixes bug in 
+
 
 0.2.6 *2019-04-23*
 ------------------
