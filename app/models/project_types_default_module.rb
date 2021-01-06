@@ -23,7 +23,6 @@ class ProjectTypesDefaultModule < ActiveRecord::Base
   
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :project_type_id
-  attr_protected :id
   
   private
   
