@@ -36,7 +36,7 @@ end
 
 # Adds the project types app/overrides directory to Rails' search paths for deface overrides
 Rails.application.paths['app/overrides'] ||= []
-project_types_overwrite_dir = "#{Redmine::Plugin.directory}/project_types/app/overrides".freeze
+project_types_overwrite_dir = "#{Redmine::Plugin.directory}/redmine_project_types/app/overrides".freeze
 unless Rails.application.paths['app/overrides'].include?(project_types_overwrite_dir)
   Rails.application.paths['app/overrides'] << project_types_overwrite_dir
 end
