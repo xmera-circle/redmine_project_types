@@ -26,5 +26,4 @@ require 'project_types/patches/tracker_patch'
 
 # Plugins hook listener
 require 'project_types/hooks/view_projects_form_top_hook_listener'
-
-
+require 'project_types/hooks/view_layouts_base_html_head_hook_listener'

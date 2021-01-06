@@ -26,7 +26,6 @@ class ProjectTypesDefaultTracker < ActiveRecord::Base
 
   validates_presence_of :tracker_id
   validates_uniqueness_of :tracker_id, :scope => :project_type_id
-  attr_protected :id
   
   private
   

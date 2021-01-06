@@ -18,17 +18,20 @@
 
 require_dependency 'project_types'
 
-Redmine::Plugin.register :project_types do
-  name 'Project Types Plugin'
-  author 'Liane Hampe'
+Redmine::Plugin.register :redmine_project_types do
+  name 'Redmine Project Types'
+  author 'Liane Hampe, xmera'
   description 'This is a plugin for defining project types with individual project default settings.'
-  version '0.2.5'
-  url 'http://example.com/path/to/plugin'
-  author_url 'http://example.com/about'
+  version '3.x.x'
+  url 'https://circle.xmera.de/projects/redmine-project-types'
+  author_url 'https://circle.xmera.de/users/5'
   
-  requires_redmine version_or_higher: '3.3.2'
+  requires_redmine version_or_higher: '4.1.1'
 
-  menu :admin_menu, :project_types, { controller: 'project_types', action: 'index' }, caption: :label_project_type_plural, html: { class: 'icon icon-plugins' }
+  menu :admin_menu, :project_types, { controller: 'project_types', action: 'index' }, 
+                                    caption: :label_project_type_plural, 
+                                    html: { class: 'icon icon-types' }, 
+                                    first: true
 end
 
 # Adds the project types app/overrides directory to Rails' search paths for deface overrides

@@ -1,6 +1,34 @@
-Changelog for Project Types
-===========================
+# Changelog for Redmine Project Types
 
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## unreleased
+
+### Added
+
+* support for Redmine 4.1.1
+    * alias_method_chain related methods since they are not supported anymore
+    * the migration class to inherent from to ActiveRecord::Migration[4.2]
+    * stylesheet path
+
+### Changed
+
+* plugin id to redmine_project_types
+
+0.3.0 *2019-04-23*
+------------------
+
+    Custom Field Synchronization
+    Show Projects
+    Module List
+    Gemfile
+    Test Fixtures
+    Redmine 3.4.10 Support.
+
+* [MODIFIED]: Fixes bug in ...
 
 0.2.6 *2019-04-23*
 ------------------
@@ -18,7 +46,7 @@ Changelog for Project Types
               when trying to show the project.
 * [MODIFIED]: Modifies module list which is displayed in project configuration to show always :roadmap
               but :tickets only if plugin :issue_cloning is not installed.
-*	[ADDED]:		Adds Gemfile with gem deface.
+* [ADDED]:    Adds Gemfile with gem deface.
 * [MODIFIED]: Extends test fixtures.
 
 
@@ -30,20 +58,14 @@ Changelog for Project Types
     Project Types Default Modules
     Project Types Default Tracker
 
-* [ADDED]: Adds form views/projects/settings/_modules.html.erb which overwrites
-           the same view in Redmine Core. 
-* [DELETED]: Deletes views/overrides/projects/settings since it is not working with
-             <fieldset> HTML tag.
-* [DELETED]:  Removes :issue_tracking module from enabled module list in project
-              configurations.
-* [MODIFIED]: Fixes projects custom field synchronization in tracker_patch.rb and 
-              custom_field_patch.rb.
-* [MODIEFIED]: Excludes saving enabled module names if checkboxes are set to disabled: true
-               since in that case no params[:enabled_module_names] are submitted.
-* [MODIFIED]: Fixes assignment of project types default module to projects with
-              respective project types when saving model project_types_default_module.rb.
+* [ADDED]: Adds form views/projects/settings/_modules.html.erb which overwrites the same view in Redmine Core.
+* [DELETED]: Deletes views/overrides/projects/settings since it is not working with `<fieldset>` HTML tag.
+* [DELETED]:  Removes :issue_tracking module from enabled module list in project configurations.
+* [MODIFIED]: Fixes projects custom field synchronization in tracker_patch.rb and custom_field_patch.rb.
+* [MODIEFIED]: Excludes saving enabled module names if checkboxes are set to disabled: true since in that case no params[:enabled_module_names] are submitted.
+* [MODIFIED]: Fixes assignment of project types default module to projects with respective project types when saving model project_types_default_module.rb.
 * [MODIFIED]: The same as above for default module but for trackers.
-* [ADDED]:    Adds synchronization of custom fields in default trackers.
+* [ADDED]: Adds synchronization of custom fields in default trackers.
 
 
 0.2.4 *2019-02-09*
@@ -53,56 +75,45 @@ Changelog for Project Types
 
 * [DELETED]: Deletes all plugin settings related code, files, dirs.
 
-
 0.2.3 *2019-01-28*
 ------------------
-
-		Labels
+	Labels
     Projects Modules
     Project Type Assignment
     Projects Modules, Trackers, Custom Fields
     Internationalisation
 
-		
 * [MODIFIED]: Modifies some labels.
-*	[MODIFIED]: Changes readonly attribute for project modules into disabled.
-* [ADDED]: Adds a HTML required tag to the drop down list for project types when creating a new
-          project.
+* [MODIFIED]: Changes readonly attribute for project modules into disabled.
+* [ADDED]: Adds a HTML required tag to the drop down list for project types when creating a new project.
 * [MODIFIED]: Fixes/refactors synchronisation in project modules, trackers, and custom fields.
 * [MODIEFIED]: Adjusts all translations to project instead of object.
-
-
 
 0.2.2 *2019-01-15*
 ------------------
 
-		Redmine Main Menu
+	Redmine Main Menu
     Requirements
     Mitrations
     Copyright Year
     Projects Modules, Trackers, Custom Fields
-
-		
+	
 * [MODIFIED]: Disables Redmine main menu when in admin area of project types.
 * [MODIFIED]: Reworked some requirements of loading other files.
 * [MODIFIED]: Modifies migration files migrating only if table not exists.
 * [MODIFIED]: Adjusts copyright year to 2019.
-* [MODIFIED]: Sets settings of module and tracker in project settings to read only and
-              synchronizes the respective ids for the project based on project type.
-* [MODIFIED]: Sets project mapping in custom field settings to read only and synchronizes
-              the fields for the project based on the assigned trackers.
-
+* [MODIFIED]: Sets settings of module and tracker in project settings to read only and synchronizes the respective ids for the project based on project type.
+* [MODIFIED]: Sets project mapping in custom field settings to read only and synchronizes the fields for the project based on the assigned trackers.
 
 0.2.1 *2018-12-01*
 ------------------
 
-		Redmine 3.4.6 Support
-		Redmine DMSF 1.6.1 Support
-		Depreciation of alias_method_chain in Rails 5.1
-		Object Creation
+	Redmine 3.4.6 Support
+	Redmine DMSF 1.6.1 Support
+	Depreciation of alias_method_chain in Rails 5.1
+	Object Creation
 		
-* [FIXED]: Disables enabled module names and tracker if project types plugin is
-					 enabled and a new object should be created.
+* [FIXED]: Disables enabled module names and tracker if project types plugin is enabled and a new object should be created.
 * [FIXED]: Fixes intersection with Redmine DMSF version 1.6.1. See #157.
 * [MODIFIED]: Changes patching method from alias_method_chain to prepend.
 
@@ -115,12 +126,10 @@ Changelog for Project Types
     Project View Modification with Deface
     Redmine 3.4.4 Support
     
-* [MODIFIED]: adjusts folders and files to meet a better structure
-              for patching redmine core
+* [MODIFIED]: adjusts folders and files to meet a better structure for patching redmine core
 * [ADDED]: adds the licence text to all relevant files
 * [MODIFIED]: adjusts the CHANGELOG and README to .md-files
 * [ADDED]: uses deface to place a call hook into the project view
-
 
 0.1.4 *2017-12-03*
 ------------------

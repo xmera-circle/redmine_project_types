@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class AddIndexToProjectTypesDefaultTracker < ActiveRecord::Migration
+class AddIndexToProjectTypesDefaultTracker < ActiveRecord::Migration[4.2]
   def self.up
     add_index :project_types_default_trackers, :project_type_id unless index_exists?(:project_types_default_trackers, :project_type_id)
   end

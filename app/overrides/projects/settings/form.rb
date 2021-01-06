@@ -16,19 +16,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class CreateProjectTypes < ActiveRecord::Migration[4.2]
-  def self.up
-    unless table_exists?(:project_types)
-      create_table :project_types do |t|
-        t.string :name
-        t.text :description
-      end
-    end
-  end
-  
-  def self.down
-    if table_exists?(:project_types)
-      drop_table :project_types
-    end
-  end
-end
+# Target is redmines app/views/projects/settings/_modules.html.erb file
+Deface::Override.new(
+  virtual_path: 'projects/settings/_modules',
+  name: 'disabled-module-names',
+  replace: "p label",
+  text: "<p><label><%= check_box_tag 'enabled_module_names[]', m, @project.module_enabled?(m), :id => nil, :disabled => true -%>
+ <%= l_or_humanize(m, :prefix => 'project_module_') %></label></p>",
+  namespaced: true
+)

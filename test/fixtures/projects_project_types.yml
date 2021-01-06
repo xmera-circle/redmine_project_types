@@ -1,3 +1,11 @@
 projects_project_type_001:
   project_id: 1
   project_type_id: 1
+
+projects_project_type_002:
+  project_id: 3
+  project_type_id: 2
+
+projects_project_type_003:
+  project_id: 5
+  project_type_id: 3
