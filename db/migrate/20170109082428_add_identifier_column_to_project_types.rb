@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class AddIdentifierColumnToProjectTypes < ActiveRecord::Migration
+class AddIdentifierColumnToProjectTypes < ActiveRecord::Migration[4.2]
   def self.up
     add_column :project_types, :identifier, :boolean unless column_exists?(:project_types, :identifier)
   end

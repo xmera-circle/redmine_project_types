@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class CreateProjectsProjectTypes < ActiveRecord::Migration
+class CreateProjectsProjectTypes < ActiveRecord::Migration[4.2]
   def self.up
     unless table_exists?(:projects_project_types)
       create_table :projects_project_types, :id => false do |t|
