@@ -25,3 +25,4 @@ Deface::Override.new(
  <%= l_or_humanize(m, :prefix => 'project_module_') %></label></p>",
   namespaced: true
 )
+
