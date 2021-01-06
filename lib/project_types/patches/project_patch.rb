@@ -22,7 +22,7 @@ module ProjectTypes
   module Patches
     # Patches project.rb from Redmine Core
     module ProjectPatch
-      def self.included(base)
+      def self.prepended(base)
         base.extend(ClassMethods) 
         base.send(:prepend, InstanceMethods)
         base.class_eval do
