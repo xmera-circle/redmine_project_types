@@ -18,7 +18,7 @@
 
 require_dependency 'project_types'
 
-Redmine::Plugin.register :project_types do
+Redmine::Plugin.register :redmine_project_types do
   name 'Project Types Plugin'
   author 'Liane Hampe'
   description 'This is a plugin for defining project types with individual project default settings.'
