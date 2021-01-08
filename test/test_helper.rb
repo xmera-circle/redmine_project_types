@@ -1,6 +1,6 @@
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
+# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>. xmera.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,26 +20,30 @@
 $VERBOSE = nil
 
 # Load the Redmine helper
-require File.expand_path(File.dirname(__FILE__) + '/../../../test/test_helper')
-
+require File.expand_path('../../../../test/test_helper', __FILE__)
+require_relative 'load_fixtures'
+require_relative 'authenticate_user'
 
 # The gem minitest-reporters gives color to the command-line
 require "minitest/reporters"
 Minitest::Reporters.use!
 #require "minitest/rails/capybara"
-require "mocha/mini_test"
+require 'minitest/unit'
+require "mocha/minitest"
 
-# Needed in order to include the plugin fixtures defined in the plugin tests.
-class ProjectType::TestCase
-  
-  def self.create_fixtures(fixtures_directory, table_names, class_names ={})
-    if ActiveRecord::VERSION::MAJOR >= 4
-      ActiveRecord::FixtureSet.create_fixtures(fixtures_directory, table_names, class_names ={})
-    else
-      ActiveRecord::Fixtures.create_fixtures(fixtures_directory, table_names, class_names ={})
-    end
-  end
-  
-end
 
-#require File.expand_path(File.dirname(__FILE__) + '/../test/functional/projects_controller_patch_test')
+
+# # Needed in order to include the plugin fixtures defined in the plugin tests.
+# class ProjectType::TestCase
+  
+#   def self.create_fixtures(fixtures_directory, table_names, class_names ={})
+#     if ActiveRecord::VERSION::MAJOR >= 4
+#       ActiveRecord::FixtureSet.create_fixtures(fixtures_directory, table_names, class_names ={})
+#     else
+#       ActiveRecord::Fixtures.create_fixtures(fixtures_directory, table_names, class_names ={})
+#     end
+#   end
+  
+# end
+
+# #require File.expand_path(File.dirname(__FILE__) + '/../test/functional/projects_controller_patch_test')

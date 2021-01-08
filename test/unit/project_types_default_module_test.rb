@@ -1,6 +1,6 @@
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
+# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>. xmera.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,9 +19,11 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class ProjectTypesDefaultModuleTest < ActiveSupport::TestCase
+  extend RedmineProjectTypes::LoadFixtures
 
-  # Replace this with your real tests.
+  fixtures :project_types_default_modules
+
   def test_truth
-    assert true
+    assert_equal 11, ProjectTypesDefaultModule.count
   end
 end

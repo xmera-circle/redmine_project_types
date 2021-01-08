@@ -1,6 +1,6 @@
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
+# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>. xmera.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,28 +16,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-require File.expand_path('../../test_helper', __FILE__)
+require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
 class ProjectsProjectTypeTest < ActiveSupport::TestCase
-  # The fixtures method allows us to include fixtures from Redmine core's
-  # test suite (for example, :issues, :roles, :users, :projects, and so on)
-  fixtures :projects, :members, :member_roles, :roles, :users
-  
-  # plugin_fixtures: This is the method we monkey-patched into the various 
-  # TestCase classes so that we could interact with Redmine's fixtures as 
-  # well as our own custom fixtures.
-  # The usage of plugin_fixtures requires some code in the plugins 
-  # test_helper.rb
-  #plugin_fixtures :project_types, :projects_project_types
-  
-  ProjectType::TestCase.create_fixtures(Redmine::Plugin.find(:project_types).directory + '/test/fixtures/', [:project_types, :projects_project_types])
-  
+  extend RedmineProjectTypes::LoadFixtures
+
+  fixtures :projects, 
+           :members, 
+           :member_roles, 
+           :roles, 
+           :users, 
+           :project_types,
+           :projects_project_types
+   
   def setup
     @projects_type1 = ProjectsProjectType.new(:project_id => "4", :project_type_id => "10")
     @projects_type2 = ProjectsProjectType.new(:project_id => "4", :project_type_id => "20")
   end
     
-
   test "should not save two project types for a single project" do
     @projects_type1.save     
     assert !@projects_type2.save, "Saved a second project type for a single project."
@@ -55,9 +51,4 @@ class ProjectsProjectTypeTest < ActiveSupport::TestCase
     
     assert !project.projects_project_type
   end
-  
-
-  
-    
-  
 end

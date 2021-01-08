@@ -1,6 +1,6 @@
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
+# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>. xmera.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,12 +16,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-require File.expand_path('../../test_helper', __FILE__)
+require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
 class ProjectTypeTest < ActiveSupport::TestCase
+  include RedmineProjectTypes::LoadFixtures
 
-  fixtures :projects, :members, :member_roles, :roles, :users
-  ProjectType::TestCase.create_fixtures(Redmine::Plugin.find(:project_types).directory + '/test/fixtures/', [:project_types, :projects_project_types])
+  fixtures :projects, 
+           :members, 
+           :member_roles, 
+           :roles, 
+           :users, 
+           :project_types,
+           :projects_project_types
 
   test "should not save project type without name" do
     projecttype = ProjectType.new
@@ -42,5 +48,4 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert_equal 1, projecttype3.position - projecttype2.position
     assert_equal 1, projecttype2.position - projecttype1.position
   end
-  
 end

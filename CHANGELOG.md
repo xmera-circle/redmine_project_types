@@ -5,18 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## unreleased
+## 1.0.0 - 2021-01-08
 
 ### Added
 
 * support for Redmine 4.1.1
-    * alias_method_chain related methods since they are not supported anymore
-    * the migration class to inherent from to ActiveRecord::Migration[4.2]
-    * stylesheet path
 
 ### Changed
 
 * plugin id to redmine_project_types
+* copyright
 
 0.3.0 *2019-04-23*
 ------------------
