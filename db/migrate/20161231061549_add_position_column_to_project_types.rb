@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class AddPositionColumnToProjectTypes < ActiveRecord::Migration
+class AddPositionColumnToProjectTypes < ActiveRecord::Migration[4.2]
   def self.up
     add_column :project_types, :position, :integer unless column_exists?(:project_types, :position)
   end

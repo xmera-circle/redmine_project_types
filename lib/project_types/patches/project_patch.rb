@@ -22,28 +22,24 @@ module ProjectTypes
   module Patches
     # Patches project.rb from Redmine Core
     module ProjectPatch
-      def self.included(base)
+      def self.prepended(base)
         base.extend(ClassMethods) 
-        base.send(:include, InstanceMethods)
+        base.send(:prepend, InstanceMethods)
         base.class_eval do
           # Associatons
           has_one :projects_project_type, dependent: :destroy
           accepts_nested_attributes_for :projects_project_type
           # Core Extensions (for class methods) --- no method defined yet
           # self.singleton_class.send(:alias_method, :project_types_next_identifier, :next_identifier)
-          # Core Extensions (for instance methods)
-          alias_method_chain :add_default_member, :project_type_default
-
         end
       end
       # Collects all class methods
-      module ClassMethods
+      module ClassMethods; end
 
-      end
       # Collects all instance methods
       module InstanceMethods
-        # Sets all the attributes, e.g., projects default 
-        # modules, and trackers, w.r.t. the underlying project type
+        # Sets all the attributes, e.g., projects default modules,
+        # and trackers, w.r.t. the underlying project type
         def project_types_default_values
 
           if self.projects_project_type.present? 
@@ -76,8 +72,8 @@ module ProjectTypes
         end
 
         # Adds user as a project member with the default role of the project type
-        # Used for when a non-admin user creates a project
-        def add_default_member_with_project_type_default(user)
+        # Used when a non-admin user creates a project
+        def add_default_member(user)
           if self.projects_project_type.present? 
             if self.projects_project_type.project_type_id.present?
               project_type_id = self.projects_project_type.project_type.id
@@ -91,7 +87,7 @@ module ProjectTypes
               member
             end
           else
-            add_default_member_without_project_type_default(user)
+            super(user)
           end
         end
 
@@ -125,8 +121,7 @@ module ProjectTypes
         
         def project_type_id
           self.projects_project_type.project_type_id unless self.projects_project_type.nil?
-        end
-        
+        end        
       end
     end
   end
@@ -135,6 +130,6 @@ end
 # Apply patch
 Rails.configuration.to_prepare do
   unless Project.included_modules.include?(ProjectTypes::Patches::ProjectPatch)
-    Project.send(:include, ProjectTypes::Patches::ProjectPatch)
+    Project.send(:prepend, ProjectTypes::Patches::ProjectPatch)
   end
 end

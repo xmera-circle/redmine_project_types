@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class AddDefaultValuesToProjectType < ActiveRecord::Migration
+class AddDefaultValuesToProjectType < ActiveRecord::Migration[4.2]
   def self.up
     add_column :project_types, :is_public, :boolean, :default => false, :null => false unless column_exists?(:project_types, :is_public)
     add_column :project_types, :default_user_role_id, :integer, foreign_key: true unless column_exists?(:project_types, :default_user_role_id)
