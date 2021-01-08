@@ -1,6 +1,6 @@
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-19 Liane Hampe <liane.hampe@xmera.de>.
+# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>. xmera.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@ Redmine::Plugin.register :redmine_project_types do
   name 'Redmine Project Types'
   author 'Liane Hampe, xmera'
   description 'This is a plugin for defining project types with individual project default settings.'
-  version '3.x.x'
+  version '1.0.0'
   url 'https://circle.xmera.de/projects/redmine-project-types'
   author_url 'https://circle.xmera.de/users/5'
   
@@ -36,8 +36,7 @@ end
 
 # Adds the project types app/overrides directory to Rails' search paths for deface overrides
 Rails.application.paths['app/overrides'] ||= []
-project_types_overwrite_dir = "#{Redmine::Plugin.directory}/project_types/app/overrides".freeze
+project_types_overwrite_dir = "#{Redmine::Plugin.directory}/redmine_project_types/app/overrides".freeze
 unless Rails.application.paths['app/overrides'].include?(project_types_overwrite_dir)
   Rails.application.paths['app/overrides'] << project_types_overwrite_dir
 end
-

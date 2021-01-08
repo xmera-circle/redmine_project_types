@@ -16,19 +16,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-require File.expand_path('../../test_helper', __FILE__)
+require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
+require File.expand_path("#{File.dirname(__FILE__)}/../load_fixtures")
 
 class LayoutTest < Redmine::IntegrationTest
   include Redmine::I18n
+  include RedmineProjectTypes::LoadFixtures
+
   fixtures :projects, :trackers, :issue_statuses, :issues,
            :enumerations, :users, :issue_categories,
            :projects_trackers,
            :roles,
            :member_roles,
            :members,
-           :enabled_modules
+           :enabled_modules,
+           :project_types,
+           :projects_project_types
   
-  ProjectType::TestCase.create_fixtures(Redmine::Plugin.find(:project_types).directory + '/test/fixtures/', [:project_types, :projects_project_types])
+  #ProjectType::TestCase.create_fixtures(Redmine::Plugin.find(:project_types).directory + '/test/fixtures/', [:project_types, :projects_project_types])
 
   def test_existence_of_project_type_field
     log_user('jsmith', 'jsmith')

@@ -1,72 +1,35 @@
-Project Types Plugin
-====================
+# Redmine Project Types
 
-The current version of Project Types Plugin is **0.2.5**.
+![Redmine Plugin Version](https://img.shields.io/badge/Redmine_Plugin-v1.0.0-red) ![Redmine Version](https://img.shields.io/badge/Redmine-v4.x.x-blue) ![Language Support](https://img.shields.io/badge/Languages-en,_de-green) ![Version Stage](https://img.shields.io/badge/Stage-release-important)
 
-Project Types is a plugin for xmera:isms based on Redmine. It allows to define individual project types.
+Redmine Project Types is a plugin which lets the administrator define project
+types each with its individual project settings.
 
-Initial development was for xmera e.K. and it is released as open source.
-Project home: <http://#>
+---
 
-Project Types Plugin is distributed under GNU General Public License v2 (GPL).  
-Redmine is a flexible project management web application, released under the terms of the GNU General Public License v2 (GPL) at <http://www.redmine.org/>
+More information and screenshots can be found at
+[xmera Circle - the  community website of xmera](https://circle.xmera.de).
 
-Further information about the GPL license can be found at
-<http://www.gnu.org/licenses/old-licenses/gpl-2.0.html#SEC1>
+## Installation
 
-Features
---------
+You need a running Redmine instance in order to install the plugin. If you need help with the installation, please refer to [Redmine.org](https://redmine.org).
 
-* Create individual project types with default settings
-* Assign each new project to a project type and get 
-  its default settings automatically 
+Instructions for the installation of this plugin can be found in the [official documentation](https://circle.xmera.de/projects/redmine-project-types/wiki/Documentation).
 
+## Changelog
 
-Dependencies
-------------
+All notable changes to this plugin will be reported in the [changelog](https://circle.xmera.de/projects/redmine-project-types/wiki/Changelog) at xmera Circle.
 
-  
-  * Redmine 3.3.2 or higher
-  * gem deface
+## Licence
 
-Usage
------
+Copyright (C) 2017-2021 Liane Hampe (<liaham@xmera.de>), xmera.
 
-1. Go to admin menu -> object types -> new object type
-1. Create an object type with all its default settings
-1. When creating a new object choose the object type 
+This plugin program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
 
-
-
-Setup / Upgrade
----------------
-
-Before installing ensure that the Redmine instance is stopped.
-
-1. Put project_types plugin directory into plugins.
-1. Run a migration with: `RAILS_ENV=production rake redmine:plugins:migrate NAME=project_types`
-1. Restart the web server.
-
-Uninstalling
-------------
-
-Before uninstalling the Project Types Plugin, please ensure that the Redmine instance is stopped.
-
-1. `cd [redmine-install-dir]`
-1. ``RAILS_ENV=production rake redmine:plugins:migrate VERSION= 0 NAME=project_types`
-1. `rm plugins/project_types -Rf`
-
-After these steps re-start your instance of Redmine.
-
-Contributing
-------------
-
-If you've added something, why not share it. Fork the repository (github.com/#), 
-make the changes and send a pull request to the maintainers.
-
-Changes with tests, and full documentation are preferred.
-
-Additional Documentation
-------------------------
-
-[CHANGELOG.md](CHANGELOG.md) - Project changelog
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+[GNU General Public License](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) for more details.
