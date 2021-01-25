@@ -45,7 +45,7 @@ class LayoutTest < Redmine::IntegrationTest
     assert_select '#project_projects_project_type_attributes_project_type_id', 1
   end
 
-  def test_none_existence_of_project_selection_for_custom_fields
+  def test_non_existence_of_project_selection_for_custom_fields
     log_user('admin', 'admin')
     get edit_custom_field_path(id: 1)
     assert_response :success
