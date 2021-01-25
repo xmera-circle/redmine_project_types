@@ -21,22 +21,12 @@
 # to a specific project is already defined by the assingment to a tracker which is 
 # still possible.
 
-unless Rails.env == 'test'
-
-Deface::Override.new(
-  virtual_path: 'custom_fields/_form',
-  name: 'disables-issue-related-lists',
-  remove: "fieldset.box",
-  namespaced: true,
-  sequence: {before: "disables-project-list"}
-)
 Deface::Override.new(
   virtual_path: 'custom_fields/_form',
   name: 'disables-project-list',
-  insert_after: "erb[silent]:contains('if @custom_field.is_a?(IssueCustomField)')",
+  replace: "erb[silent]:contains('if @custom_field.is_a?(IssueCustomField)')",
+  closing_selector: "erb[silent]:contains('end')",
   partial: "custom_fields/issue_related_fields",
-  namespaced: true,
-  sequence: {after: "disables-issue-related-lists"}
+  original: 'f53df0d8c1849ed72ee3f418def77fe73cd43c5b',
+  namespaced: true
 )
-
-end

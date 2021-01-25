@@ -18,39 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
 %>
 
-
-<fieldset class="box tabular"><legend><%= l(:field_visible) %></legend>
-    <label class="block">
-      <%= radio_button_tag 'custom_field[visible]', 1, @custom_field.visible?, :id => 'custom_field_visible_on',
-            :data => {:disables => '.custom_field_role input'} %>
-      <%= l(:label_visibility_public) %>
-    </label>
-    <label class="block">
-      <%= radio_button_tag 'custom_field[visible]', 0, !@custom_field.visible?, :id => 'custom_field_visible_off',
-            :data => {:enables => '.custom_field_role input'} %>
-      <%= l(:label_visibility_roles) %>:
-    </label>
-    <% role_ids = @custom_field.role_ids %>
-    <% Role.givable.sorted.each do |role| %>
-      <label class="block custom_field_role" style="padding-left:2em;">
-        <%= check_box_tag 'custom_field[role_ids][]', role.id, role_ids.include?(role.id), :id => nil %>
-        <%= role.name %>
-      </label>
-    <% end %>
-    <%= hidden_field_tag 'custom_field[role_ids][]', '' %>
-  </fieldset>
-
-  <fieldset class="box" id="custom_field_tracker_ids"><legend><%=l(:label_tracker_plural)%></legend>
-  <% tracker_ids = @custom_field.tracker_ids %>
-  <% Tracker.sorted.each do |tracker| %>
-    <%= check_box_tag "custom_field[tracker_ids][]",
-                      tracker.id,
-                      tracker_ids.include?(tracker.id),
-                      :id => "custom_field_tracker_ids_#{tracker.id}" %>
-    <label class="no-css" for="custom_field_tracker_ids_<%=tracker.id%>">
-      <%= tracker.name %>
-    </label>
-  <% end %>
-  <%= hidden_field_tag "custom_field[tracker_ids][]", '' %>
-  <p><%= check_all_links 'custom_field_tracker_ids' %></p>
-  </fieldset>
+<% if @custom_field.is_a?(IssueCustomField) %>
+  <%= render :partial => 'visibility_by_tracker_selector', :locals => { :f => f } %>
+<% end %>

@@ -30,16 +30,25 @@ class LayoutTest < Redmine::IntegrationTest
            :member_roles,
            :members,
            :enabled_modules,
+           :custom_fields, :custom_values,
+           :custom_fields_projects, :custom_fields_trackers,
            :project_types,
-           :projects_project_types
+           :projects_project_types,
+           :project_types_default_trackers,
+           :project_types_default_modules
   
-  #ProjectType::TestCase.create_fixtures(Redmine::Plugin.find(:project_types).directory + '/test/fixtures/', [:project_types, :projects_project_types])
-
   def test_existence_of_project_type_field
     log_user('jsmith', 'jsmith')
     project = Project.find(1)
     get settings_project_path(project)
     assert_response :success
     assert_select '#project_projects_project_type_attributes_project_type_id', 1
+  end
+
+  def test_none_existence_of_project_selection_for_custom_fields
+    log_user('admin', 'admin')
+    get edit_custom_field_path(id: 1)
+    assert_response :success
+    assert_select '#custom_field_project_ids', 0
   end
 end
