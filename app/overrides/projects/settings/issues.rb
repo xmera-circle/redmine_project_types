@@ -16,21 +16,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# Target is Redmines app/views/projects/_form.html.erb file
+# Target is Redmines app/views/projects/settings/_issues.html.erb file
 Deface::Override.new(
-  virtual_path: 'projects/_form',
-  name: 'disabled-module-names',
-  replace: "erb[loud]:contains('check_box_tag')",
-  text: "<%= check_box_tag 'enabled_module_names[]', m, @project.module_enabled?(m), :id => nil, :disabled => true %>",
-  original: '5b2999dfbd5d56a30b26ab2f3a1944b89ae8798d',
+  virtual_path: 'projects/settings/_issues',
+  name: 'disabled-trackers',
+  replace: "erb[loud]:contains('tracker.id')",
+  text: "<%= check_box_tag 'project[tracker_ids][]', tracker.id, @project.trackers.to_a.include?(tracker), :id => nil, :disabled => true %>",
+  original: '2968122c1e535d6906a5e0fb82d30302b617e1bc',
   namespaced: true
 )
 
 Deface::Override.new(
-  virtual_path: 'projects/_form',
-  name: 'add-project-type',
-  insert_top: 'div.box.tabular',
-  text: "<%= call_hook(:view_projects_form_top, :project => @project, :f => f) %>",
-  original: '5d0124c1829499ebafc294594acf1f585faf0938',
+  virtual_path: 'projects/settings/_issues',
+  name: 'disabled-custom-fields',
+  replace: "erb[loud]:contains('custom_field.id')",
+  text: "<%= check_box_tag 'project[issue_custom_field_ids][]', custom_field.id, (@project.all_issue_custom_fields.include? custom_field),
+        :id => nil, :disabled => true %>",
+  original: '678ce8d0dbf350d65eca3d0b992daf7757d9df65',
   namespaced: true
 )

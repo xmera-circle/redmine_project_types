@@ -15,7 +15,7 @@ class CustomFieldsControllerTest
       assert_select 'input[type=radio][name=?]', 'custom_field[visible]', 2
       assert_select 'input[type=checkbox][name=?]', 'custom_field[role_ids][]', 3
       # Projects
-      byebug
+
       assert_select 'input[type=checkbox][name=?]', 'custom_field[project_ids][]', 0
       assert_select 'input[type=hidden][name=?]', 'custom_field[project_ids][]', 0
       assert_select 'input[type=hidden][name=type][value=IssueCustomField]'
