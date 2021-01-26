@@ -19,6 +19,10 @@ where it is expected to modify them in project types admin area
 * icon size of project types admin menu
 * table columns to be as much as column headlines in project types table
 
+### Deleted
+
+* ProjectsControllerPatch#modules method patch
+
 ## 1.0.0 - 2021-01-08
 
 ### Added
