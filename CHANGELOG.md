@@ -9,7 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Redmine core test patch for modified custom field view
+* Redmine core test patch for modified custom field and project settings view
+
+### Changed
+
+* some views in order to disable tracker, module, custom field, and projects
+where it is expected to modify them in project types admin area
+* icon size of project types admin menu
 
 ## 1.0.0 - 2021-01-08
 
