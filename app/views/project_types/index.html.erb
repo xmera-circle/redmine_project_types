@@ -31,15 +31,18 @@
 	<table class="list project_types">
 	  <thead><tr>
 	  <th><%=l(:label_project_type_name)%></th>
+		<th><%=l(:field_description)%></th>
 	  <%= call_hook(:view_project_types_table_header) %>
 	  <th></th>
-	  <th></th>
+		<th></th>
 	  </tr></thead>
 	  <tbody>
 	<% for type in @project_types %>
 	  <tr class="<%= cycle("odd", "even") %>">
 	  <td class="name"><%= link_to type.name, edit_project_type_path(type) %></td>
-	  <%= call_hook(:view_project_types_table_data, :project => @project_types, :type => type) %>
+		<td class="name"><%= type.description %></td>
+		<%= call_hook(:view_project_types_table_data, :project => @project_types, :type => type) %>
+	  <td></td>
 	  <td class="buttons">
 	    <%= reorder_handle(type) %>
 	    <%= delete_link project_type_path(type) %>

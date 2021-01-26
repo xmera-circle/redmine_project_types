@@ -10,12 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Redmine core test patch for modified custom field and project settings view
+* description column in project types table
 
 ### Changed
 
 * some views in order to disable tracker, module, custom field, and projects
 where it is expected to modify them in project types admin area
 * icon size of project types admin menu
+* table columns to be as much as column headlines in project types table
 
 ## 1.0.0 - 2021-01-08
 
