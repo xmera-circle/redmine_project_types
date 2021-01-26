@@ -30,7 +30,7 @@ module ProjectTypes
           has_one :projects_project_type, dependent: :destroy
           accepts_nested_attributes_for :projects_project_type
           # Core Extensions (for class methods) --- no method defined yet
-          # self.singleton_class.send(:alias_method, :project_types_next_identifier, :next_identifier)
+          # self.singleton_class.send(ClassMethods)
         end
       end
       # Collects all class methods
@@ -41,7 +41,6 @@ module ProjectTypes
         # Sets all the attributes, e.g., projects default modules,
         # and trackers, w.r.t. the underlying project type
         def project_types_default_values
-
           if self.projects_project_type.present? 
             if self.projects_project_type.project_type_id.present?
               # Delete all multi choice attributes first

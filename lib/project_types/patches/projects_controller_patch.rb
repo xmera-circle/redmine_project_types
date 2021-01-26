@@ -25,43 +25,7 @@ module ProjectTypes
         super
         @projects_project_type = @project.build_projects_project_type
       end
-         
-      # Builds a projects_project_type object if not already done
-      def settings
-        super
-        if @project.projects_project_type.nil?
-          @projects_project_type = @project.build_projects_project_type(:id => @project.id)
-        end
-      end
-        
-      # Updates nested attributes (projects_project_types_attributes)
-      # with project_params by using strong parameters
-      # and assigns projects project type default values
-      def update
-        @project.safe_attributes = params[:project]
-        if @project.save
-          if params[:project][:projects_project_type_attributes]
-            @project.update(project_params) 
-            @project.project_types_default_values
-          end
-          respond_to do |format|
-          format.html {
-            flash[:notice] = l(:notice_successful_update)
-            redirect_to settings_project_path(@project)
-          }
-          format.api  { render_api_ok }
-          end
-        else
-          respond_to do |format|
-              format.html {
-                settings
-                render :action => 'settings'
-              }
-              format.api  { render_validation_errors(@project) }
-          end
-        end
-      end
-        
+
       # Creates nested attributes (projects_project_types_attributes)
       # with project_params by using strong parameters
       # and assigns projects project type default values
@@ -98,20 +62,50 @@ module ProjectTypes
           end
         end
       end
-      
-      def modules
-        @project.enabled_module_names = params[:enabled_module_names] unless params[:enabled_module_names].nil?
-        flash[:notice] = l(:notice_successful_update)
-        redirect_to settings_project_path(@project, :tab => 'modules')
+         
+      # Builds a projects_project_type object if not already done
+      def settings
+        super
+        if @project.projects_project_type.nil?
+          @projects_project_type = @project.build_projects_project_type(id: @project.id)
+        end
       end
-    
+        
+      # Updates nested attributes (projects_project_types_attributes)
+      # with project_params by using strong parameters
+      # and assigns projects project type default values
+      def update
+        @project.safe_attributes = params[:project]
+        if @project.save
+          if params[:project][:projects_project_type_attributes]
+            @project.update(project_params) 
+            @project.project_types_default_values
+          end
+          respond_to do |format|
+          format.html {
+            flash[:notice] = l(:notice_successful_update)
+            redirect_to settings_project_path(@project)
+          }
+          format.api  { render_api_ok }
+          end
+        else
+          respond_to do |format|
+              format.html {
+                settings
+                render :action => 'settings'
+              }
+              format.api  { render_validation_errors(@project) }
+          end
+        end
+      end
+         
       private
         
       # Collects the projects custom field ids and turns them into the 
       # required data structure to store their values in the database.
       # method is needed to include 'project_custom_field_ids' in params.require(:project).permit(...)
       def projects_custom_field_ids
-         CustomField.where(type: "ProjectCustomField").ids.collect {|m| CustomField.find_by(id: m).multiple ? [m.to_s => [] ] : [m.to_s, :value]}
+        CustomField.where(type: "ProjectCustomField").ids.collect {|m| CustomField.find_by(id: m).multiple ? [m.to_s => [] ] : [m.to_s, :value]}
       end
         
       # Uses strong parameters for nested attributes and others
