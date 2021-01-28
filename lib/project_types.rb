@@ -1,6 +1,6 @@
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>. xmera.
+# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,12 +18,15 @@
 
 # Project Types Libraries
 
-# Plugins patches
+# Plugin hook listener
+require 'project_types/hooks/view_projects_form_top_hook_listener'
+require 'project_types/hooks/view_layouts_base_html_head_hook_listener'
+
+# Plugin integrations
+require 'project_types/integrations/projects_controller'
+
+# Plugin patches
 require 'project_types/patches/custom_field_patch'
 require 'project_types/patches/project_patch'
 require 'project_types/patches/projects_controller_patch'
 require 'project_types/patches/tracker_patch'
-
-# Plugins hook listener
-require 'project_types/hooks/view_projects_form_top_hook_listener'
-require 'project_types/hooks/view_layouts_base_html_head_hook_listener'
