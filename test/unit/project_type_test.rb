@@ -26,26 +26,36 @@ class ProjectTypeTest < ActiveSupport::TestCase
            :member_roles, 
            :roles, 
            :users, 
-           :project_types,
-           :projects_project_types
+           :project_types
 
   test "should not save project type without name" do
-    projecttype = ProjectType.new
-    assert !projecttype.save, "Saved the project type without a name."
+    project_type = ProjectType.new
+    assert_not project_type.valid?
+    assert_equal [:name], project_type.errors.keys
   end
   
   test "should not save two project types with identical names" do
-    projecttype1 = ProjectType.new(:name => "FirstProjectType")
-    projecttype1.save
-    projecttype2 = ProjectType.new(:name => "FirstProjectType")
-    assert !projecttype2.save, "Saved the project type with an already existing project type name."
+    project_type = ProjectType.new(name: "name1")
+    assert_not project_type.valid?
+    assert_equal [:name], project_type.errors.keys
   end
   
   test "should order by position" do
-    projecttype1 = ProjectType.find(1)
-    projecttype2 = ProjectType.find(2)
-    projecttype3 = ProjectType.find(3)
-    assert_equal 1, projecttype3.position - projecttype2.position
-    assert_equal 1, projecttype2.position - projecttype1.position
+    project_type1 = ProjectType.find(1)
+    project_type2 = ProjectType.find(2)
+    project_type3 = ProjectType.find(3)
+    assert_equal 1, project_type3.position - project_type2.position
+    assert_equal 1, project_type2.position - project_type1.position
+  end
+
+  test "should respond to is_public?" do
+    project_type = ProjectType.find(1)
+    assert project_type.respond_to? :is_public?
+  end
+
+
+  test "should respond to default_member_role" do
+    project_type = ProjectType.find(1)
+    assert project_type.respond_to? :default_member_role
   end
 end

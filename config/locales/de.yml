@@ -27,6 +27,7 @@ de:
   
   # Fehlermeldungen
   error_unable_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, da es verbundene Projekte gibt.
+  error_can_not_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, da es verbundene Projekte gibt
 
   # Schaltflächen
   button_default_values: Standardwerte bearbeiten

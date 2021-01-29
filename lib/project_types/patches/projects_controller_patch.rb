@@ -62,7 +62,6 @@ module ProjectTypes
       end
 
       def update
-      byebug
         @project.safe_attributes = params[:project]
         if @project.save
       #    ProjectTypes::Integrations::ProjectsController.update(params, @project)

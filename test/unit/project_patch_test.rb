@@ -18,7 +18,7 @@
 
 require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
-class ProjectsProjectTypeTest < ActiveSupport::TestCase
+class ProjectPatchTest < ActiveSupport::TestCase
   extend RedmineProjectTypes::LoadFixtures
 
   fixtures :projects, 
@@ -26,29 +26,24 @@ class ProjectsProjectTypeTest < ActiveSupport::TestCase
            :member_roles, 
            :roles, 
            :users, 
-           :project_types,
-           :projects_project_types
+           :project_types
    
   def setup
-    @projects_type1 = ProjectsProjectType.new(:project_id => "4", :project_type_id => "10")
-    @projects_type2 = ProjectsProjectType.new(:project_id => "4", :project_type_id => "20")
+    #
   end
     
-  test "should not save two project types for a single project" do
-    @projects_type1.save     
-    assert !@projects_type2.save, "Saved a second project type for a single project."
-  end
-  
-  test "different project types should not have the same set of projects" do
-    first_project_set = ProjectType.find(1).projects
-    second_project_set = ProjectType.find(2).projects
-    
-    assert_not_equal( first_project_set, second_project_set )
-  end
-  
   test "projects without project type should be nil" do
     project = Project.find(6)
     
-    assert !project.projects_project_type
+    assert !project.project_type
+  end
+
+  private
+
+  def create_project_with_project_type(name, project_type_id)
+    attrs = { name: name,
+              project_type_id: project_type_id }
+    project = Project.new(attrs)
+    project.save
   end
 end

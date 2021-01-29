@@ -25,9 +25,7 @@ module ProjectTypes
       def self.prepended(base)
         base.extend(ClassMethods) 
         base.class_eval do
-          attr_readonly :is_public # Is it working?
-
-          belongs_to :project_type, autosave: true
+          belongs_to :project_type
           delegate :is_public, :is_public?, :default_member_role, to: :project_type, allow_nil: true
 
           safe_attributes(redefine_attribute_names)

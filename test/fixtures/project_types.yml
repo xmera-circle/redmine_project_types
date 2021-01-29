@@ -4,8 +4,7 @@ project_type_001:
   description: description1
   is_public: 0
   position: 1
-  default_user_role_id: 3
-  identifier: true
+  default_member_role_id: 3
 
 project_type_002:
   id: 2
@@ -13,8 +12,7 @@ project_type_002:
   description: description2
   is_public: 1
   position: 2
-  default_user_role_id: 2
-  identifier: false
+  default_member_role_id: 2
   
 project_type_003:
   id: 3
@@ -22,5 +20,4 @@ project_type_003:
   description: description3
   is_public: 0
   position: 3
-  default_user_role_id: 1
-  identifier: false
+  default_member_role_id: 1

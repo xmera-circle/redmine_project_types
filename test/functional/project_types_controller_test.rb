@@ -28,8 +28,7 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
            :member_roles, 
            :roles, 
            :users, 
-           :project_types,
-           :projects_project_types
+           :project_types
  
   test 'should get index' do
     log_user('admin', 'admin')
@@ -79,10 +78,13 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
 
   test "should not delete when it has projects" do
     log_user('admin', 'admin')
+    project = Project.find(1)
+    project.project_type_id = 1
+    project.save
     assert_no_difference 'ProjectType.count' do
-      delete '/project_types/1', params: nil
+      delete project_type_path(id: 1)
     end
-    assert_equal 'Unable to delete project type due to related projects', flash[:error].to_s
+    assert_equal 'Cannot delete project type due to related projects', flash[:error].to_s
   end
 
   private
@@ -92,7 +94,7 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
       { name: 'Lore ipsum',
         description: 'for testing',
         is_public: 0,
-        default_user_role_id: 3,
+        default_member_role_id: 3,
         position: 4 } }.merge(associates)
   end
 
@@ -102,9 +104,10 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def after_create
-    { ->{ ProjectType.count } => 1, 
-      ->{ProjectTypesDefaultModule.count} => 2, 
-      ->{ProjectTypesDefaultTracker.count} => 2 }
+    { ->{ ProjectType.count } => 1#, 
+      #->{ProjectTypesDefaultModule.count} => 2, 
+      #->{ProjectTypesDefaultTracker.count} => 2 
+      }
   end
 
   def project_type_update_params
@@ -112,8 +115,9 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def after_delete
-    { ->{ ProjectType.count } => -1, 
-    ->{ProjectTypesDefaultModule.count} => -2, 
-    ->{ProjectTypesDefaultTracker.count} => -2 }
+    { ->{ ProjectType.count } => -1#, 
+    #->{ProjectTypesDefaultModule.count} => -2, 
+    #->{ProjectTypesDefaultTracker.count} => -2 
+    }
   end  
 end

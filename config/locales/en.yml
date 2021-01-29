@@ -25,6 +25,7 @@ en:
   
   # Error messages
   error_unable_delete_project_type: Unable to delete project type due to related projects
+  error_can_not_delete_project_type: Cannot delete project type due to related projects
   
   # Buttons
   button_default_values: Edit default values
