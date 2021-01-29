@@ -16,13 +16,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class AddIndexToProjectType < ActiveRecord::Migration[4.2]
+class AddDefaultValuesToProjectType < ActiveRecord::Migration[4.2]
   def self.up
-    add_index :project_types, :default_user_role_id unless index_exists?(:project_types, :default_user_role_id)
+    add_column :project_types, :is_public, :boolean, :default => false, :null => false unless column_exists?(:project_types, :is_public)
+    add_column :project_types, :default_member_role_id, :integer, foreign_key: true unless column_exists?(:project_types, :default_member_role_id)
   end
   
   def self.down
-    remove_index :project_types, :default_user_role_id if index_exists?(:project_types, :default_user_role_id)
+    remove_column :project_types, :is_public if column_exists?(:project_types, :is_public)
+    remove_column :project_types, :default_member_role_id if column_exists?(:project_types, :default_member_role_id)
   end
-  
 end

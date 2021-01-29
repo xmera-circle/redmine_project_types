@@ -20,13 +20,13 @@
 
 # Plugin hook listener
 require 'project_types/hooks/view_projects_form_top_hook_listener'
-require 'project_types/hooks/view_layouts_base_html_head_hook_listener'
+# require 'project_types/hooks/view_layouts_base_html_head_hook_listener'
 
 # Plugin integrations
-require 'project_types/integrations/projects_controller'
+# require 'project_types/integrations/projects_controller'
 
 # Plugin patches
-require 'project_types/patches/custom_field_patch'
+# require 'project_types/patches/custom_field_patch'
 require 'project_types/patches/project_patch'
-require 'project_types/patches/projects_controller_patch'
-require 'project_types/patches/tracker_patch'
+# require 'project_types/patches/projects_controller_patch'
+# require 'project_types/patches/tracker_patch'

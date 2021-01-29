@@ -18,30 +18,43 @@
 
 class ProjectType < ActiveRecord::Base
   include Redmine::SafeAttributes
-  # Associated models
-  has_many :projects_project_types
-  has_many :projects, :through => :projects_project_types
-  
+  has_many :projects, autosave: true
   has_many :trackers, :through => :project_types_default_trackers
-  has_many :project_types_default_trackers, :dependent => :delete_all 
-  has_many :project_types_default_modules, :dependent => :delete_all
+  # has_many :project_types_default_trackers, :dependent => :delete_all 
+  # has_many :project_types_default_modules, :dependent => :delete_all
   has_many :issue_custom_fields, :through => :trackers
     
-  # Validations
+
   validates_presence_of :name
   validates_uniqueness_of :name
 
-  # Reorder list items
   acts_as_positioned
 
   scope :sorted, lambda { order(:position) }
-  
+
+  # unused
   def <=>(project_type)
     position <=> project_type.position
   end
   
+  # unused
   def self.relation_order
     self.sorted.to_a
   end
 
+  safe_attributes(
+    :name,
+    :description,
+    :identifier,
+    :is_public,
+    :default_member_role_id,
+    :position)
+
+  def is_public?
+    is_public
+  end
+
+  def default_member_role
+    Role.givable.find_by_id(default_member_role_id) || Role.givable.first
+  end
 end

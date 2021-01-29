@@ -32,15 +32,17 @@
 	  <thead><tr>
 	  <th><%=l(:label_project_type_name)%></th>
 		<th><%=l(:field_description)%></th>
+		<th><%=l(:field_is_public)%></th>
 	  <%= call_hook(:view_project_types_table_header) %>
 	  <th></th>
 		<th></th>
 	  </tr></thead>
 	  <tbody>
 	<% for type in @project_types %>
-	  <tr class="<%= cycle("odd", "even") %>">
+	  <tr>
 	  <td class="name"><%= link_to type.name, edit_project_type_path(type) %></td>
 		<td class="name"><%= type.description %></td>
+		<td class="name"><%= checked_image type.is_public? %></td>
 		<%= call_hook(:view_project_types_table_data, :project => @project_types, :type => type) %>
 	  <td></td>
 	  <td class="buttons">

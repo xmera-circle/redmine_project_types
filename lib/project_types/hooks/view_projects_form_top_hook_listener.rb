@@ -16,8 +16,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# Hooks the partial for new footer and its CSS
+
 class ViewProjectsFormTopHookListener < Redmine::Hook::ViewListener
   render_on :view_projects_form_top, 
-            partial: 'projects_project_types/form'
+            partial: 'hooks/view_projects_form_top'
 end

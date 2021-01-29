@@ -21,7 +21,7 @@ module ProjectTypes
     module ProjectsControllerPatch
       def new
         super
-        @projects_project_type = ProjectTypes::Integrations::ProjectsController.new(@project)
+       # @projects_project_type = ProjectTypes::Integrations::ProjectsController.new(@project)
       end
 
 
@@ -32,7 +32,7 @@ module ProjectTypes
         @project.safe_attributes = params[:project]
       
         if @project.save
-          ProjectTypes::Integrations::ProjectsController.create(params, @project)
+       #   ProjectTypes::Integrations::ProjectsController.create(params, @project)
           unless User.current.admin?
             @project.add_default_member(User.current)
           end
@@ -58,13 +58,14 @@ module ProjectTypes
          
       def settings
         super
-        @projects_project_type = ProjectTypes::Integrations::ProjectsController.settings(@project)
+       # @project_type = ProjectTypes::Integrations::ProjectsController.settings(@project)
       end
 
       def update
+      byebug
         @project.safe_attributes = params[:project]
         if @project.save
-          ProjectTypes::Integrations::ProjectsController.update(params, @project)
+      #    ProjectTypes::Integrations::ProjectsController.update(params, @project)
           respond_to do |format|
           format.html {
             flash[:notice] = l(:notice_successful_update)
