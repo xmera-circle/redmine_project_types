@@ -46,7 +46,7 @@ module ProjectTypes
       def settings(project)
         return unless project.projects_project_type.nil?
 
-        @project.build_projects_project_type(id: @project.id)
+        project.build_projects_project_type(id: project.id)
       end
 
       ## 
