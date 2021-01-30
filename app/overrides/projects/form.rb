@@ -39,7 +39,7 @@ Deface::Override.new(
   virtual_path: 'projects/_form',
   name: 'remove-is-public-checkbox',
   remove: "erb[loud]:contains('f.check_box :is_public')",
-  original: '',
+  original: 'd1eb7f4396a41fc6033ffaf8c3c5626c9bb8d887',
   namespaced: true
 )
 
@@ -48,6 +48,6 @@ Deface::Override.new(
   name: 'replace-note-on-project-visibility',
   replace: "erb[loud]:contains('Setting.login_required?')",
   text: "<% if @project.is_public? %><div class='warning'><%= Setting.login_required? ? l(:text_project_type_is_public_non_member) : l(:text_project_type_is_public_anonymous) %></div><% end %>",
-  original: '',
+  original: '5d02bcb05023a2d2af23178635bf027c36197068',
   namespaced: true
 )
