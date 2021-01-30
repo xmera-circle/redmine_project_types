@@ -26,10 +26,41 @@ module ProjectTypes
         base.extend(ClassMethods) 
         base.class_eval do
           belongs_to :project_type
+          has_many :project_type_modules, class_name: 'EnabledModule', foreign_key: :project_type_id, dependent: :delete_all
+          
           delegate :is_public, :is_public?, :default_member_role, to: :project_type, allow_nil: true
 
-          safe_attributes(redefine_attribute_names)
+          safe_attributes :project_type_id
+          delete_safe_attribute_names :is_public, :enabled_module_names
         end
+      end
+
+
+      ##
+      # Reassigns all calls of enabled_modules to the association as defined in 
+      # project_type_modules
+      # 
+      def enabled_modules
+        if self.project_type_id.present?
+          self.class.delete_safe_attribute_names :enabled_module_names
+          self.enabled_modules = self.project_type_modules
+        else
+          self.class.safe_attributes(
+            'enabled_module_names',
+            :if =>
+              lambda {|project, user|
+                if project.new_record?
+                  if user.admin?
+                    true
+                  else
+                    default_member_role.has_permission?(:select_project_modules)
+                  end
+                else
+                  user.allowed_to?(:select_project_modules, project)
+                end
+              })
+        end
+        super
       end
 
       ##
@@ -49,24 +80,25 @@ module ProjectTypes
 
       module ClassMethods
         ##
-        # Marking projects as public should only be possible at the project
-        # type level.
+        # Attributes handled by the projects project_type are not allowed
+        # to manipulate in the project directly.
         #
-        # @note: @safe_attributes is a nested array of size 3
+        # @note: @safe_attributes is a nested array with 3 levels:
+        #   [[[list], {option}], [[list], {option}], ...] where list contains
+        #   the names of the safe attributes.
         #
-        def redefine_attribute_names
-          @safe_attributes.first.first.replace(redefined)
-        end
-
-        def redefined
-          given - ['is_public'] + ['project_type_id']
-        end
-
-        def given
-          @safe_attributes.first.first
+        def delete_safe_attribute_names(*args)
+          return if args.empty?
+          attributes = []
+          @safe_attributes.collect do |elements, options|
+            args.each do |name|
+              elements.delete(name.to_s)
+            end
+            attributes << [elements, options] unless elements.empty?
+          end
+          @safe_attributes = attributes
         end
       end
-
 
       # Collects all instance methods
       module InstanceMethods

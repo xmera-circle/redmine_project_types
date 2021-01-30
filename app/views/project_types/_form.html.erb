@@ -28,3 +28,9 @@
 <p><%= label(:project_types, :default_member_role_id,l(:label_project_type_new_project_member_role_ids))%><%= f.collection_select(:default_member_role_id, Role.find_all_givable.collect, :id, :name, :include_blank => "--- #{l(:actionview_instancetag_blank_option)} ---") %> </p>
 <%= call_hook(:view_project_types_form_middle, :project => @project, :f => f) %>
 </div>
+
+<% if @project_type.safe_attribute?('enabled_module_names') %>
+  <div class="box tabular settings" id="default-modules">
+  <p><%= modules_multiselect(@project_type.id, Redmine::AccessControl.available_project_modules.collect {|m| [l_or_humanize(m, :prefix => "project_module_"), m.to_s] }, :label_project_type_default_modules ) %></p>
+  </div>
+<% end %>

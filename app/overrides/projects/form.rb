@@ -23,6 +23,7 @@ Deface::Override.new(
   replace: "erb[loud]:contains('check_box_tag')",
   text: "<%= check_box_tag 'enabled_module_names[]', m, @project.module_enabled?(m), :id => nil, :disabled => true %>",
   original: '5b2999dfbd5d56a30b26ab2f3a1944b89ae8798d',
+  disabled: true,
   namespaced: true
 )
 
