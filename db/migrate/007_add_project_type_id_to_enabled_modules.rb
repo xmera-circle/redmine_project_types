@@ -16,8 +16,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class AddProjectTypeIdToProjects < ActiveRecord::Migration[4.2]
+class AddProjectTypeIdToEnabledModules < ActiveRecord::Migration[4.2]
   def change
-    add_column :projects, :project_type_id, :integer, null: true
+    add_column :enabled_modules, :project_type_id, :integer, null: true
   end
 end

@@ -19,10 +19,12 @@
 class ProjectType < ActiveRecord::Base
   include Redmine::SafeAttributes
   has_many :projects, autosave: true
-  has_many :trackers, :through => :project_types_default_trackers
+  has_many :enabled_modules, :dependent => :delete_all
+
+  # has_many :trackers, :through => :project_types_default_trackers
   # has_many :project_types_default_trackers, :dependent => :delete_all 
   # has_many :project_types_default_modules, :dependent => :delete_all
-  has_many :issue_custom_fields, :through => :trackers
+  # has_many :issue_custom_fields, :through => :trackers
     
 
   validates_presence_of :name
