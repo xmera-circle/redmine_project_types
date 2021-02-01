@@ -2,9 +2,7 @@ class ProjectTypesController < ApplicationController
   layout 'admin'
   self.main_menu = false
 
-  before_action :require_admin, :except => :index
-  before_action :require_admin_or_api_request, :only => :index
-  # accept_api_auth :index
+  before_action :require_admin
 
   def index
     @project_types = ProjectType.sorted.to_a
@@ -26,11 +24,11 @@ class ProjectTypesController < ApplicationController
   end
 
   def edit
-    find_project_type(params[:id])
+    find_project_type(secure_id_from_params)
   end
 
   def update
-    find_project_type(params[:id])
+    find_project_type(secure_id_from_params)
     @project_type.safe_attributes = params[:project_type]
     if @project_type.save
       respond_to do |format|
@@ -51,7 +49,7 @@ class ProjectTypesController < ApplicationController
     end
   end
   def destroy
-    find_project_type(params[:id])
+    find_project_type(secure_id_from_params)
     unless @project_type.projects.empty?
       flash[:error] = l(:error_can_not_delete_project_type)
     else
@@ -64,5 +62,9 @@ class ProjectTypesController < ApplicationController
 
   def find_project_type(id)
     @project_type ||= ProjectType.find(id.to_i)
+  end
+
+  def secure_id_from_params
+    params[:id].to_i
   end
 end

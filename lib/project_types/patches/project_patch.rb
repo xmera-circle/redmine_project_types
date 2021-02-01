@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin..
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
@@ -26,42 +28,83 @@ module ProjectTypes
         base.extend(ClassMethods) 
         base.class_eval do
           belongs_to :project_type
-          has_many :project_type_modules, class_name: 'EnabledModule', foreign_key: :project_type_id, dependent: :delete_all
-          
-          delegate :is_public, :is_public?, :default_member_role, to: :project_type, allow_nil: true
+
+          ##
+          # Redirects the EnabledModule association to be dependent
+          # on the project_type_id instead of project_id.
+          # That is, all requests are transferred through the ProjectType model.
+          #
+          has_many :project_type_modules, 
+                    class_name: 'EnabledModule', 
+                    foreign_key: :project_type_id,
+                    through: :project_type,
+                    source: :enabled_modules
+          ##
+          # Since ProjectType model is now responsible for some configuration
+          # the respective methods are delegated to it. Delegating to 
+          # enabled_modules will take place by super as defined below.
+          #
+          delegate :is_public,
+                   :is_public?, 
+                   :default_member_role,
+                   :enabled_modules,
+                   :enabled_module_names,
+                   :enabled_module_names=,
+                   :enabled_module,
+                   :module_enabled?,
+                   :enable_module!,
+                   :disable_module!,
+                   to: :project_type, 
+                   allow_nil: true
 
           safe_attributes :project_type_id
           delete_safe_attribute_names :is_public, :enabled_module_names
         end
       end
 
+      ##
+      # If there is a project_type_id the association is redirected via 
+      # ProjectType model to get the enabled modules. If no project_type_id
+      # exist, the linkage is made manually what gives an empty 
+      # ActiveRecord::Association::CollectionProxy instead of nil
+      # 
+      # @return [ActiveRecord::Association::CollectionProxy]
+      #
+      def enabled_modules
+      ## Solution 1: as described above
+        project_type_id ? super : self.project_type_modules
+
+      ## Solution 2: create a predefined project type as fallback
+        # self.project_type_id ||= ProjectType.fallback_id
+        # super
+      end
 
       ##
       # Reassigns all calls of enabled_modules to the association as defined in 
       # project_type_modules
-      # 
-      def enabled_modules
-        if self.project_type_id.present?
-          self.class.delete_safe_attribute_names :enabled_module_names
-          self.enabled_modules = self.project_type_modules
-        else
-          self.class.safe_attributes(
-            'enabled_module_names',
-            :if =>
-              lambda {|project, user|
-                if project.new_record?
-                  if user.admin?
-                    true
-                  else
-                    default_member_role.has_permission?(:select_project_modules)
-                  end
-                else
-                  user.allowed_to?(:select_project_modules, project)
-                end
-              })
-        end
-        super
-      end
+      
+      # def enabled_modules
+      #   if self.project_type_id.present?
+      #     self.class.delete_safe_attribute_names :enabled_module_names
+      #     self.enabled_modules = self.project_type_modules
+      #   else
+      #     self.class.safe_attributes(
+      #       'enabled_module_names',
+      #       :if =>
+      #         lambda {|project, user|
+      #           if project.new_record?
+      #             if user.admin?
+      #               true
+      #             else
+      #               default_member_role.has_permission?(:select_project_modules)
+      #             end
+      #           else
+      #             user.allowed_to?(:select_project_modules, project)
+      #           end
+      #         })
+      #   end
+      #   super
+      # end
 
       ##
       # Adds user as a project member with the default role of the project type.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin.
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
@@ -27,6 +29,10 @@ require 'project_types/hooks/view_projects_form_top_hook_listener'
 
 # Plugin patches
 # require 'project_types/patches/custom_field_patch'
+require 'project_types/patches/enabled_module_patch'
 require 'project_types/patches/project_patch'
 # require 'project_types/patches/projects_controller_patch'
 # require 'project_types/patches/tracker_patch'
+
+# Other module
+require 'project_types/project_type_modules'

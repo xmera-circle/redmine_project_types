@@ -29,4 +29,7 @@ en:
   
   # Buttons
   button_default_values: Edit default values
+
+  # Default project type
+  label_system_project_type: Default Project Type
   

@@ -31,4 +31,7 @@ de:
 
   # Schaltflächen
   button_default_values: Standardwerte bearbeiten
+
+  # Default project type
+  label_system_project_type: Standard-Projekttyp
   

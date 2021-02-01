@@ -1,4 +1,6 @@
 <%
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin.
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
@@ -30,7 +32,11 @@
 </div>
 
 <% if @project_type.safe_attribute?('enabled_module_names') %>
-  <div class="box tabular settings" id="default-modules">
-  <p><%= modules_multiselect(@project_type.id, Redmine::AccessControl.available_project_modules.collect {|m| [l_or_humanize(m, :prefix => "project_module_"), m.to_s] }, :label_project_type_default_modules ) %></p>
-  </div>
+  <fieldset class="box tabular" id="default-modules">
+    <legend>
+      <%= toggle_checkboxes_link('#default-modules input[type="checkbox"]') %>
+      <%= l(:label_module_plural) %>
+    </legend> 
+    <%= modules_multiselect(@project_type.id, available_project_modules ) %>
+  </fieldset>
 <% end %>

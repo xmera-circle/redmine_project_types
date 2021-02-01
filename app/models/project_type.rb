@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin.
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
@@ -18,8 +20,16 @@
 
 class ProjectType < ActiveRecord::Base
   include Redmine::SafeAttributes
+  include Redmine::I18n
+  include ProjectTypes::EnabledModules
+
   has_many :projects, autosave: true
-  has_many :enabled_modules, -> { where 'project_type_id != ?', nil }, :dependent => :delete_all
+  has_many :enabled_modules, :dependent => :delete_all
+
+  # delegate :allowed_permissions,
+  #          :allowed_actions,
+  #          :allows_to?,
+  #          to: :project
 
   # has_many :trackers, :through => :project_types_default_trackers
   # has_many :project_types_default_trackers, :dependent => :delete_all 
@@ -33,6 +43,31 @@ class ProjectType < ActiveRecord::Base
   acts_as_positioned
 
   scope :sorted, lambda { order(:position) }
+
+  ##
+  # Same as for Project class. That is, all global project settings will
+  # now be applied to project types. Exception is the project identifier which
+  # should be kept globally for simplicity.
+  #
+  def initialize(attributes=nil, *args)
+    super
+
+    initialized = (attributes || {}).stringify_keys
+    if !initialized.key?('is_public')
+      self.is_public = default_project_public
+    end
+    if !initialized.key?('enabled_module_names')
+      self.enabled_module_names = default_project_modules
+    end
+    # if !initialized.key?('trackers') && !initialized.key?('tracker_ids')
+    #   default = Setting.default_projects_tracker_ids
+    #   if default.is_a?(Array)
+    #     self.trackers = Tracker.where(:id => default.map(&:to_i)).sorted.to_a
+    #   else
+    #     self.trackers = Tracker.sorted.to_a
+    #   end
+    # end
+  end
 
   # unused
   def <=>(project_type)
@@ -61,51 +96,30 @@ class ProjectType < ActiveRecord::Base
     Role.givable.find_by_id(default_member_role_id) || Role.givable.first
   end
 
-  ##############################################################################
-  # Return the enabled module with the given name
-  # or nil if the module is not enabled for the project
-  def enabled_module(name)
-    name = name.to_s
-    byebug
-    enabled_modules.detect {|m| m.name == name}
+  def default_project_modules
+    Setting.default_projects_modules
   end
 
-  # Return true if the module with the given name is enabled
-  def module_enabled?(name)
-    enabled_module(name).present?
+  def default_project_public
+    Setting.default_projects_public
   end
-################################################################################
-  def enabled_module_names=(module_names)
-    if module_names && module_names.is_a?(Array)
-      module_names = module_names.collect(&:to_s).reject(&:blank?)
-      self.enabled_modules = module_names.collect {|name| enabled_modules.detect {|mod| mod.name == name} || EnabledModule.new(:name => name)}
-    else
-      enabled_modules.clear
+
+  def self.fallback_id
+    project_type = find_or_create_system_project_type
+    project_type.id
+  end
+
+  def self.find_or_create_system_project_type
+    name = 'system default project type'
+    project_type = unscoped.find_by(name: name)
+    if project_type.nil?
+      project_type = unscoped.create(name: name) do |type|
+        type.enabled_module_names = type.default_project_modules
+        type.is_public = type.default_project_public
+      end
+      raise "Unable to create the system project type (#{project_type.errors.full_messages.join(',')})." if project_type.new_record?
     end
+    project_type
   end
-
-  # Returns an array of the enabled modules names
-  def enabled_module_names
-    enabled_modules.collect(&:name)
-  end
-
-  # Enable a specific module
-  #
-  # Examples:
-  #   project.enable_module!(:issue_tracking)
-  #   project.enable_module!("issue_tracking")
-  def enable_module!(name)
-    enabled_modules << EnabledModule.new(:name => name.to_s) unless module_enabled?(name)
-  end
-
-  # Disable a module if it exists
-  #
-  # Examples:
-  #   project.disable_module!(:issue_tracking)
-  #   project.disable_module!("issue_tracking")
-  #   project.disable_module!(project.enabled_modules.first)
-  def disable_module!(target)
-    target = enabled_modules.detect{|mod| target.to_s == mod.name} unless enabled_modules.include?(target)
-    target.destroy unless target.blank?
-  end
+  private_class_method :find_or_create_system_project_type
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin.
 #
 #  Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
@@ -32,15 +34,20 @@ class LayoutTest < Redmine::IntegrationTest
            :enabled_modules,
            :custom_fields, :custom_values,
            :custom_fields_projects, :custom_fields_trackers,
-           :project_types#,
-           #:projects_project_types,
-           #:project_types_default_trackers,
-           #:project_types_default_modules
+           :project_types
+           #:project_types_default_trackers
 
-  def test_existence_of_project_type_field
-    project = project_with_project_type
+  def test_existence_of_project_type_field_in_any_project
     log_user('jsmith', 'jsmith')
-    get settings_project_path(project)
+    get settings_project_path(project(id: 2))
+    assert_response :success
+    assert_select '#project_project_type_id', 1
+    # assert_select '.warning', 1
+  end
+
+  def test_existence_of_warning_for_public_projects
+    log_user('admin', 'admin')
+    get settings_project_path(project(id: 6, type: 2))
     assert_response :success
     assert_select '#project_project_type_id', 1
     assert_select '.warning', 1
@@ -86,10 +93,10 @@ class LayoutTest < Redmine::IntegrationTest
       end
   end
 
-  def project_with_project_type
-    project = Project.find(1)
-    project.project_type_id = 2
+  def project(id:, type: nil)
+    project = Project.find(id.to_i)
+    project.project_type_id = type
     project.save
-    project.reload
+    project
   end
 end

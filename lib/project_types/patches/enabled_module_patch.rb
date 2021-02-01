@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 #
-# Redmine plugin for xmera called Project Types Plugin.
+# Redmine plugin for xmera called Project Types Plugin..
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
 #
@@ -18,17 +18,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# Target is redmines app/views/custom_fields/_form.html.erb file
-# Removes the list of projects from the custom_fields form since the the assignment
-# to a specific project is already defined by the assingment to a tracker which is 
-# still possible.
+# require_dependency 'project'
 
-Deface::Override.new(
-  virtual_path: 'custom_fields/_form',
-  name: 'disables-project-list',
-  replace: "erb[silent]:contains('if @custom_field.is_a?(IssueCustomField)')",
-  closing_selector: "erb[silent]:contains('end')",
-  partial: "custom_fields/issue_related_fields",
-  original: 'f53df0d8c1849ed72ee3f418def77fe73cd43c5b',
-  namespaced: true
-)
+module ProjectTypes
+  module Patches
+    # Patches enabled_module.rb from Redmine Core
+    module EnabledModulePatch
+      def self.prepended(base)
+        base.class_eval do
+          belongs_to :project_type, foreign_key: :project_type_id, optional: true
+          clear_validators!
+          # ignored_columns = [:project_id]
+          validates_uniqueness_of :name, scope: :project_type_id
+        end
+      end
+    end
+  end
+end
+
+# Apply patch
+Rails.configuration.to_prepare do
+  unless EnabledModule.included_modules.include?(ProjectTypes::Patches::EnabledModulePatch)
+    EnabledModule.send(:prepend, ProjectTypes::Patches::EnabledModulePatch)
+  end
+end
