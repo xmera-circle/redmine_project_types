@@ -24,12 +24,7 @@ class ProjectType < ActiveRecord::Base
   include ProjectTypes::EnabledModules
 
   has_many :projects, autosave: true
-  has_many :enabled_modules, :dependent => :delete_all
-
-  # delegate :allowed_permissions,
-  #          :allowed_actions,
-  #          :allows_to?,
-  #          to: :project
+  has_many :enabled_modules, class_name: 'EnabledProjectTypeModule', :dependent => :delete_all
 
   # has_many :trackers, :through => :project_types_default_trackers
   # has_many :project_types_default_trackers, :dependent => :delete_all 
@@ -104,11 +99,13 @@ class ProjectType < ActiveRecord::Base
     Setting.default_projects_public
   end
 
+  # unused
   def self.fallback_id
     project_type = find_or_create_system_project_type
     project_type.id
   end
 
+  # unused
   def self.find_or_create_system_project_type
     name = 'system default project type'
     project_type = unscoped.find_by(name: name)

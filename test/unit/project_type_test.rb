@@ -72,7 +72,7 @@ class ProjectTypeTest < ActiveSupport::TestCase
   test "should have many enabled modules" do
     association = ProjectType.reflect_on_association(:enabled_modules)
     assert_equal :enabled_modules, association.name
-    assert_equal Hash({ dependent: :delete_all }), association.options
+    assert_equal enabled_modules_association, association.options
   end
 
   private
@@ -89,5 +89,9 @@ class ProjectTypeTest < ActiveSupport::TestCase
       default_member_role_id
       position
       enabled_module_names]
+  end
+
+  def enabled_modules_association
+    Hash({ class_name: 'EnabledProjectTypeModule', dependent: :delete_all })
   end
 end

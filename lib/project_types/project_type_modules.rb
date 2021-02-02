@@ -42,7 +42,7 @@ module ProjectTypes
     def enabled_module_names=(module_names)
       if module_names && module_names.is_a?(Array)
         module_names = module_names.collect(&:to_s).reject(&:blank?)
-        self.enabled_modules = module_names.collect {|name| enabled_modules.detect {|mod| mod.name == name} || EnabledModule.new(name: name)}
+        self.enabled_modules = module_names.collect {|name| enabled_modules.detect {|mod| mod.name == name} || EnabledProjectTypeModule.new(name: name)}
       else
         enabled_modules.clear
       end
@@ -59,7 +59,7 @@ module ProjectTypes
     #   project_type.enable_module!(:issue_tracking)
     #   project_type.enable_module!("issue_tracking")
     def enable_module!(name)
-      enabled_modules << EnabledModule.new(:name => name.to_s) unless module_enabled?(name)
+      enabled_modules << EnabledProjectTypeModule.new(:name => name.to_s) unless module_enabled?(name)
     end
 
     # Disable a module if it exists
@@ -72,45 +72,5 @@ module ProjectTypes
       target = enabled_modules.detect{|mod| target.to_s == mod.name} unless enabled_modules.include?(target)
       target.destroy unless target.blank?
     end
-
-################################################################################
-# Permission related project methods 
-
-    ##
-    # Permissions are based on enabled_modules. This needs now to be checked
-    # by ProjectType class instead of Project class.
-    #
-    def allowed_permissions
-      @allowed_permissions ||= begin
-        module_names = enabled_modules.loaded? ? enabled_modules.map(&:name) : enabled_modules.pluck(:name)
-        Redmine::AccessControl.modules_permissions(module_names).collect {|p| p.name}
-      end
-    end
-
-    def allowed_actions
-      @actions_allowed ||= allowed_permissions.inject([]) { |actions, permission| actions += Redmine::AccessControl.allowed_actions(permission) }.flatten
-    end
-
-    # Return true if this project allows to do the specified action.
-    # action can be:
-    # * a parameter-like Hash (eg. :controller => 'projects', :action => 'edit')
-    # * a permission Symbol (eg. :edit_project)
-    def allows_to?(action)
-      if archived?
-        # No action allowed on archived projects
-        return false
-      end
-      unless active? || Redmine::AccessControl.read_action?(action)
-        # No write action allowed on closed projects
-        return false
-      end
-      # No action allowed on disabled modules
-      if action.is_a? Hash
-        allowed_actions.include? "#{action[:controller]}/#{action[:action]}"
-      else
-        allowed_permissions.include? action
-      end
-    end
-
   end
 end

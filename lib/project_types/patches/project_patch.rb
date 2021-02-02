@@ -27,84 +27,16 @@ module ProjectTypes
       def self.prepended(base)
         base.extend(ClassMethods) 
         base.class_eval do
-          belongs_to :project_type
+          include ProjectTypes::EnabledModuleSwitch
+          table_switch :enabled_modules, condition: :project_type_any?
 
-          ##
-          # Redirects the EnabledModule association to be dependent
-          # on the project_type_id instead of project_id.
-          # That is, all requests are transferred through the ProjectType model.
-          #
-          has_many :project_type_modules, 
-                    class_name: 'EnabledModule', 
-                    foreign_key: :project_type_id,
-                    through: :project_type,
-                    source: :enabled_modules
-          ##
-          # Since ProjectType model is now responsible for some configuration
-          # the respective methods are delegated to it. Delegating to 
-          # enabled_modules will take place by super as defined below.
-          #
-          delegate :is_public,
-                   :is_public?, 
-                   :default_member_role,
-                   :enabled_modules,
-                   :enabled_module_names,
-                   :enabled_module_names=,
-                   :enabled_module,
-                   :module_enabled?,
-                   :enable_module!,
-                   :disable_module!,
-                   to: :project_type, 
-                   allow_nil: true
-
-          safe_attributes :project_type_id
-          delete_safe_attribute_names :is_public, :enabled_module_names
+          after_create :module_enabled
+          after_update :module_enabled
+          scope :has_module, lambda {|mod|
+            where("#{Project.table_name}.id IN (SELECT em.project_id FROM #{EnabledProjectTypeModule.table_name} em WHERE em.name=?)", mod.to_s)
+          }
         end
       end
-
-      ##
-      # If there is a project_type_id the association is redirected via 
-      # ProjectType model to get the enabled modules. If no project_type_id
-      # exist, the linkage is made manually what gives an empty 
-      # ActiveRecord::Association::CollectionProxy instead of nil
-      # 
-      # @return [ActiveRecord::Association::CollectionProxy]
-      #
-      def enabled_modules
-      ## Solution 1: as described above
-        project_type_id ? super : self.project_type_modules
-
-      ## Solution 2: create a predefined project type as fallback
-        # self.project_type_id ||= ProjectType.fallback_id
-        # super
-      end
-
-      ##
-      # Reassigns all calls of enabled_modules to the association as defined in 
-      # project_type_modules
-      
-      # def enabled_modules
-      #   if self.project_type_id.present?
-      #     self.class.delete_safe_attribute_names :enabled_module_names
-      #     self.enabled_modules = self.project_type_modules
-      #   else
-      #     self.class.safe_attributes(
-      #       'enabled_module_names',
-      #       :if =>
-      #         lambda {|project, user|
-      #           if project.new_record?
-      #             if user.admin?
-      #               true
-      #             else
-      #               default_member_role.has_permission?(:select_project_modules)
-      #             end
-      #           else
-      #             user.allowed_to?(:select_project_modules, project)
-      #           end
-      #         })
-      #   end
-      #   super
-      # end
 
       ##
       # Adds user as a project member with the default role of the project type.
@@ -113,7 +45,7 @@ module ProjectTypes
       # @override This is overwritten from Project#add_default_member 
       #
       def add_default_member(user)
-        return super(user) unless project_type.present?
+        return super(user) unless project_type_id.present?
 
         role = default_member_role
         member = Member.new(:project => self, :principal => user, :roles => [role])
@@ -121,29 +53,44 @@ module ProjectTypes
         member
       end
 
-      module ClassMethods
-        ##
-        # Attributes handled by the projects project_type are not allowed
-        # to manipulate in the project directly.
-        #
-        # @note: @safe_attributes is a nested array with 3 levels:
-        #   [[[list], {option}], [[list], {option}], ...] where list contains
-        #   the names of the safe attributes.
-        #
-        def delete_safe_attribute_names(*args)
-          return if args.empty?
-          attributes = []
-          @safe_attributes.collect do |elements, options|
-            args.each do |name|
-              elements.delete(name.to_s)
-            end
-            attributes << [elements, options] unless elements.empty?
-          end
-          @safe_attributes = attributes
+      private
+
+      # after_create callback used to do things when a module is enabled
+      def module_enabled
+        if module_enabled?(:wiki) && wiki.nil?
+          # Create a wiki with a default start page
+          Wiki.create(:project => project, :start_page => 'Wiki')
         end
       end
 
-      # Collects all instance methods
+      module ClassMethods
+        def table_switch(table_name, condition: true)
+          #after_initialize do |project|
+          # before_save do |project|
+            # self.class.enable_switch(table_name) if self.class.send condition
+            self.enable_switch(table_name) unless core_test_run
+          #end
+        end
+
+        def enable_switch(name)
+          send name
+        end
+
+        def project_type_any?
+          return false unless table_found? :project_types
+        
+          ProjectType.any?
+        end
+
+        def table_found?(table_name)
+         connection.table_exists?(table_name)
+        end
+
+        def core_test_run
+          !project_type_any? && Rails.env.test?
+        end
+      end
+
       module InstanceMethods
         # Sets all the attributes, e.g., projects default modules,
         # and trackers, w.r.t. the underlying project type

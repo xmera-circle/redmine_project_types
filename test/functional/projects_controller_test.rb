@@ -62,6 +62,6 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   private
 
   def project_attributes
-    { project: { name: 'New project', project_type_id: 1 } }
+    { project: { name: 'New project with project type', project_type_id: 1 } }
   end
 end

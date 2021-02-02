@@ -59,7 +59,7 @@ class ProjectPatchTest < ActiveSupport::TestCase
   end
     
   test 'projects without project type should be nil' do
-    assert !project(id: 6).project_type
+    assert !project(id: 6).project_type_id
   end
 
   test 'default_member_role' do
@@ -85,7 +85,7 @@ class ProjectPatchTest < ActiveSupport::TestCase
   private
 
   def module_options
-    Hash({ class_name: 'EnabledModule',
+    Hash({ class_name: 'EnabledProjectTypeModule',
            foreign_key: :project_type_id,
            through: :project_type,
            source: :enabled_modules})

@@ -18,8 +18,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class AddProjectTypeIdToEnabledModules < ActiveRecord::Migration[4.2]
-  def change
-    add_column :enabled_modules, :project_type_id, :integer, null: true
+class CreateEnabledProjectTypeModules < ActiveRecord::Migration[4.2]
+  def self.up
+    unless table_exists?(:enabled_project_type_modules)
+      create_table :enabled_project_type_modules do |t|
+        t.string :name, null: false
+        t.integer :project_type_id
+        t.index [:project_type_id], name: :enabled_project_type_modules_project_type_id
+      end
+    end
+  end
+  
+  def self.down
+    if table_exists?(:enabled_project_type_modules)
+      drop_table :enabled_project_type_modules
+    end
   end
 end
