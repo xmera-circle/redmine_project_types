@@ -37,3 +37,4 @@ require 'project_types/patches/project_patch'
 # Other module
 require 'project_types/project_type_modules'
 require 'project_types/enabled_module_switch'
+require 'project_types/enabled_module_sync'

@@ -28,14 +28,27 @@ module ProjectTypes
         base.extend(ClassMethods) 
         base.class_eval do
           include ProjectTypes::EnabledModuleSwitch
-          table_switch :enabled_modules, condition: :project_type_any?
+                
+          after_initialize do |project|
+            enable_switch(:enabled_modules) if project_type_any?
+          end
 
-          after_create :module_enabled
-          after_update :module_enabled
-          scope :has_module, lambda {|mod|
-            where("#{Project.table_name}.id IN (SELECT em.project_id FROM #{EnabledProjectTypeModule.table_name} em WHERE em.name=?)", mod.to_s)
-          }
+          after_commit do |project|
+            project.synchronize_modules if project_type_any?
+          end 
         end
+      end
+
+      def project_type_any?
+        self.class.project_type_any?
+      end
+
+      def enable_switch(name)
+        self.class.enable_switch(name)
+      end
+
+      def synchronize_modules
+        project_type&.synchronize_modules
       end
 
       ##
@@ -53,39 +66,47 @@ module ProjectTypes
         member
       end
 
-      private
-
-      # after_create callback used to do things when a module is enabled
-      def module_enabled
-        if module_enabled?(:wiki) && wiki.nil?
-          # Create a wiki with a default start page
-          Wiki.create(:project => project, :start_page => 'Wiki')
-        end
-      end
-
       module ClassMethods
-        def table_switch(table_name, condition: true)
-          #after_initialize do |project|
-          # before_save do |project|
-            # self.class.enable_switch(table_name) if self.class.send condition
-            self.enable_switch(table_name) unless core_test_run
-          #end
+        ##
+        # This switch will be checked only once. That is, the condition needs
+        # to hold during the whole runtime. A change would not be considered.
+        #
+        # @note: Use this method interchangeable with the callback above!
+        #
+        def table_switch(table_name, callback: nil, condition: true)
+          self.enable_switch(table_name) if send condition
         end
 
         def enable_switch(name)
           send name
         end
 
+        #### CONDITIONS ####
+
+        ##
+        # Preferred condition which works in all environments
+        #
         def project_type_any?
-          return false unless table_found? :project_types
+          return false unless table_found?
         
           ProjectType.any?
         end
 
-        def table_found?(table_name)
+        def table_found?(table_name = :project_types)
          connection.table_exists?(table_name)
         end
 
+        ##
+        # The table will be found even when running core tests.
+        #
+        def plugin_test_run
+          table_found? && Rails.env.test?
+        end
+
+        ##
+        # When this condition will be checked before any test (core, plugin)
+        # there is never a project type since it will be loaded later.
+        #
         def core_test_run
           !project_type_any? && Rails.env.test?
         end

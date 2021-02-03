@@ -1,12 +1,12 @@
 default_module_001:
   id: 1
   project_type_id: 1
-  name: "issue-tracking"
+  name: "issue_tracking"
   
 default_module_002:
   id: 2
   project_type_id: 1
-  name: "time-tracking"
+  name: "time_tracking"
 
 default_module_003:
   id: 3

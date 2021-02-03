@@ -49,10 +49,13 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert_equal 1, project_type(2).position - project_type(1).position
   end
 
+  test "should respond to synchronize_modules" do
+    assert project_type(1).respond_to? :synchronize_modules
+  end
+
   test "should respond to is_public?" do
     assert project_type(1).respond_to? :is_public?
   end
-
 
   test "should respond to default_member_role" do
     assert project_type(1).respond_to? :default_member_role

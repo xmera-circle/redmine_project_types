@@ -22,18 +22,24 @@ class ProjectType < ActiveRecord::Base
   include Redmine::SafeAttributes
   include Redmine::I18n
   include ProjectTypes::EnabledModules
+  include ProjectTypes::EnabledModuleSync
 
   has_many :projects, autosave: true
-  has_many :enabled_modules, class_name: 'EnabledProjectTypeModule', :dependent => :delete_all
+  has_many :enabled_modules,
+           class_name: 'EnabledProjectTypeModule', 
+           :dependent => :delete_all
 
   # has_many :trackers, :through => :project_types_default_trackers
   # has_many :project_types_default_trackers, :dependent => :delete_all 
   # has_many :project_types_default_modules, :dependent => :delete_all
   # has_many :issue_custom_fields, :through => :trackers
-    
 
   validates_presence_of :name
   validates_uniqueness_of :name
+
+  after_commit do |project_type|
+    project_type.synchronize_modules
+  end
 
   acts_as_positioned
 

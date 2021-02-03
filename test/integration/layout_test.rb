@@ -31,18 +31,16 @@ class LayoutTest < Redmine::IntegrationTest
            :roles,
            :member_roles,
            :members,
-           :enabled_modules,
            :custom_fields, :custom_values,
            :custom_fields_projects, :custom_fields_trackers,
-           :project_types
-           #:project_types_default_trackers
+           :project_types,
+           :enabled_project_type_modules
 
   def test_existence_of_project_type_field_in_any_project
     log_user('jsmith', 'jsmith')
     get settings_project_path(project(id: 2))
     assert_response :success
     assert_select '#project_project_type_id', 1
-    # assert_select '.warning', 1
   end
 
   def test_existence_of_warning_for_public_projects
@@ -51,6 +49,15 @@ class LayoutTest < Redmine::IntegrationTest
     assert_response :success
     assert_select '#project_project_type_id', 1
     assert_select '.warning', 1
+  end
+
+  def test_visibility_of_issues_when_module_enabled
+    log_user('admin', 'admin')
+    get project_issues_path(project(id: 1, type: 1))
+    assert_response :success
+    assert_select '#main-menu', 1
+    assert_select '#main-menu a.issues', 1
+    assert_select 'a[href="/issues/1"]', :text => /Cannot print recipes/
   end
 
   def test_non_existence_of_project_selection_for_custom_fields

@@ -65,11 +65,13 @@ module ProjectTypes
                  to: :project_type, 
                  allow_nil: true
 
+        #after_create :module_enabled
+        #after_update :module_enabled
+
         safe_attributes :project_type_id
         delete_safe_attribute_names :is_public, :enabled_module_names
       end
     end
-
     module Association 
       ##
       # If there is a project_type_id the association is redirected via 
@@ -97,6 +99,22 @@ module ProjectTypes
       def self.included(base)
         base.extend ClassMethods
       end
+
+      private
+
+      ##
+      # For callbacks (after_create, after_update) to do things when a module 
+      # is enabled
+      # @note: This method is moved from core (EnabledModule#module_enabled)
+      #   into Project#module_enabled since EnabledModule is not directly used
+      #   anymore.
+      #
+      # def module_enabled
+      #   if module_enabled?(:wiki) && wiki.nil?
+      #     # Create a wiki with a default start page
+      #     Wiki.create(:project => project, :start_page => 'Wiki')
+      #   end
+      # end
 
       module ClassMethods
         ##

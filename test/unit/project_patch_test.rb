@@ -35,16 +35,19 @@ class ProjectPatchTest < ActiveSupport::TestCase
   end
 
   test 'should belong_to project_type' do
-    association = Project.reflect_on_association(:project_type)
+    assert association = Project.reflect_on_association(:project_type)
     assert_equal :project_type, association.name
   end
 
   test 'should have many project_type_modules' do
-    association = Project.reflect_on_association(:project_type_modules)
+    assert association = Project.reflect_on_association(:project_type_modules)
     assert_equal :project_type_modules, association.name
     assert_equal module_options, association.options
   end
 
+  test "should respond to synchronize_modules" do
+    assert project(id: 1).respond_to? :synchronize_modules
+  end
 
   test 'should have safe project_type_id attribute' do
     assert project(id: 1).safe_attribute? 'project_type_id'
@@ -62,17 +65,22 @@ class ProjectPatchTest < ActiveSupport::TestCase
     assert !project(id: 6).project_type_id
   end
 
-  test 'default_member_role' do
+  test 'default_member_role should not exist without project type' do
     assert_equal project_type(1).default_member_role, 
                  project(id: 1, type_id: 1).default_member_role
     assert_not project(id: 2).default_member_role
   end
 
-  test 'enabled_module_names' do
+  test 'enabled_module_names should sync when changed in project type' do
     new_project = create_project_with_project_type('First test project', 2)
     assert_equal Setting.default_projects_modules, new_project.enabled_module_names
     project_type(2).disable_module! :wiki
     assert_equal Setting.default_projects_modules-[:wiki], new_project.enabled_module_names
+  end
+
+  test 'should create wiki when wiki module enabled first time' do
+    new_project = create_project_with_project_type('Second test project', 2)
+    assert Wiki.find_by(project_id: new_project.id)
   end
 
   test 'create new project with project type' do

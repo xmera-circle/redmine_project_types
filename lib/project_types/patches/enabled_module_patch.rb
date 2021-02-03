@@ -26,10 +26,9 @@ module ProjectTypes
     module EnabledModulePatch
       def self.prepended(base)
         base.class_eval do
-          belongs_to :project_type, foreign_key: :project_type_id, optional: true
-          clear_validators!
-          # ignored_columns = [:project_id]
-          validates_uniqueness_of :name, scope: :project_type_id
+          # belongs_to :project_type, foreign_key: :project_type_id, optional: true
+          # clear_validators!
+          # validates_uniqueness_of :name, scope: :project_type_id
         end
       end
     end

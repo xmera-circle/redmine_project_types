@@ -32,7 +32,8 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
            :enabled_modules, :enumerations, :boards, :messages,
            :attachments, :custom_fields, :custom_values, :time_entries,
            :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions,
-           :project_types
+           :project_types,
+           :enabled_project_type_modules   
 
   def setup
     log_user('admin', 'admin')

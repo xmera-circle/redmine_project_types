@@ -24,5 +24,6 @@ Deface::Override.new(
   name: 'disable-project-list',
   replace: "erb[silent]:contains('if @projects.any?')",
   text: "<% if @projects.any? && Rails.env == 'test' %>",
+  disabled: true,
   namespaced: true
 )

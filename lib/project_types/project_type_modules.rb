@@ -23,8 +23,8 @@
 module ProjectTypes
   ##
   # Copied from Project class to be available for ProjectType class.
-  # Focus on methods which create EnabledModule objects in order to
-  # set the project_type_id and not project_id.
+  # Focused on methods which create EnabledModule objects in order to
+  # select the enabled modules from :enabled_project_type_modules table.
   #
   module EnabledModules
     # Return the enabled module with the given name
