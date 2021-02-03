@@ -22,7 +22,7 @@ Redmine::Plugin.register :redmine_project_types do
   name 'Redmine Project Types'
   author 'Liane Hampe, xmera'
   description 'This is a plugin for defining project types with individual project default settings.'
-  version '1.0.1'
+  version '1.0.2'
   url 'https://circle.xmera.de/projects/redmine-project-types'
   author_url 'https://circle.xmera.de/users/5'
   
