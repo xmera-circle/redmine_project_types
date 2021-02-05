@@ -21,18 +21,27 @@
 module ProjectTypes
   module Patches
     module TrackerPatch
-      # Calls the prepended modules on the class. Without this 
-      # method the after_commit would be called on the module
-      # what raises an error since the method is unknown for the
-      # module IssueCloning::Patches::RolePatch.
-      def self.prepended(mod)
-         mod.singleton_class.prepend(ClassMethods)
-         mod.prepend(InstanceMethods)
-         mod.after_commit :sync_project_custom_fields
-      end      
+      def self.prepended(base)
+        base.extend(ClassMethods) 
+        # mod.prepend(InstanceMethods)
+        # mod.after_commit :sync_project_custom_fields
+        base.class_eval do
+          include ProjectTypes::Switch::Trackers
+                
+          after_initialize do |tracker|
+            enable_switch(:trackers) if ProjectTypes.any?
+          end
+        end
+      end
+
+      def enable_switch(name)
+        self.class.enable_switch(name)
+      end
       
       module ClassMethods
-        # empty
+        def enable_switch(name)
+          send name
+        end
       end
 
       module InstanceMethods 

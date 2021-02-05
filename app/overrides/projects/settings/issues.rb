@@ -21,19 +21,18 @@
 # Target is Redmines app/views/projects/settings/_issues.html.erb file
 Deface::Override.new(
   virtual_path: 'projects/settings/_issues',
-  name: 'disabled-trackers',
-  replace: "erb[loud]:contains('tracker.id')",
-  text: "<%= check_box_tag 'project[tracker_ids][]', tracker.id, @project.trackers.to_a.include?(tracker), :id => nil, :disabled => true %>",
-  original: '2968122c1e535d6906a5e0fb82d30302b617e1bc',
+  name: 'remove-trackers-from-project-settings',
+  remove: '#project_trackers',
+  original: 'a68a0c8d0bdb2791b8dfbaab3902352f28454484',
+  disabled: ProjectTypes.missing?,
   namespaced: true
 )
 
 Deface::Override.new(
   virtual_path: 'projects/settings/_issues',
-  name: 'disabled-custom-fields',
-  replace: "erb[loud]:contains('custom_field.id')",
-  text: "<%= check_box_tag 'project[issue_custom_field_ids][]', custom_field.id, (@project.all_issue_custom_fields.include? custom_field),
-        :id => nil, :disabled => true %>",
+  name: 'remove-custom-fields-from-project-settings',
+  remove: '#project_issue_custom_fields',
   original: '678ce8d0dbf350d65eca3d0b992daf7757d9df65',
+  disabled: ProjectTypes.missing?,
   namespaced: true
 )

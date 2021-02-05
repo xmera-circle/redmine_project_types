@@ -20,65 +20,44 @@
 
 module ProjectTypesHelper
  def modules_multiselect(project_type_id, choices, options={})
-    hidden_field_tag("project_type[enabled_module_names][]", '').html_safe +
+  hidden_field_tag("project_type[enabled_module_names][]", '').html_safe +
+  choices.collect do |choice|
+    text, value = (choice.is_a?(Array) ? choice : [choice, choice])
+    content_tag(
+      'label',
+      check_box_tag(
+        "project_type[enabled_module_names][]",
+        value,
+        @project_type.module_enabled?(value),
+        :id => nil
+      ) + text.to_s,
+      :class => 'floating'
+    )
+    end.join.html_safe
+  end
+
+  def available_project_modules
+    Redmine::AccessControl.available_project_modules.collect {|m| [l_or_humanize(m, :prefix => "project_module_"), m.to_s] }
+  end
+  
+  def trackers_multiselect(project_type_id, choices, options={})
+    hidden_field_tag("project_type[tracker_ids][]", '').html_safe +
     choices.collect do |choice|
       text, value = (choice.is_a?(Array) ? choice : [choice, choice])
       content_tag(
         'label',
         check_box_tag(
-            "project_type[enabled_module_names][]",
-            value,
-            @project_type.module_enabled?(value),
-            :id => nil
+          "project_type[tracker_ids][]",
+          value,
+          @project_type.tracker_assigned?(value),
+          :id => nil
           ) + text.to_s,
         :class => 'floating'
         )
     end.join.html_safe
   end
-  
-  def trackers_multiselect(project_type_id, choices, label,options={})
-    
-    trackers = ProjectTypesDefaultTracker.where(project_type_id: project_type_id).pluck(:tracker_id)
-    trackers = [] unless trackers.is_a?(Array)
 
-    content_tag("label", l(label) ) +
-      hidden_field_tag("project_types_tracker[tracker_id][]", '').html_safe +
-      choices.collect do |choice|
-        text, value = (choice.is_a?(Array) ? choice : [choice, choice])
-        content_tag(
-          'label',
-          check_box_tag(
-             "project_types_tracker[tracker_id][]",
-             value,
-             trackers.include?(value),
-             :id => nil
-           ) + text.to_s,
-          :class => 'block'
-         )
-      end.join.html_safe
-  end
-  
-  def create_multi_modules(record_set, parameters)
-    record_set.delete_all
-      
-        parameters[:name].each do |i|
-            if !i.empty?
-              record_set.create!( name: i)
-            end
-        end
-  end
-  
-  def create_multi_trackers(record_set, parameters)
-    record_set.delete_all
-      
-        parameters[:tracker_id].each do |i|
-            if !i.empty?
-              record_set.create!( tracker_id: i)
-            end
-        end
-  end
-
-  def available_project_modules
-    Redmine::AccessControl.available_project_modules.collect {|m| [l_or_humanize(m, :prefix => "project_module_"), m.to_s] }
+  def available_issue_trackers
+    Tracker.sorted.collect {|t| [t.name, t.id.to_s]}
   end
 end

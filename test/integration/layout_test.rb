@@ -60,45 +60,43 @@ class LayoutTest < Redmine::IntegrationTest
     assert_select 'a[href="/issues/1"]', :text => /Cannot print recipes/
   end
 
+  def test_disabled_module_selection_in_project_settings
+    log_user('jsmith', 'jsmith')
+    project = Project.find(1)
+    get settings_project_path(project)
+    assert_response :success
+
+    assert_select '#project_modules', 0 #do
+    #  assert_select 'label.floating input[disabled=disabled]'
+    # end
+  end
+
+  def test_disabled_tracker_in_project_settings
+    log_user('jsmith', 'jsmith')
+    get settings_project_path(id: 1, tab: 'issues')
+    assert_response :success
+    assert_select '#project_trackers', 0 # do
+    #  assert_select 'label.floating input[disabled=disabled]'
+    # end
+  end
+
+  def test_disabled_custom_fields_in_project_settings
+    log_user('jsmith', 'jsmith')
+      get settings_project_path(id: 1, tab: 'issues')
+      assert_response :success
+      assert_select '#project_issue_custom_fields', 0 # do
+      #  assert_select 'label.floating input[disabled=disabled]'
+      # end
+  end
+
   def test_non_existence_of_project_selection_for_custom_fields
-    skip
     log_user('admin', 'admin')
     get edit_custom_field_path(id: 1)
     assert_response :success
     assert_select '#custom_field_project_ids', 0
   end
 
-  def test_disabled_module_selection_in_project_settings
-    skip
-    log_user('jsmith', 'jsmith')
-    project = Project.find(1)
-    get settings_project_path(project)
-    assert_response :success
-
-    assert_select '#project_modules' do
-      assert_select 'label.floating input[disabled=disabled]'
-    end
-  end
-
-  def test_disabled_tracker_in_project_settings
-    skip
-    log_user('jsmith', 'jsmith')
-    get settings_project_path(id: 1, tab: 'issues')
-    assert_response :success
-    assert_select '#project_trackers' do
-      assert_select 'label.floating input[disabled=disabled]'
-    end
-  end
-
-  def test_disabled_custom_fields_in_project_settings
-    skip
-    log_user('jsmith', 'jsmith')
-      get settings_project_path(id: 1, tab: 'issues')
-      assert_response :success
-      assert_select '#project_issue_custom_fields' do
-        assert_select 'label.floating input[disabled=disabled]'
-      end
-  end
+  private
 
   def project(id:, type: nil)
     project = Project.find(id.to_i)

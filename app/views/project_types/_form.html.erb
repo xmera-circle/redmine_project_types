@@ -40,3 +40,15 @@
     <%= modules_multiselect(@project_type.id, available_project_modules ) %>
   </fieldset>
 <% end %>
+
+<% if @project_type.safe_attribute?('tracker_ids') %>
+  <fieldset class="box tabular" id="default-trackers">
+    <legend>
+      <%= toggle_checkboxes_link('#default-trackers input[type="checkbox"]') %>
+      <%= l(:label_tracker_plural) %>
+    </legend> 
+    <%= trackers_multiselect(@project_type.id, available_issue_trackers ) %>
+  </fieldset>
+<% end %>
+
+

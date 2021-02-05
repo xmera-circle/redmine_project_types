@@ -32,9 +32,36 @@ require 'project_types/hooks/view_projects_form_top_hook_listener'
 # require 'project_types/patches/enabled_module_patch'
 require 'project_types/patches/project_patch'
 # require 'project_types/patches/projects_controller_patch'
-# require 'project_types/patches/tracker_patch'
+require 'project_types/patches/tracker_patch'
 
-# Other module
-require 'project_types/project_type_modules'
-require 'project_types/enabled_module_switch'
-require 'project_types/enabled_module_sync'
+# Association
+require 'project_types/association/modules'
+require 'project_types/association/trackers'
+
+# Switch
+require 'project_types/switch/modules'
+
+# Synchronization
+require 'project_types/synchronisation/modules'
+
+module ProjectTypes
+  class << self
+    def missing?
+      return false if Rails.env.test?
+
+      !any?
+    end
+
+    def any?
+      return false unless table_found?
+          
+      ProjectType.any?
+    end
+
+    private
+
+    def table_found?(table_name = :project_types)
+      ActiveRecord::Base.connection.table_exists?(table_name)
+    end
+  end
+end

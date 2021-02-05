@@ -22,8 +22,8 @@
 Deface::Override.new(
   virtual_path: 'trackers/_form',
   name: 'disable-project-list',
-  replace: "erb[silent]:contains('if @projects.any?')",
-  text: "<% if @projects.any? && Rails.env == 'test' %>",
-  disabled: true,
+  replace: "div.splitcontentright",
+  partial: "trackers/project_types",
+  disabled: ProjectTypes.missing?,
   namespaced: true
 )

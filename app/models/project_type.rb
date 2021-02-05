@@ -21,24 +21,27 @@
 class ProjectType < ActiveRecord::Base
   include Redmine::SafeAttributes
   include Redmine::I18n
-  include ProjectTypes::EnabledModules
-  include ProjectTypes::EnabledModuleSync
+  include ProjectTypes::Association::Modules
+  include ProjectTypes::Association::Trackers
+  include ProjectTypes::Synchronisation::Modules
+  include ProjectTypes::Synchronisation::Trackers
 
   has_many :projects, autosave: true
   has_many :enabled_modules,
            class_name: 'EnabledProjectTypeModule', 
            :dependent => :delete_all
+  has_and_belongs_to_many :trackers, 
+                          lambda {order(:position)},
+                          autosave: true
 
-  # has_many :trackers, :through => :project_types_default_trackers
-  # has_many :project_types_default_trackers, :dependent => :delete_all 
-  # has_many :project_types_default_modules, :dependent => :delete_all
   # has_many :issue_custom_fields, :through => :trackers
 
   validates_presence_of :name
   validates_uniqueness_of :name
 
   after_commit do |project_type|
-    project_type.synchronize_modules
+    project_type.synchronise_modules
+    project_type.synchronise_trackers
   end
 
   acts_as_positioned
@@ -60,14 +63,14 @@ class ProjectType < ActiveRecord::Base
     if !initialized.key?('enabled_module_names')
       self.enabled_module_names = default_project_modules
     end
-    # if !initialized.key?('trackers') && !initialized.key?('tracker_ids')
-    #   default = Setting.default_projects_tracker_ids
-    #   if default.is_a?(Array)
-    #     self.trackers = Tracker.where(:id => default.map(&:to_i)).sorted.to_a
-    #   else
-    #     self.trackers = Tracker.sorted.to_a
-    #   end
-    # end
+    if !initialized.key?('trackers') && !initialized.key?('tracker_ids')
+      default = default_project_trackers
+      if default.is_a?(Array)
+        self.trackers = Tracker.where(:id => default.map(&:to_i)).sorted.to_a
+      else
+        self.trackers = Tracker.sorted.to_a
+      end
+    end
   end
 
   # unused
@@ -87,7 +90,8 @@ class ProjectType < ActiveRecord::Base
     :is_public,
     :default_member_role_id,
     :position,
-    :enabled_module_names)
+    :enabled_module_names,
+    :tracker_ids)
 
   def is_public?
     is_public
@@ -103,6 +107,10 @@ class ProjectType < ActiveRecord::Base
 
   def default_project_public
     Setting.default_projects_public
+  end
+
+  def default_project_trackers
+    Setting.default_projects_tracker_ids
   end
 
   # unused
