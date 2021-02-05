@@ -34,16 +34,16 @@ class ProjectPatchTest < ActiveSupport::TestCase
     #
   end
 
-  test 'should belong_to project_type' do
-    assert association = Project.reflect_on_association(:project_type)
-    assert_equal :project_type, association&.name
-  end
+  # test 'should belong_to project_type' do
+  #   assert association = Project.reflect_on_association(:project_type)
+  #   assert_equal :project_type, association&.name
+  # end
 
-  test 'should have many project_type_modules' do
-    assert association = Project.reflect_on_association(:project_type_modules)
-    assert_equal :project_type_modules, association.name
-    assert_equal module_options, association&.options
-  end
+  # test 'should have many project_type_modules' do
+  #   assert association = Project.reflect_on_association(:project_type_modules)
+  #   assert_equal :project_type_modules, association.name
+  #   assert_equal module_options, association&.options
+  # end
 
   test "should respond to synchronize_modules" do
     assert project(id: 1).respond_to? :synchronise_modules
