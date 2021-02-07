@@ -2,7 +2,7 @@
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
+# Copyright (C) 2017-2021 Liane Hampe <liaham@xmera.de>, xmera.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,22 +18,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class CreateProjectTypesDefaultModules < ActiveRecord::Migration[4.2]
+class CreateCustomFieldsProjectTypes < ActiveRecord::Migration[4.2]
   def self.up
-    unless table_exists?(:project_types_default_modules)
-      create_table :project_types_default_modules do |t|
-        t.integer :project_type_id
-        t.string :name, :null => false
-      end
-      add_index :project_types_default_modules, :project_type_id
+    create_table :custom_fields_project_types, id: false do |t|
+      t.column :custom_field_id, :integer, default: 0, null: false
+      t.column :project_type_id, :integer, default: 0, null: false
     end
+    add_index :custom_fields_project_types, 
+              [:custom_field_id, :project_type_id], 
+              unique: true,
+              name: :index_cf_pt_on_cf_id_and_pt_id
   end
-  
+
   def self.down
-    if table_exists?(:project_types_default_modules)
-      remove_index :project_types_default_modules, :project_type_id
-      drop_table :project_types_default_modules
-    end
+    drop_table :custom_fields_project_types
   end
-  
 end

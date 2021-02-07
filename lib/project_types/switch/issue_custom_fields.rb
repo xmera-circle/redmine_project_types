@@ -22,21 +22,23 @@
 
 module ProjectTypes
   module Switch
-    module Trackers
+    module IssueCustomFields
       def self.included(base)
         base.extend ClassMethods
       end
 
       module ClassMethods
-        def trackers
-          unless self.included_modules.include?(ProjectTypes::Switch::Trackers::InstanceMethods)
-            send :include, ProjectTypes::Switch::Trackers::InstanceMethods    
+        def issue_custom_fields
+          unless self.included_modules.include?(ProjectTypes::Switch::IssueCustomFields::InstanceMethods)
+            send :include, ProjectTypes::Switch::IssueCustomFields::InstanceMethods    
           end
 
-          has_and_belongs_to_many :project_types,
-                                   autosave: true,
-                                   after_add: :add_projects_tracker,
-                                   after_remove: :remove_projects_tracker
+          has_and_belongs_to_many :project_types, 
+                                  join_table: "#{table_name_prefix}custom_fields_project_types#{table_name_suffix}", 
+                                  foreign_key: "custom_field_id", 
+                                  autosave: true,
+                                  after_add: :add_custom_fields_projects,
+                                  after_remove: :remove_custom_fields_projects
 
           safe_attributes :project_type_ids
           delete_safe_attribute_names :project_ids
@@ -48,12 +50,12 @@ module ProjectTypes
           base.extend ClassMethods
         end
 
-        def add_projects_tracker(project_type)
-          project_type. synchronise_projects_tracker(self)
+        def add_custom_fields_projects(project_type)
+          project_type.synchronise_issue_custom_field_projects(self)
         end
 
-        def remove_projects_tracker(project_type)
-          project_type. synchronise_projects_tracker(self)
+        def remove_custom_fields_projects(project_type)
+          project_type.synchronise_issue_custom_field_projects(self)
         end
 
         module ClassMethods

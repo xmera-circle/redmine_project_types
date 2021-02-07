@@ -20,11 +20,11 @@
 
 class CreateProjectTypesTrackers < ActiveRecord::Migration[4.2]
   def self.up
-    create_table :project_types_trackers, :id => false do |t|
-      t.column :project_type_id, :integer, :default => 0, :null => false
-      t.column :tracker_id, :integer, :default => 0, :null => false
+    create_table :project_types_trackers, id: false do |t|
+      t.column :project_type_id, :integer, default: 0, null: false
+      t.column :tracker_id, :integer, default: 0, null: false
     end
-    add_index :project_types_trackers, :project_type_id, :name => :project_types_trackers_project_type_id
+    add_index :project_types_trackers, [:project_type_id, :tracker_id], name: :project_types_trackers_unique, unique: true
   end
 
   def self.down

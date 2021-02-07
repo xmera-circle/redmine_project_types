@@ -22,7 +22,7 @@
 
 require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
-class TrackersControllerTest < ActionDispatch::IntegrationTest
+class CustomFieldsControllerTest < ActionDispatch::IntegrationTest
   extend RedmineProjectTypes::LoadFixtures
   include RedmineProjectTypes::AuthenticateUser
 
@@ -32,31 +32,33 @@ class TrackersControllerTest < ActionDispatch::IntegrationTest
            :enabled_modules, :enumerations, :boards, :messages,
            :attachments, :custom_fields, :custom_values, :time_entries,
            :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions,
-           :project_types,
-           :enabled_project_type_modules   
+           :custom_fields_trackers, :custom_fields_projects,
+           :project_types, :enabled_project_type_modules
+
 
   def setup
     log_user('admin', 'admin')
   end
 
-  test 'should assign tracker to project type and sync projects_tracker table' do
-    tracker = Tracker.find(1)
-    tracker.project_type_ids = [1, 3]
+  test 'should assign IssueCustomField to project type and sync custom_fields_projects table' do
+    custom_field = IssueCustomField.first
+    custom_field.project_type_ids = [1, 3]
     ProjectType.find(1).project_ids = [1]
     ProjectType.find(2).project_ids = [2]
     ProjectType.find(3).project_ids = [3]
-    put tracker_path(
-      id: 1,
-      tracker: {name: 'Renamed tracker', 
+    put custom_field_path(
+      id: custom_field.id,
+      custom_field: {name: 'Renamed issue custom field', 
                 project_type_ids: ['', '1', '2']}
     )
-    assert_redirected_to action: :index
-    assert ProjectType.find(1).trackers.include? tracker
-    assert ProjectType.find(2).trackers.include? tracker
-    assert ProjectType.find(3).trackers.empty?
-    assert Project.find(1).trackers.include? tracker
-    assert Project.find(2).trackers.include? tracker
-    assert Project.find(3).trackers.empty?
+    assert_redirected_to action: :edit
+    custom_field = IssueCustomField.first
+    assert ProjectType.find(1).issue_custom_fields.to_a.include? custom_field
+    assert ProjectType.find(2).issue_custom_fields.to_a.include? custom_field
+    assert ProjectType.find(3).issue_custom_fields.empty?
+    assert Project.find(1).issue_custom_fields.to_a.include? custom_field
+    assert Project.find(2).issue_custom_fields.to_a.include? custom_field
+    assert Project.find(3).issue_custom_fields.empty?
   end
 
 end

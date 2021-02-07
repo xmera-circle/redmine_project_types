@@ -7,3 +7,7 @@
 #admin-menu .icon.icon-types.project-types{
 	background-size:15px;
 }
+/* Project Type Index Table */
+table.list.project_types td.center {
+  text-align: center;
+}

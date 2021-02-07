@@ -19,6 +19,7 @@ de:
   label_project_type_new_project_member_role_ids: Rolle, die einem Nicht-Administrator zugeordnet wird, der ein Projekt mit diesem Projekttyp erstellt
   label_project_type: Projekttyp
   label_project_new_default_values: Neues Projekt - Standardwerte
+  label_issue_custom_field_plural: Benutzerdefinierte Felder - Tickets
   
   # Texte
   text_select_project_modules: 'Aktivierte Module'
@@ -28,10 +29,3 @@ de:
   # Fehlermeldungen
   error_unable_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, da es verbundene Projekte gibt.
   error_can_not_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, da es verbundene Projekte gibt
-
-  # Schaltflächen
-  button_default_values: Standardwerte bearbeiten
-
-  # Default project type
-  label_system_project_type: Standard-Projekttyp
-  

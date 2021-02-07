@@ -26,10 +26,8 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
   include Redmine::I18n
 
   fixtures :projects, 
-           :members, 
-           :member_roles, 
-           :roles, 
-           :users, 
+           :members, :member_roles, :roles, :users,
+           :trackers,:projects_trackers, :issue_statuses,
            :project_types
 
   test 'index by anonymous should redirect to login form' do

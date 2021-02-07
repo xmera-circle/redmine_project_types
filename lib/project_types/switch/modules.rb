@@ -53,6 +53,11 @@ module ProjectTypes
           # the respective methods are delegated to it. Delegating to 
           # enabled_modules will take place by super as defined below.
           #
+          # @note: Some delegations might meanwhile be redundant since enabled
+          #   modules are synchronised. This should be checked and revised. The
+          #   respective methods which might be eliminated are in 
+          #   ProjectTypes::Association::Modules module.
+          #
           delegate :is_public,
                   :is_public?, 
                   :default_member_role,
@@ -64,7 +69,8 @@ module ProjectTypes
                   :enable_module!,
                   :disable_module!,
                   :synchronise_modules,
-                  :synchronise_trackers,
+                  :synchronise_projects_trackers,
+                  :synchronise_custom_fields_projects,
                   to: :project_type, 
                   allow_nil: true
 

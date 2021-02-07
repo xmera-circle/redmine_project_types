@@ -21,44 +21,45 @@
 module ProjectTypes
   module Synchronisation
     ##
-    # The :projects_trackers table will be synchronized with the 
-    # :project_types_trackers table.
+    # The :custom_fields_projects table will be synchronized with the 
+    # :custom_fields_project_types table.
     #
     # This is necessary in order to use the design of the core application,
-    # especially where table queries refer to the original table :projects_trackers.
+    # especially where table queries refer to the original table
+    # :custom_fields_projects.
     #
-    module Trackers
+    module IssueCustomFields
       ##
       # Synchronises from ProjectType model perspective
       #
-      def synchronise_projects_trackers
+      def synchronise_issue_custom_fields_projects
         return if projects.empty?
 
-        update_projects_trackers
+        update_issue_custom_fields_projects
       end
 
       ##
-      # Synchronises from Tracker model perspective
+      # Synchronises from IssueCustomField model perspective
       #
-      def synchronise_projects_tracker(tracker)
+      def synchronise_issue_custom_field_projects(custom_field)
         return if projects.empty?
 
-        update_projects_tracker(tracker)
+        update_issue_custom_field_projects(custom_field)
       end
 
       private
 
-      def update_projects_trackers
+      def update_issue_custom_fields_projects
         projects.each do |project|
-          project.trackers&.delete_all
-          project.tracker_ids = tracker_ids
+          project.issue_custom_fields&.delete_all
+          project.issue_custom_field_ids = issue_custom_field_ids
         end
       end
 
-      def update_projects_tracker(tracker)
-        tracker.projects&.delete_all
-        tracker.project_types.each do |project_type|
-          tracker.projects << project_type.projects
+      def update_issue_custom_field_projects(custom_field)
+        custom_field.projects&.delete_all
+        custom_field.project_types.each do |project_type|
+          custom_field.projects << project_type.projects
         end
       end
     end

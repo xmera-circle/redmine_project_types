@@ -32,8 +32,8 @@
 <% else %>
 	<table class="list project_types">
 	  <thead><tr>
-	  <th><%=l(:label_project_type_name)%></th>
-		<th><%=l(:field_description)%></th>
+	  <th class="name"><%=l(:label_project_type_name)%></th>
+		<th class="name"><%=l(:field_description)%></th>
 		<th><%=l(:field_is_public)%></th>
 	  <%= call_hook(:view_project_types_table_header) %>
 	  <th></th>
@@ -44,7 +44,7 @@
 	  <tr>
 	  <td class="name"><%= link_to type.name, edit_project_type_path(type) %></td>
 		<td class="name"><%= type.description %></td>
-		<td class="name"><%= checked_image type.is_public? %></td>
+		<td class="center"><%= checked_image type.is_public? %></td>
 		<%= call_hook(:view_project_types_table_data, :project => @project_types, :type => type) %>
 	  <td></td>
 	  <td class="buttons">

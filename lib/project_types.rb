@@ -22,16 +22,10 @@
 
 # Plugin hook listener
 require 'project_types/hooks/view_projects_form_top_hook_listener'
-# require 'project_types/hooks/view_layouts_base_html_head_hook_listener'
-
-# Plugin integrations
-# require 'project_types/integrations/projects_controller'
 
 # Plugin patches
-# require 'project_types/patches/custom_field_patch'
-# require 'project_types/patches/enabled_module_patch'
+require 'project_types/patches/custom_field_patch'
 require 'project_types/patches/project_patch'
-# require 'project_types/patches/projects_controller_patch'
 require 'project_types/patches/tracker_patch'
 
 # Association
@@ -40,9 +34,13 @@ require 'project_types/association/trackers'
 
 # Switch
 require 'project_types/switch/modules'
+require 'project_types/switch/trackers'
+require 'project_types/switch/issue_custom_fields'
 
 # Synchronization
 require 'project_types/synchronisation/modules'
+require 'project_types/synchronisation/trackers'
+require 'project_types/synchronisation/issue_custom_fields'
 
 module ProjectTypes
   class << self

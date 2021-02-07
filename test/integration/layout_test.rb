@@ -96,6 +96,30 @@ class LayoutTest < Redmine::IntegrationTest
     assert_select '#custom_field_project_ids', 0
   end
 
+
+  def test_non_existence_of_project_table_columns_in_issue_custom_field_index
+    log_user('admin', 'admin')
+    get custom_fields_path(tab: 'IssueCustomField')
+    assert_response :success
+    assert_select 'For all projects', 0
+    assert_select 'Used by', 0
+  end
+
+  def test_visibility_of_tracker_selector_in_issue_custom_fields
+    log_user('admin', 'admin')
+    get edit_custom_field_path(id: 1)
+    assert_response :success
+    assert_select '#custom_field_tracker_ids', 1
+  end
+
+  def test_visibility_of_project_type_selector_in_issue_custom_fields
+    log_user('admin', 'admin')
+    get edit_custom_field_path(id: 1)
+    assert_response :success
+    assert_select '#custom_field_project_type_ids', 1
+  end
+
+
   private
 
   def project(id:, type: nil)

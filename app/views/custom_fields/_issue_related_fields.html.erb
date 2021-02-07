@@ -22,4 +22,5 @@
 
 <% if @custom_field.is_a?(IssueCustomField) %>
   <%= render :partial => 'visibility_by_tracker_selector', :locals => { :f => f } %>
+  <%= render :partial => 'visibility_by_project_type_selector', :locals => { :f => f } %>
 <% end %>

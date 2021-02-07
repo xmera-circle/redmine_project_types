@@ -22,6 +22,8 @@ class ProjectTypesController < ApplicationController
   layout 'admin'
   self.main_menu = false
 
+  helper :custom_fields
+
   before_action :require_admin
 
   def index
@@ -29,10 +31,12 @@ class ProjectTypesController < ApplicationController
   end
 
   def new
+    @issue_custom_fields = IssueCustomField.sorted.to_a 
     @project_type = ProjectType.new
   end
 
   def create
+    @issue_custom_fields = IssueCustomField.sorted.to_a 
     @project_type = ProjectType.new
     @project_type.safe_attributes = params[:project_type]
     if @project_type.save
@@ -44,6 +48,7 @@ class ProjectTypesController < ApplicationController
   end
 
   def edit
+    @issue_custom_fields = IssueCustomField.sorted.to_a 
     find_project_type(secure_id_from_params)
   end
 

@@ -51,4 +51,22 @@
   </fieldset>
 <% end %>
 
+<% unless @issue_custom_fields.empty? %>
+  <fieldset class="box tabular" id="project_type_issue_custom_fields">
+    <legend>
+      <%= toggle_checkboxes_link('#project_type_issue_custom_fields input[type=checkbox]:enabled') %>
+        <%=l(:label_issue_custom_field_plural)%>
+    </legend>
+  <% @issue_custom_fields.each do |custom_field| %>
+    <label class="floating">
+      <%= check_box_tag 'project_type[issue_custom_field_ids][]', custom_field.id, (@project_type.issue_custom_fields.include? custom_field),
+          :disabled => (custom_field.is_for_all? ? "disabled" : nil),
+          :id => nil %>
+      <%= custom_field_name_tag(custom_field) %>
+    </label>
+  <% end %>
+  <%= hidden_field_tag 'project_type[issue_custom_field_ids][]', '' %>
+  </fieldset>
+  <% end %>
+
 

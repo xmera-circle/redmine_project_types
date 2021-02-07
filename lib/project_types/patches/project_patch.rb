@@ -25,7 +25,8 @@ module ProjectTypes
     # Patches project.rb from Redmine Core
     module ProjectPatch
       def self.prepended(base)
-        base.extend(ClassMethods) 
+        base.extend(ClassMethods)
+        base.include(InstanceMethods) 
         base.class_eval do
           include ProjectTypes::Switch::Modules
                 
@@ -36,37 +37,10 @@ module ProjectTypes
           after_commit do |project|
             if ProjectTypes.any?
               project.synchronise_modules 
-              project.synchronise_trackers
+              project.synchronise_projects_trackers
             end
           end 
         end
-      end
-
-      def enable_switch(name)
-        self.class.enable_switch(name)
-      end
-
-      # def synchronise_modules
-      #   project_type&.synchronise_modules
-      # end
-
-      # def synchronise_modules
-
-      # end
-
-      ##
-      # Adds user as a project member with the default role of the project type.
-      # Used when a non-admin user creates a project.
-      #
-      # @override This is overwritten from Project#add_default_member 
-      #
-      def add_default_member(user)
-        return super(user) unless project_type_id.present?
-
-        role = default_member_role
-        member = Member.new(:project => self, :principal => user, :roles => [role])
-        self.members << member
-        member
       end
 
       module ClassMethods
@@ -76,16 +50,31 @@ module ProjectTypes
         #
         # @note: Use this method interchangeable with the callback above!
         #
-        def table_switch(table_name, callback: nil, condition: true)
-          self.enable_switch(table_name) if send condition
-        end
-
         def enable_switch(name)
           send name
         end
       end
 
-      module InstanceMethods; end
+      module InstanceMethods
+        def enable_switch(name)
+          self.class.enable_switch(name)
+        end
+
+        ##
+        # Adds user as a project member with the default role of the project type.
+        # Used when a non-admin user creates a project.
+        #
+        # @override This is overwritten from Project#add_default_member 
+        #
+        def add_default_member(user)
+          return super(user) unless project_type_id.present?
+
+          role = default_member_role
+          member = Member.new(:project => self, :principal => user, :roles => [role])
+          self.members << member
+          member
+        end
+      end
     end
   end
 end

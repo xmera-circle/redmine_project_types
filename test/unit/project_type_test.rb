@@ -24,10 +24,8 @@ class ProjectTypeTest < ActiveSupport::TestCase
   include RedmineProjectTypes::LoadFixtures
 
   fixtures :projects, 
-           :members, 
-           :member_roles, 
-           :roles, 
-           :users, 
+           :members, :member_roles, :roles, :users,
+           :trackers,:projects_trackers, :issue_statuses,
            :project_types
 
   test "should not save project type without name" do
@@ -65,17 +63,32 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert_equal safe_attribute_names, project_type(1).safe_attribute_names
   end
 
-
   test "should have many projects" do
     association = ProjectType.reflect_on_association(:projects)
     assert_equal :projects, association.name
+    assert_equal :has_many, association.macro
     assert_equal Hash({ autosave: true }), association.options
   end
 
   test "should have many enabled modules" do
     association = ProjectType.reflect_on_association(:enabled_modules)
     assert_equal :enabled_modules, association.name
+    assert_equal :has_many, association.macro
     assert_equal enabled_modules_association, association.options
+  end
+
+  test "should have many trackers" do
+    association = ProjectType.reflect_on_association(:trackers)
+    assert_equal :trackers, association.name
+    assert_equal :has_and_belongs_to_many, association.macro
+    assert_equal tracker_association, association.options
+  end
+
+  test "should have many issue_custom_fields" do
+    association = ProjectType.reflect_on_association(:issue_custom_fields)
+    assert_equal :issue_custom_fields, association.name
+    assert_equal :has_and_belongs_to_many, association.macro
+    assert_equal issue_custom_field_association, association.options
   end
 
   private
@@ -92,10 +105,21 @@ class ProjectTypeTest < ActiveSupport::TestCase
       default_member_role_id
       position
       enabled_module_names
-      tracker_ids]
+      tracker_ids
+      issue_custom_field_ids]
   end
 
   def enabled_modules_association
     Hash({ class_name: 'EnabledProjectTypeModule', dependent: :delete_all })
+  end
+
+  def tracker_association
+    Hash({ autosave: true })
+  end
+
+  def issue_custom_field_association
+    Hash({ class_name: 'IssueCustomField', 
+           join_table: 'custom_fields_project_types',
+           association_foreign_key: 'custom_field_id'})
   end
 end

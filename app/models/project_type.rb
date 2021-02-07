@@ -25,6 +25,7 @@ class ProjectType < ActiveRecord::Base
   include ProjectTypes::Association::Trackers
   include ProjectTypes::Synchronisation::Modules
   include ProjectTypes::Synchronisation::Trackers
+  include ProjectTypes::Synchronisation::IssueCustomFields
 
   has_many :projects, autosave: true
   has_many :enabled_modules,
@@ -33,15 +34,19 @@ class ProjectType < ActiveRecord::Base
   has_and_belongs_to_many :trackers, 
                           lambda {order(:position)},
                           autosave: true
-
-  # has_many :issue_custom_fields, :through => :trackers
+  has_and_belongs_to_many :issue_custom_fields,
+                          lambda {order(:position)},
+                          class_name: 'IssueCustomField',
+                          join_table: "#{table_name_prefix}custom_fields_project_types#{table_name_suffix}",
+                          association_foreign_key: 'custom_field_id'
 
   validates_presence_of :name
   validates_uniqueness_of :name
 
   after_commit do |project_type|
     project_type.synchronise_modules
-    project_type.synchronise_trackers
+    project_type.synchronise_projects_trackers
+    project_type.synchronise_issue_custom_fields_projects
   end
 
   acts_as_positioned
@@ -73,16 +78,6 @@ class ProjectType < ActiveRecord::Base
     end
   end
 
-  # unused
-  def <=>(project_type)
-    position <=> project_type.position
-  end
-  
-  # unused
-  def self.relation_order
-    self.sorted.to_a
-  end
-
   safe_attributes(
     :name,
     :description,
@@ -91,7 +86,8 @@ class ProjectType < ActiveRecord::Base
     :default_member_role_id,
     :position,
     :enabled_module_names,
-    :tracker_ids)
+    :tracker_ids,
+    :issue_custom_field_ids)
 
   def is_public?
     is_public
