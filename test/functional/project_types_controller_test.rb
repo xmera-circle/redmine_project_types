@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin.
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
@@ -24,13 +26,22 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
   include Redmine::I18n
 
   fixtures :projects, 
-           :members, 
-           :member_roles, 
-           :roles, 
-           :users, 
-           :project_types,
-           :projects_project_types
- 
+           :members, :member_roles, :roles, :users,
+           :trackers,:projects_trackers, :issue_statuses,
+           :project_types
+
+  test 'index by anonymous should redirect to login form' do
+    User.anonymous
+    get project_types_url
+    assert_redirected_to '/login?back_url=http%3A%2F%2Fwww.example.com%2Fproject_types'
+  end
+
+  test 'index by user should respond with 403' do
+    log_user('jsmith', 'jsmith')
+    get project_types_url
+    assert_response 403
+  end
+
   test 'should get index' do
     log_user('admin', 'admin')
     get project_types_url
@@ -55,7 +66,7 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect after create' do
     log_user('admin', 'admin')
     assert_difference after_create do
-      post project_types_url, params: project_type_create_params(defaults)
+      post project_types_url, params: project_type_create_params(empty_modules)
     end
     assert_redirected_to(controller: "project_types", action: "index")
   end
@@ -70,7 +81,7 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
 
   test "should delete when it has no projects" do
     log_user('admin', 'admin')
-    post project_types_url, params: project_type_create_params(defaults)      
+    post project_types_url, params: project_type_create_params(empty_modules)      
     assert_difference after_delete do
       delete "/project_types/#{ProjectType.last.id}", params: nil
     end
@@ -79,10 +90,13 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
 
   test "should not delete when it has projects" do
     log_user('admin', 'admin')
+    project = Project.find(1)
+    project.project_type_id = 1
+    project.save
     assert_no_difference 'ProjectType.count' do
-      delete '/project_types/1', params: nil
+      delete project_type_path(id: 1)
     end
-    assert_equal 'Unable to delete project type due to related projects', flash[:error].to_s
+    assert_equal 'Cannot delete project type due to related projects', flash[:error].to_s
   end
 
   private
@@ -92,19 +106,24 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
       { name: 'Lore ipsum',
         description: 'for testing',
         is_public: 0,
-        default_user_role_id: 3,
-        position: 4 } }.merge(associates)
+        default_member_role_id: 3,
+        position: 4 }.merge(associates) }
   end
 
-  def defaults 
-    { project_types_default_module: { project_type_id: 1, name: ["","wiki", "documents"] },
-      project_types_default_tracker: { project_type_id: 1, tracker_id: ["",1,2] } }
+  # def defaults 
+  #   { project_types_default_module: { project_type_id: 1, name: ["","wiki", "documents"] },
+  #     project_types_default_tracker: { project_type_id: 1, tracker_id: ["",1,2] } }
+  # end
+
+  def empty_modules
+     { enabled_module_names: [''] }
   end
 
   def after_create
-    { ->{ ProjectType.count } => 1, 
-      ->{ProjectTypesDefaultModule.count} => 2, 
-      ->{ProjectTypesDefaultTracker.count} => 2 }
+    { ->{ ProjectType.count } => 1#, 
+      #->{ProjectTypesDefaultModule.count} => 2, 
+      #->{ProjectTypesDefaultTracker.count} => 2 
+      }
   end
 
   def project_type_update_params
@@ -112,8 +131,9 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def after_delete
-    { ->{ ProjectType.count } => -1, 
-    ->{ProjectTypesDefaultModule.count} => -2, 
-    ->{ProjectTypesDefaultTracker.count} => -2 }
+    { ->{ ProjectType.count } => -1#, 
+    #->{ProjectTypesDefaultModule.count} => -2, 
+    #->{ProjectTypesDefaultTracker.count} => -2 
+    }
   end  
 end

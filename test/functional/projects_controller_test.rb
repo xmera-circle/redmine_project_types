@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin.
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
@@ -31,7 +33,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
            :attachments, :custom_fields, :custom_values, :time_entries,
            :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions,
            :project_types,
-           :projects_project_types
+           :enabled_project_type_modules   
 
   def setup
     log_user('admin', 'admin')
@@ -39,25 +41,28 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create project with project type' do
     assert_difference 'Project.count' do
-      post projects_url,
-           params: project_params(projects_project_type_attributes)
+      post projects_path, params: {
+        project: {
+          name: "blog",
+          description: "weblog",
+          homepage: 'http://weblog',
+          identifier: "blog",
+          custom_field_values:  {
+            '3': 'Beta'
+          },
+          is_public: true,
+          project_type_id: 1
+        }
+      }
     end
-    assert_redirected_to '/projects/blog/settings'
-    assert_equal 1, Project.last.projects_project_type.project_type_id
+    assert_redirected_to settings_project_path(id: 'blog')
+    assert_equal 1, Project.last.project_type_id
+    assert_not Project.last.is_public?
   end
 
   private
 
-  def project_params(associate)
-    { project:
-      { name: 'blog',
-        description: 'weblog',
-        homepage: 'http://weblog',
-        identifier: 'blog',
-        is_public: 1 }.merge(associate) }
-  end
-
-  def projects_project_type_attributes
-    { projects_project_type_attributes: { project_type_id: 1 } }
+  def project_attributes
+    { project: { name: 'New project with project type', project_type_id: 1 } }
   end
 end

@@ -1,4 +1,6 @@
 <%
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin.
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
@@ -23,17 +25,48 @@
 <div class="box tabular settings">
 <p><%= f.text_field :name, size: 30, :required => true %></p>
 <p><%= f.text_area :description, size: "5x5" %></p>
-<p><%= f.check_box :identifier, :label => :setting_sequential_project_identifiers %></p>
 <p><%= f.check_box :is_public %></p>
-<p><%= label(:project_types, :default_user_role_id,l(:label_project_type_new_project_user_role_ids))%><%= f.collection_select(:default_user_role_id, Role.find_all_givable.collect, :id, :name, :include_blank => "--- #{l(:actionview_instancetag_blank_option)} ---") %> </p>
+<p class='warning'><%= Setting.login_required? ? l(:text_project_is_public_non_member) : l(:text_project_is_public_anonymous) %></p>
+<p><%= label(:project_types, :default_member_role_id,l(:label_project_type_new_project_member_role_ids))%><%= f.collection_select(:default_member_role_id, Role.find_all_givable.collect, :id, :name, :include_blank => "--- #{l(:actionview_instancetag_blank_option)} ---") %> </p>
 <%= call_hook(:view_project_types_form_middle, :project => @project, :f => f) %>
 </div>
 
-<div class="box tabular settings" id="default-modules">
-<p><%= default_modules_multiselect(@project_type.id, Redmine::AccessControl.available_project_modules.collect {|m| [l_or_humanize(m, :prefix => "project_module_"), m.to_s] }, :label_project_type_default_modules ) %></p>
-</div>
+<% if @project_type.safe_attribute?('enabled_module_names') %>
+  <fieldset class="box tabular" id="default-modules">
+    <legend>
+      <%= toggle_checkboxes_link('#default-modules input[type="checkbox"]') %>
+      <%= l(:label_module_plural) %>
+    </legend> 
+    <%= modules_multiselect(@project_type.id, available_project_modules ) %>
+  </fieldset>
+<% end %>
 
-<div class="box tabular settings" id="default-trackers">
-<p><%= default_trackers_multiselect(@project_type.id, Tracker.sorted.collect {|t| [t.name, t.id] }, :label_project_type_default_trackers ) %></p>
+<% if @project_type.safe_attribute?('tracker_ids') %>
+  <fieldset class="box tabular" id="default-trackers">
+    <legend>
+      <%= toggle_checkboxes_link('#default-trackers input[type="checkbox"]') %>
+      <%= l(:label_tracker_plural) %>
+    </legend> 
+    <%= trackers_multiselect(@project_type.id, available_issue_trackers ) %>
+  </fieldset>
+<% end %>
 
-</div>
+<% unless @issue_custom_fields.empty? %>
+  <fieldset class="box tabular" id="project_type_issue_custom_fields">
+    <legend>
+      <%= toggle_checkboxes_link('#project_type_issue_custom_fields input[type=checkbox]:enabled') %>
+        <%=l(:label_issue_custom_field_plural)%>
+    </legend>
+  <% @issue_custom_fields.each do |custom_field| %>
+    <label class="floating">
+      <%= check_box_tag 'project_type[issue_custom_field_ids][]', custom_field.id, (@project_type.issue_custom_fields.include? custom_field),
+          :disabled => (custom_field.is_for_all? ? "disabled" : nil),
+          :id => nil %>
+      <%= custom_field_name_tag(custom_field) %>
+    </label>
+  <% end %>
+  <%= hidden_field_tag 'project_type[issue_custom_field_ids][]', '' %>
+  </fieldset>
+  <% end %>
+
+

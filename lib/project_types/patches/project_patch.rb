@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin..
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
@@ -16,111 +18,62 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-require_dependency 'project'
+# require_dependency 'project'
 
 module ProjectTypes
   module Patches
     # Patches project.rb from Redmine Core
     module ProjectPatch
       def self.prepended(base)
-        base.extend(ClassMethods) 
-        base.send(:prepend, InstanceMethods)
+        base.extend(ClassMethods)
+        base.include(InstanceMethods) 
         base.class_eval do
-          # Associatons
-          has_one :projects_project_type, dependent: :destroy
-          accepts_nested_attributes_for :projects_project_type
-          # Core Extensions (for class methods) --- no method defined yet
-          # self.singleton_class.send(ClassMethods)
+          include ProjectTypes::Switch::Modules
+                
+          after_initialize do |project|
+            enable_switch(:enabled_modules) if ProjectTypes.any?
+          end
+
+          after_commit do |project|
+            if ProjectTypes.any?
+              project.synchronise_modules 
+              project.synchronise_projects_trackers
+            end
+          end 
         end
       end
-      # Collects all class methods
-      module ClassMethods; end
 
-      # Collects all instance methods
+      module ClassMethods
+        ##
+        # This switch will be checked only once. That is, the condition needs
+        # to hold during the whole runtime. A change would not be considered.
+        #
+        # @note: Use this method interchangeable with the callback above!
+        #
+        def enable_switch(name)
+          send name
+        end
+      end
+
       module InstanceMethods
-        # Sets all the attributes, e.g., projects default modules,
-        # and trackers, w.r.t. the underlying project type
-        def project_types_default_values
-          if self.projects_project_type.present? 
-            if self.projects_project_type.project_type_id.present?
-              # Delete all multi choice attributes first
-              self.enabled_module_names = []
-              self.trackers = []
-              self.is_public = false
-              self.save
-                
-              # Set all attributes according the underlying project type
-              project_type_id = self.projects_project_type.project_type.id
-              project_type = ProjectType.find(project_type_id)
-              default = ProjectTypesDefaultTracker.where(project_type_id: project_type_id).pluck(:tracker_id).map(&:to_s)
-    
-              if project_type.is_public
-                self.is_public = true
-                self.save
-              end
-
-              self.enabled_module_names = ProjectTypesDefaultModule.where(project_type_id: project_type_id).pluck(:name)
-              
-              if default.is_a?(Array)
-                self.trackers = Tracker.where(:id => default.map(&:to_i)).sorted.to_a
-              else
-                self.trackers = Tracker.sorted.to_a
-              end
-            end
-          end
+        def enable_switch(name)
+          self.class.enable_switch(name)
         end
 
-        # Adds user as a project member with the default role of the project type
-        # Used when a non-admin user creates a project
+        ##
+        # Adds user as a project member with the default role of the project type.
+        # Used when a non-admin user creates a project.
+        #
+        # @override This is overwritten from Project#add_default_member 
+        #
         def add_default_member(user)
-          if self.projects_project_type.present? 
-            if self.projects_project_type.project_type_id.present?
-              project_type_id = self.projects_project_type.project_type.id
-              project_type = ProjectType.find(project_type_id)
-              role_id = project_type.default_user_role_id
-                  
-              role = Role.givable.find_by_id(role_id) || Role.givable.first
-              member = Member.new(:project => self, :principal => user, :roles => [role])
-              self.members << member
-              self.save
-              member
-            end
-          else
-            super(user)
-          end
-        end
+          return super(user) unless project_type_id.present?
 
-        def type
-          ProjectType.find(self.projects_project_type.project_type_id)
+          role = default_member_role
+          member = Member.new(:project => self, :principal => user, :roles => [role])
+          self.members << member
+          member
         end
-
-        def relations
-          ProjectsRelation.relations(self)
-        end
-
-        def relations?
-          ProjectsRelation.relations?(self)
-        end
-
-        def relations_down
-          ProjectsRelation.relations_down(self)
-        end
-
-        def relations_down?
-          ProjectsRelation.relations_down?(self)
-        end
-
-        def relations_up
-          ProjectsRelation.relations_up(self)
-        end
-
-        def relations_up?
-          ProjectsRelation.relations_up?(self)
-        end
-        
-        def project_type_id
-          self.projects_project_type.project_type_id unless self.projects_project_type.nil?
-        end        
       end
     end
   end

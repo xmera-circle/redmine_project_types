@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin.
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
@@ -19,4 +21,4 @@
 # Plugin's routes
 # See: http://guides.rubyonrails.org/routing.html
 
- resources :project_types, :project_types_default_modules, :projects_project_types
+ resources :project_types

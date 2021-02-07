@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin.
 #
 #  Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
@@ -29,20 +31,62 @@ class LayoutTest < Redmine::IntegrationTest
            :roles,
            :member_roles,
            :members,
-           :enabled_modules,
            :custom_fields, :custom_values,
            :custom_fields_projects, :custom_fields_trackers,
            :project_types,
-           :projects_project_types,
-           :project_types_default_trackers,
-           :project_types_default_modules
-  
-  def test_existence_of_project_type_field
+           :enabled_project_type_modules
+
+  def test_existence_of_project_type_field_in_any_project
+    log_user('jsmith', 'jsmith')
+    get settings_project_path(project(id: 2))
+    assert_response :success
+    assert_select '#project_project_type_id', 1
+  end
+
+  def test_existence_of_warning_for_public_projects
+    log_user('admin', 'admin')
+    get settings_project_path(project(id: 6, type: 2))
+    assert_response :success
+    assert_select '#project_project_type_id', 1
+    assert_select '.warning', 1
+  end
+
+  def test_visibility_of_issues_when_module_enabled
+    log_user('admin', 'admin')
+    get project_issues_path(project(id: 1, type: 1))
+    assert_response :success
+    assert_select '#main-menu', 1
+    assert_select '#main-menu a.issues', 1
+    assert_select 'a[href="/issues/1"]', :text => /Cannot print recipes/
+  end
+
+  def test_disabled_module_selection_in_project_settings
     log_user('jsmith', 'jsmith')
     project = Project.find(1)
     get settings_project_path(project)
     assert_response :success
-    assert_select '#project_projects_project_type_attributes_project_type_id', 1
+
+    assert_select '#project_modules', 0 #do
+    #  assert_select 'label.floating input[disabled=disabled]'
+    # end
+  end
+
+  def test_disabled_tracker_in_project_settings
+    log_user('jsmith', 'jsmith')
+    get settings_project_path(id: 1, tab: 'issues')
+    assert_response :success
+    assert_select '#project_trackers', 0 # do
+    #  assert_select 'label.floating input[disabled=disabled]'
+    # end
+  end
+
+  def test_disabled_custom_fields_in_project_settings
+    log_user('jsmith', 'jsmith')
+      get settings_project_path(id: 1, tab: 'issues')
+      assert_response :success
+      assert_select '#project_issue_custom_fields', 0 # do
+      #  assert_select 'label.floating input[disabled=disabled]'
+      # end
   end
 
   def test_non_existence_of_project_selection_for_custom_fields
@@ -52,32 +96,36 @@ class LayoutTest < Redmine::IntegrationTest
     assert_select '#custom_field_project_ids', 0
   end
 
-  def test_disabled_module_selection_in_project_settings
-    log_user('jsmith', 'jsmith')
-    project = Project.find(1)
-    get settings_project_path(project)
-    assert_response :success
 
-    assert_select '#project_modules' do
-      assert_select 'label.floating input[disabled=disabled]'
-    end
+  def test_non_existence_of_project_table_columns_in_issue_custom_field_index
+    log_user('admin', 'admin')
+    get custom_fields_path(tab: 'IssueCustomField')
+    assert_response :success
+    assert_select 'For all projects', 0
+    assert_select 'Used by', 0
   end
 
-  def test_disabled_tracker_in_project_settings
-    log_user('jsmith', 'jsmith')
-    get settings_project_path(id: 1, tab: 'issues')
+  def test_visibility_of_tracker_selector_in_issue_custom_fields
+    log_user('admin', 'admin')
+    get edit_custom_field_path(id: 1)
     assert_response :success
-    assert_select '#project_trackers' do
-      assert_select 'label.floating input[disabled=disabled]'
-    end
+    assert_select '#custom_field_tracker_ids', 1
   end
 
-  def test_disabled_custom_fields_in_project_settings
-    log_user('jsmith', 'jsmith')
-      get settings_project_path(id: 1, tab: 'issues')
-      assert_response :success
-      assert_select '#project_issue_custom_fields' do
-        assert_select 'label.floating input[disabled=disabled]'
-      end
+  def test_visibility_of_project_type_selector_in_issue_custom_fields
+    log_user('admin', 'admin')
+    get edit_custom_field_path(id: 1)
+    assert_response :success
+    assert_select '#custom_field_project_type_ids', 1
+  end
+
+
+  private
+
+  def project(id:, type: nil)
+    project = Project.find(id.to_i)
+    project.project_type_id = type
+    project.save
+    project
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin.
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
@@ -19,8 +21,19 @@
 # Target is redmines app/views/trackers/_form.html.erb file
 Deface::Override.new(
   virtual_path: 'trackers/_form',
-  name: 'disable-project-list',
-  replace: "erb[silent]:contains('if @projects.any?')",
-  text: "<% if @projects.any? && Rails.env == 'test' %>",
+  name: 'remove-project-list',
+  replace: "div.splitcontentright",
+  partial: "trackers/project_types",
+  disabled: ProjectTypes.missing?,
+  original: '570b247e7ac59c8c751282f89dd9011b7fe6f945',
+  namespaced: true
+)
+Deface::Override.new(
+  virtual_path: 'trackers/_form',
+  name: 'remove-custom-field-list',
+  remove: "erb[silent]:contains('if @issue_custom_fields.present?')",
+  closing_selector: "erb[silent]:contains('end')",
+  disabled: ProjectTypes.missing?,
+  original: 'f78ee40e91e9a5c255510544e02182d9c3da046d',
   namespaced: true
 )

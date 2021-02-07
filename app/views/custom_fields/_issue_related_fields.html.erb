@@ -1,4 +1,6 @@
 <%
+# frozen_string_literal: true
+#
 # Redmine plugin for xmera called Project Types Plugin.
 #
 # Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
@@ -20,4 +22,5 @@
 
 <% if @custom_field.is_a?(IssueCustomField) %>
   <%= render :partial => 'visibility_by_tracker_selector', :locals => { :f => f } %>
+  <%= render :partial => 'visibility_by_project_type_selector', :locals => { :f => f } %>
 <% end %>

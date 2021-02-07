@@ -1,0 +1,38 @@
+<%
+# frozen_string_literal: true
+#
+# Redmine plugin for xmera called Project Types Plugin.
+#
+# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
+%>
+
+<div class="splitcontentright">
+<% if ProjectType.any? %>
+  <fieldset class="box" id="tracker_project_ids">
+    <legend><%= toggle_checkboxes_link("#tracker_project_ids input[type=checkbox]") %><%= l(:label_project_type_plural) %></legend>
+  <% project_type_ids = @tracker.project_type_ids.to_a %>
+  <%= tag.ul class: 'projects root' do %>
+    <% ProjectType.all.each do |project_type| %>
+    <%= tag.li class: 'root' do %>
+     <%= content_tag('label', check_box_tag('tracker[project_type_ids][]', project_type.id, project_type_ids.include?(project_type.id), :id => nil) + ' ' + h(project_type.name)) %>
+     <% end %>
+   <% end %>
+  <% end %>
+<%= hidden_field_tag('tracker[project_type_ids][]', '', :id => nil) %>
+</fieldset>
+<% end %>
+</div>
