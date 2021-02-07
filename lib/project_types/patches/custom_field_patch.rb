@@ -27,9 +27,7 @@ module ProjectTypes
         base.class_eval do
           include ProjectTypes::Switch::IssueCustomFields
                 
-          after_initialize do |issue_custom_field|
-            enable_switch(:issue_custom_fields) if ProjectTypes.any?
-          end
+          enable_switch(:issue_custom_fields) if ProjectTypes.any?
         end
       end      
       

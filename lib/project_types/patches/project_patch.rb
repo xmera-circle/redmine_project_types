@@ -30,9 +30,7 @@ module ProjectTypes
         base.class_eval do
           include ProjectTypes::Switch::Modules
                 
-          after_initialize do |project|
-            enable_switch(:enabled_modules) if ProjectTypes.any?
-          end
+          enable_switch(:enabled_modules) if ProjectTypes.any?
 
           after_commit do |project|
             if ProjectTypes.any?
