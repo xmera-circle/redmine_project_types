@@ -25,6 +25,7 @@ $VERBOSE = nil
 require File.expand_path('../../../../test/test_helper', __FILE__)
 require_relative 'load_fixtures'
 require_relative 'authenticate_user'
+require_relative 'create_project_type'
 
 # The gem minitest-reporters gives color to the command-line
 require "minitest/reporters"

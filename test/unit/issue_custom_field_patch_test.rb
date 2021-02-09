@@ -29,6 +29,8 @@ class IssueCustomFieldPatchTest < ActiveSupport::TestCase
            :roles, 
            :users,
            :trackers,
+           :custom_fields,
+           :custom_values,
            :custom_fields_trackers,
            :custom_fields_projects,
            :project_types

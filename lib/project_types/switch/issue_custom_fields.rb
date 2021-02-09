@@ -41,6 +41,7 @@ module ProjectTypes
                                   after_remove: :remove_custom_fields_projects
 
           safe_attributes :project_type_ids
+
           delete_safe_attribute_names :project_ids
         end
       end
@@ -69,6 +70,7 @@ module ProjectTypes
           #
           def delete_safe_attribute_names(*args)
             return if args.empty?
+
             attributes = []
             @safe_attributes.collect do |elements, options|
               args.each do |name|

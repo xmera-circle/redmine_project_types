@@ -23,6 +23,7 @@ require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
   extend RedmineProjectTypes::LoadFixtures
   include RedmineProjectTypes::AuthenticateUser
+  include RedmineProjectTypes::CreateProjectType
   include Redmine::I18n
 
   fixtures :projects, 
@@ -46,21 +47,21 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
     log_user('admin', 'admin')
     get project_types_url
     assert_response :success
-    assert_template "index"
+    assert_template 'index'
   end
   
   test 'should get new' do
     log_user('admin', 'admin')
     get new_project_type_url
     assert_response :success
-    assert_template "new"
+    assert_template 'new'
   end
   
   test 'should get edit' do
     log_user('admin', 'admin')
     get edit_project_type_url(id: 1)
     assert_response :success
-    assert_template "edit"
+    assert_template 'edit'
   end
 
   test 'should redirect after create' do
@@ -68,7 +69,7 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
     assert_difference after_create do
       post project_types_url, params: project_type_create_params(empty_modules)
     end
-    assert_redirected_to(controller: "project_types", action: "index")
+    assert_redirected_to(controller: 'project_types', action: 'index')
   end
 
   test 'should update' do
@@ -79,16 +80,16 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'changed', type_to_change.name
   end
 
-  test "should delete when it has no projects" do
+  test 'should delete when it has no projects' do
     log_user('admin', 'admin')
     post project_types_url, params: project_type_create_params(empty_modules)      
     assert_difference after_delete do
       delete "/project_types/#{ProjectType.last.id}", params: nil
     end
-    assert_redirected_to(controller: "project_types", action: "index")
+    assert_redirected_to(controller: 'project_types', action: 'index')
   end
 
-  test "should not delete when it has projects" do
+  test 'should not delete when it has projects' do
     log_user('admin', 'admin')
     project = Project.find(1)
     project.project_type_id = 1
@@ -97,6 +98,25 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
       delete project_type_path(id: 1)
     end
     assert_equal 'Cannot delete project type due to related projects', flash[:error].to_s
+  end
+
+  test 'should save associates with create' do
+    log_user('admin', 'admin')
+    # Sometimes the creation fails here! Don't know why yet.
+    assert_difference after_create_with_associates do
+      post project_types_url, params: project_type_create_params(associates)
+    end
+    assert_redirected_to(controller: 'project_types', action: 'index')
+    
+  end
+
+  test 'should delete associates with delete' do
+    log_user('admin', 'admin')
+    post project_types_url, params: project_type_create_params(associates)
+    assert_difference after_delete_with_associates do
+      delete "/project_types/#{ProjectType.last.id}", params: nil
+    end
+    assert_redirected_to(controller: 'project_types', action: 'index')
   end
 
   private
@@ -110,20 +130,37 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
         position: 4 }.merge(associates) }
   end
 
-  # def defaults 
-  #   { project_types_default_module: { project_type_id: 1, name: ["","wiki", "documents"] },
-  #     project_types_default_tracker: { project_type_id: 1, tracker_id: ["",1,2] } }
-  # end
+  def associates
+    { enabled_module_names: ['', 'issue_tracking'],
+      tracker_ids: ['', 1,2],
+      issue_custom_field_ids: ['', 1, 2],
+      project_custom_field_ids: ['', 3] }
+  end
+
+  def after_create_with_associates
+    { ->{ ProjectType.count } => 1 , 
+      ->{ ProjectType.last.enabled_modules.count } => 1, 
+      ->{ ProjectType.last.trackers.count } => 2,
+      ->{ ProjectType.last.issue_custom_field_ids.count } => 2,
+      ->{ ProjectType.last.project_custom_field_ids.count } => 1
+      }
+  end
+
+  def after_delete_with_associates
+    { ->{ ProjectType.count } => -1, 
+      ->{ ProjectType.last.enabled_modules.count } => -1, 
+      ->{ ProjectType.last.trackers.count } => -2,
+      ->{ ProjectType.last.issue_custom_field_ids.count } => -2,
+      ->{ ProjectType.last.project_custom_field_ids.count } => -1
+    }
+  end 
 
   def empty_modules
      { enabled_module_names: [''] }
   end
 
   def after_create
-    { ->{ ProjectType.count } => 1#, 
-      #->{ProjectTypesDefaultModule.count} => 2, 
-      #->{ProjectTypesDefaultTracker.count} => 2 
-      }
+    { ->{ ProjectType.count } => 1 }
   end
 
   def project_type_update_params
@@ -131,9 +168,6 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def after_delete
-    { ->{ ProjectType.count } => -1#, 
-    #->{ProjectTypesDefaultModule.count} => -2, 
-    #->{ProjectTypesDefaultTracker.count} => -2 
-    }
+    { ->{ ProjectType.count } => -1 }
   end  
 end

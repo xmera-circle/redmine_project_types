@@ -27,7 +27,7 @@ module ProjectTypes
         base.class_eval do
           include ProjectTypes::Switch::Trackers
                 
-          enable_switch(:trackers) if ProjectTypes.any?
+          enable_switch(:trackers) #if ProjectTypes.any?
         end
       end
  

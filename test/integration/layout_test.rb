@@ -22,19 +22,18 @@ require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 require File.expand_path("#{File.dirname(__FILE__)}/../load_fixtures")
 
 class LayoutTest < Redmine::IntegrationTest
-  include Redmine::I18n
   include RedmineProjectTypes::LoadFixtures
+  include RedmineProjectTypes::AuthenticateUser
+  include RedmineProjectTypes::CreateProjectType
+  include Redmine::I18n
 
-  fixtures :projects, :trackers, :issue_statuses, :issues,
-           :enumerations, :users, :issue_categories,
-           :projects_trackers,
-           :roles,
-           :member_roles,
-           :members,
+  fixtures :projects,  :issue_statuses, :issues,
+           :enumerations, :issue_categories,
+           :projects_trackers, :trackers,
+           :roles, :member_roles, :members,:users, 
            :custom_fields, :custom_values,
            :custom_fields_projects, :custom_fields_trackers,
-           :project_types,
-           :enabled_project_type_modules
+           :project_types, :enabled_project_type_modules
 
   def test_existence_of_project_type_field_in_any_project
     log_user('jsmith', 'jsmith')
@@ -66,27 +65,21 @@ class LayoutTest < Redmine::IntegrationTest
     get settings_project_path(project)
     assert_response :success
 
-    assert_select '#project_modules', 0 #do
-    #  assert_select 'label.floating input[disabled=disabled]'
-    # end
+    assert_select '#project_modules', 0
   end
 
   def test_disabled_tracker_in_project_settings
     log_user('jsmith', 'jsmith')
     get settings_project_path(id: 1, tab: 'issues')
     assert_response :success
-    assert_select '#project_trackers', 0 # do
-    #  assert_select 'label.floating input[disabled=disabled]'
-    # end
+    assert_select '#project_trackers', 0
   end
 
   def test_disabled_custom_fields_in_project_settings
     log_user('jsmith', 'jsmith')
       get settings_project_path(id: 1, tab: 'issues')
       assert_response :success
-      assert_select '#project_issue_custom_fields', 0 # do
-      #  assert_select 'label.floating input[disabled=disabled]'
-      # end
+      assert_select '#project_issue_custom_fields', 0
   end
 
   def test_non_existence_of_project_selection_for_custom_fields
@@ -95,7 +88,6 @@ class LayoutTest < Redmine::IntegrationTest
     assert_response :success
     assert_select '#custom_field_project_ids', 0
   end
-
 
   def test_non_existence_of_project_table_columns_in_issue_custom_field_index
     log_user('admin', 'admin')
@@ -119,6 +111,29 @@ class LayoutTest < Redmine::IntegrationTest
     assert_select '#custom_field_project_type_ids', 1
   end
 
+  def test_visibility_of_project_type_selector_in_project_custom_fields
+    log_user('admin', 'admin')
+    get edit_custom_field_path(id: 3)
+    assert_response :success
+    assert_select '#custom_field_project_type_ids', 1
+  end
+
+  def test_disabled_project_custom_fields_in_project_settings
+    log_user('jsmith', 'jsmith')
+    get settings_project_path(id: 1)
+    assert_response :success
+    assert_select '#project_custom_field_values', 0
+  end
+
+  def test_visibility_project_custom_fields_in_project_settings
+    project(id: 1, type: 1)
+    ProjectCustomField.first.project_type_ids = [1]
+    log_user('jsmith', 'jsmith')
+    get settings_project_path(id: 1)
+    assert_response :success
+    assert_select '#project_custom_field_values_3', 1
+  end
+
 
   private
 
@@ -127,5 +142,9 @@ class LayoutTest < Redmine::IntegrationTest
     project.project_type_id = type
     project.save
     project
+  end
+
+  def associates
+    { project_custom_field_ids: ['', 3] }
   end
 end

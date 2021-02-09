@@ -20,14 +20,14 @@
 
 module ProjectTypes
   module Patches
-    module CustomFieldPatch
+    module IssueCustomFieldPatch
       def self.prepended(base)
         base.extend(ClassMethods)
         base.include(InstanceMethods) 
         base.class_eval do
           include ProjectTypes::Switch::IssueCustomFields
                 
-          enable_switch(:issue_custom_fields) if ProjectTypes.any?
+          enable_switch(:issue_custom_fields) #if ProjectTypes.any?
         end
       end      
       
@@ -48,7 +48,7 @@ end
 
 # Apply patch
 Rails.configuration.to_prepare do
-  unless CustomField.included_modules.include?(ProjectTypes::Patches::CustomFieldPatch)
-    CustomField.prepend(ProjectTypes::Patches::CustomFieldPatch)
+  unless IssueCustomField.included_modules.include?(ProjectTypes::Patches::IssueCustomFieldPatch)
+    IssueCustomField.prepend(ProjectTypes::Patches::IssueCustomFieldPatch)
   end
 end
