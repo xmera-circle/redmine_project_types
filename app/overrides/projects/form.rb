@@ -42,7 +42,7 @@ Deface::Override.new(
   virtual_path: 'projects/_form',
   name: 'replace-note-on-project-visibility',
   replace: "erb[loud]:contains('Setting.login_required?')",
-  text: "<% if @project.is_public? %><div class='warning'><%= Setting.login_required? ? l(:text_project_type_is_public_non_member) : l(:text_project_type_is_public_anonymous) %></div><% end %>",
+  text: "<% if @project.is_public? %><div class='warning'><%= Setting.login_required? ? l(:text_public_project_type_visibility_non_member) : l(:text_public_project_type_visibility_anonymous) %></div><% end %>",
   original: '5d02bcb05023a2d2af23178635bf027c36197068',
   disabled: ProjectTypes.missing?,
   namespaced: true

@@ -16,7 +16,7 @@ de:
   label_project_type_default_modules: Standardmäßig aktivierte Module für neue Projekte dieses Projekttypen
   label_project_type_default_trackers: Standardmäßig aktivierte Tracker für neue Projekte dieses Projekttypen
   label_project_type_sequential_project_identifiers: Fortlaufende Projektkennungen generieren
-  label_project_type_new_project_member_role_ids: Rolle, die einem Nicht-Administrator zugeordnet wird, der ein Projekt mit diesem Projekttyp erstellt
+  label_project_type_default_member_role: Rolle, die einem Nicht-Administrator zugeordnet wird, der ein Projekt mit diesem Projekttyp erstellt
   label_project_type: Projekttyp
   label_project_new_default_values: Neues Projekt - Standardwerte
   label_issue_custom_field_plural: Benutzerdefinierte Felder - Tickets
@@ -24,9 +24,8 @@ de:
   label_project_custom_fields: Projektdaten
   
   # Texts
-  text_select_project_modules: 'Aktivierte Module'
-  text_project_type_is_public_non_member: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind für alle angemeldeten Benutzer zugänglich!'
-  text_project_type_is_public_anonymous: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind ohne Anmeldung frei zugänglich!'
+  text_public_project_type_visibility_non_member: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind für alle angemeldeten Benutzer zugänglich!'
+  text_public_project_type_visibility_anonymous: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind ohne Anmeldung frei zugänglich!'
   
   # Error Messages
   error_unable_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, da es verbundene Projekte gibt.

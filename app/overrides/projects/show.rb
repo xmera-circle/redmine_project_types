@@ -24,7 +24,7 @@ Deface::Override.new(
   name: 'remove-custom-fields',
   remove: "erb[silent]:contains('render_custom_field_values(@project)')",
   closing_selector: "erb[silent]:contains('end')",
-  original: '',
+  original: 'dd9edde0aa32810f1effa2d612511ee12cfe5ee5',
   disabled: ProjectTypes.missing?,
   namespaced: true
 )
@@ -34,7 +34,7 @@ Deface::Override.new(
   name: 'add-custom-fields',
   insert_before: "erb[silent]:contains('if User.current.allowed_to?(:view_issues, @project)')",
   partial: 'projects/show_custom_fields',
-  original: '',
+  original: 'd736e71f5e5a2fd181033352638a9f58ad98d4c6',
   disabled: ProjectTypes.missing?,
   namespaced: true
 )

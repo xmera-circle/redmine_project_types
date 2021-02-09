@@ -16,7 +16,7 @@ en:
   label_project_type_default_modules: Default enabled modules for new projects of this project type
   label_project_type_default_trackers: Default trackers for new projects of this project type
   label_project_type_sequential_project_identifiers: Generate sequential project identifiers
-  label_project_type_new_project_user_role_ids: Role given to a non-admin user who creates a project of this project type
+  label_project_type_default_member_role: Role given to a non-admin user who creates a project of this project type
   label_project_type: Project Type
   label_project_new_default_values: New Project - Default Values
   label_issue_custom_field_plural: Custom Fields - Tickets
@@ -24,8 +24,9 @@ en:
   label_project_custom_fields: Project Data
 
   # Texts
-  text_select_project_modules: 'Activated modules'
-  
+  text_public_project_type_visibility_non_member: With this selected project type the project will become publicly available. All contents are readable for all logged users!
+  text_public_project_type_visibility_anonymous: With this selected project type the project will become publicly available. All contents are readable without login!
+
   # Error messages
   error_unable_delete_project_type: Unable to delete project type due to related projects.
   error_can_not_delete_project_type: Cannot delete project type due to related projects.
