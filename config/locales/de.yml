@@ -30,7 +30,14 @@ de:
   
   # Error Messages
   error_unable_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, da es verbundene Projekte gibt.
-  error_can_not_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, da es verbundene Projekte gibt
+  error_can_not_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, da es verbundene Projekte gibt.
+  activerecord:
+    errors:
+      models:
+        project:
+          attributes:
+            project_type:
+              error_project_type_missing: muss ausgewählt werden.
 
   # Fields
   field_project_type: Projekttyp

@@ -32,14 +32,15 @@ module ProjectTypes
           unless self.included_modules.include?(ProjectTypes::Switch::Trackers::InstanceMethods)
             send :include, ProjectTypes::Switch::Trackers::InstanceMethods    
           end
+          unless self.reflect_on_association(:project_types)
+            has_and_belongs_to_many :project_types,
+                                    autosave: true,
+                                    after_add: :add_projects_tracker,
+                                    after_remove: :remove_projects_tracker
 
-          has_and_belongs_to_many :project_types,
-                                   autosave: true,
-                                   after_add: :add_projects_tracker,
-                                   after_remove: :remove_projects_tracker
-
-          safe_attributes :project_type_ids
-          delete_safe_attribute_names :project_ids
+            safe_attributes :project_type_ids
+            delete_safe_attribute_names :project_ids
+          end
         end
       end
 

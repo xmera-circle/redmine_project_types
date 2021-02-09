@@ -83,6 +83,7 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
   test 'should delete when it has no projects' do
     log_user('admin', 'admin')
     post project_types_url, params: project_type_create_params(empty_modules)      
+    assert_redirected_to(controller: 'project_types', action: 'index')
     assert_difference after_delete do
       delete "/project_types/#{ProjectType.last.id}", params: nil
     end
@@ -97,22 +98,15 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'ProjectType.count' do
       delete project_type_path(id: 1)
     end
-    assert_equal 'Cannot delete project type due to related projects', flash[:error].to_s
+    assert_equal 'Cannot delete project type due to related projects.', flash[:error].to_s
   end
 
-  test 'should save associates with create' do
+  test 'should save and delete associates' do
     log_user('admin', 'admin')
-    # Sometimes the creation fails here! Don't know why yet.
     assert_difference after_create_with_associates do
       post project_types_url, params: project_type_create_params(associates)
     end
-    assert_redirected_to(controller: 'project_types', action: 'index')
-    
-  end
-
-  test 'should delete associates with delete' do
-    log_user('admin', 'admin')
-    post project_types_url, params: project_type_create_params(associates)
+    assert_redirected_to(controller: 'project_types', action: 'index') 
     assert_difference after_delete_with_associates do
       delete "/project_types/#{ProjectType.last.id}", params: nil
     end

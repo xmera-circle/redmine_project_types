@@ -5,12 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 3.0.0 - 2021-02-09
 
-## unreleased
+### Fixed
 
-## Deleted
+* 'already initialized constant' warnings for associations by introducing 
+a condition
+### Added
 
-* ActiveRecord Callbacks from patches
+* project_type_id for ProjectCustomField class in order to display them only if
+  assigned to the underlying project
+* validaton for Project#project_type_id
+
 ## 2.0.0 - 2021-02-07
 
 ### Changed
@@ -58,37 +64,29 @@ where it is expected to modify them in project types admin area
 * plugin id to redmine_project_types
 * copyright
 
-0.3.0 *2019-04-23*
-------------------
+## 0.3.0 - 2019-04-23
 
-    Custom Field Synchronization
-    Show Projects
-    Module List
-    Gemfile
-    Test Fixtures
-    Redmine 3.4.10 Support.
+### Added
 
-* [MODIFIED]: Fixes bug in ...
+* Redmine 3.4.10 support
+* test fixtures
+* module list
+* custom field synchronisation
 
-0.2.6 *2019-04-23*
-------------------
+## 0.2.6 - 2019-04-23
 
-    Custom Field Synchronization
-    Show Projects
-    Module List
-    Gemfile
-    Test Fixtures
-    Redmine 3.4.10 Support.
+### Fixed
 
-* [MODIFIED]: Fixes bug in ProjectTypesDefaultTracker#sync_project_custom_fields 
-              occuring when there are projects and project types but no assignment between them.
-* [MODIFIED]: Considers projects having no project type assigned so that no nil error occurs
-              when trying to show the project.
-* [MODIFIED]: Modifies module list which is displayed in project configuration to show always :roadmap
-              but :tickets only if plugin :issue_cloning is not installed.
-* [ADDED]:    Adds Gemfile with gem deface.
-* [MODIFIED]: Extends test fixtures.
+* bug in ProjectTypesDefaultTracker#sync_project_custom_fields occuring when 
+there are projects and project types but no assignment between them.
 
+### Added
+
+* validation for projects and its project type
+* a condition for project modules as displayed in project settings to show
+  :issue_tracking only if :issue_cloning module is not available
+* Gemfile with gem deface
+* test fixtures
 
 0.2.5 *2019-02-18*
 ------------------

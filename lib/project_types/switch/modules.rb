@@ -35,49 +35,52 @@ module ProjectTypes
           unless self.included_modules.include?(ProjectTypes::Switch::Modules::InstanceMethods)
             send :include, ProjectTypes::Switch::Modules::InstanceMethods    
           end
+          unless self.reflect_on_association(:project_type)
+            belongs_to :project_type
+          end
+          unless self.reflect_on_association(:project_type_modules)
+            ##
+            # Redirects the EnabledModule association to be dependent
+            # on the project_type_id instead of project_id.
+            # That is, all requests are transferred through the ProjectType model.
+            #
+            has_many :project_type_modules, 
+                      class_name: 'EnabledProjectTypeModule', 
+                      foreign_key: :project_type_id,
+                      through: :project_type,
+                      source: :enabled_modules
+    
+            ##
+            # Since ProjectType model is now responsible for some configuration
+            # the respective methods are delegated to it. Delegating to 
+            # enabled_modules will take place by super as defined below.
+            #
+            # @note: Some delegations might meanwhile be redundant since enabled
+            #   modules are synchronised. This should be checked and revised. The
+            #   respective methods which might be eliminated are in 
+            #   ProjectTypes::Association::Modules module.
+            #
+            delegate :is_public,
+                    :is_public?, 
+                    :default_member_role,
+                    :enabled_modules,
+                    :enabled_module_names,
+                    :enabled_module_names=,
+                    :enabled_module,
+                    :module_enabled?,
+                    :enable_module!,
+                    :disable_module!,
+                    :synchronise_modules,
+                    :synchronise_projects_trackers,
+                    :synchronise_custom_fields_projects,
+                    to: :project_type, 
+                    allow_nil: true
 
-          belongs_to :project_type
-          ##
-          # Redirects the EnabledModule association to be dependent
-          # on the project_type_id instead of project_id.
-          # That is, all requests are transferred through the ProjectType model.
-          #
-          has_many :project_type_modules, 
-                    class_name: 'EnabledProjectTypeModule', 
-                    foreign_key: :project_type_id,
-                    through: :project_type,
-                    source: :enabled_modules
-  
-          ##
-          # Since ProjectType model is now responsible for some configuration
-          # the respective methods are delegated to it. Delegating to 
-          # enabled_modules will take place by super as defined below.
-          #
-          # @note: Some delegations might meanwhile be redundant since enabled
-          #   modules are synchronised. This should be checked and revised. The
-          #   respective methods which might be eliminated are in 
-          #   ProjectTypes::Association::Modules module.
-          #
-          delegate :is_public,
-                  :is_public?, 
-                  :default_member_role,
-                  :enabled_modules,
-                  :enabled_module_names,
-                  :enabled_module_names=,
-                  :enabled_module,
-                  :module_enabled?,
-                  :enable_module!,
-                  :disable_module!,
-                  :synchronise_modules,
-                  :synchronise_projects_trackers,
-                  :synchronise_custom_fields_projects,
-                  to: :project_type, 
-                  allow_nil: true
-
-          safe_attributes :project_type_id
-          delete_safe_attribute_names :is_public, 
-                                      :enabled_module_names, 
-                                      :tracker_ids
+            safe_attributes :project_type_id
+            delete_safe_attribute_names :is_public, 
+                                        :enabled_module_names, 
+                                        :tracker_ids
+          end
         end
       end
 

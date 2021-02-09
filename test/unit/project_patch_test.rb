@@ -21,6 +21,7 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
 class ProjectPatchTest < ActiveSupport::TestCase
+  include Redmine::I18n
   extend RedmineProjectTypes::LoadFixtures
 
   fixtures :projects, 
@@ -34,16 +35,16 @@ class ProjectPatchTest < ActiveSupport::TestCase
     #
   end
 
-  # test 'should belong_to project_type' do
-  #   assert association = Project.reflect_on_association(:project_type)
-  #   assert_equal :project_type, association&.name
-  # end
+  test 'should belong_to project_type' do
+    assert association = Project.reflect_on_association(:project_type)
+    assert_equal :project_type, association&.name
+  end
 
-  # test 'should have many project_type_modules' do
-  #   assert association = Project.reflect_on_association(:project_type_modules)
-  #   assert_equal :project_type_modules, association.name
-  #   assert_equal module_options, association&.options
-  # end
+  test 'should have many project_type_modules' do
+    assert association = Project.reflect_on_association(:project_type_modules)
+    assert_equal :project_type_modules, association.name
+    assert_equal module_options, association&.options
+  end
 
   test "should respond to synchronize_modules" do
     assert project(id: 1).respond_to? :synchronise_modules
@@ -94,6 +95,14 @@ class ProjectPatchTest < ActiveSupport::TestCase
     end 
   end
 
+  test 'create new project without project type should fail' do
+    assert_no_difference 'Project.count' do
+      new_project = new_project_without_project_type('Third test project')
+      assert_not new_project.valid?
+      assert_equal ['needs to be selected.'], new_project.errors.messages[:project_type]
+    end 
+  end
+
   private
 
   def module_options
@@ -106,8 +115,17 @@ class ProjectPatchTest < ActiveSupport::TestCase
   def create_project_with_project_type(name, project_type_id)
     attrs = { name: name,
               identifier: name.downcase.gsub(' ', '_'),
-              project_type_id: project_type_id }
+              project_type_id: project_type_id,
+              tracker_ids: ['']}
     project = Project.create(attrs)
+    project
+  end
+
+  def new_project_without_project_type(name)
+    attrs = { name: name,
+              identifier: name.downcase.gsub(' ', '_'),
+              tracker_ids: ['']}
+    project = Project.new(attrs)
     project
   end
 

@@ -27,8 +27,15 @@ en:
   text_select_project_modules: 'Activated modules'
   
   # Error messages
-  error_unable_delete_project_type: Unable to delete project type due to related projects
-  error_can_not_delete_project_type: Cannot delete project type due to related projects
+  error_unable_delete_project_type: Unable to delete project type due to related projects.
+  error_can_not_delete_project_type: Cannot delete project type due to related projects.
+  activerecord:
+    errors:
+      models:
+        project:
+          attributes:
+            project_type:
+              error_project_type_missing: needs to be selected.
 
   # Fields
   field_project_type: Project Type
