@@ -1,4 +1,3 @@
-<%
 # frozen_string_literal: true
 #
 # Redmine plugin for xmera called Project Types Plugin.
@@ -17,14 +16,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
-%>
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-<%= error_messages_for 'projects' %>
 
-<p> <%= label(:project, :project_type_id,) do %>
-			<%= l(:label_project_type) %><span class="required"> *</span>
-		<% end %>
-	<%= f.collection_select(:project_type_id, ::ProjectType.all.collect, :id, :name, {include_blank: "--- #{l(:actionview_instancetag_blank_option)} ---"}) %> 
-</p>
-
+class ViewLayoutsBaseHtmlHeadHookListener < Redmine::Hook::ViewListener
+  render_on :view_layouts_base_html_head, 
+            partial: 'redmine_project_types/redmine_project_types_header_tags'
+end

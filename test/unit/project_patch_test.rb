@@ -108,7 +108,6 @@ class ProjectPatchTest < ActiveSupport::TestCase
               identifier: name.downcase.gsub(' ', '_'),
               project_type_id: project_type_id }
     project = Project.create(attrs)
-    project.save!
     project
   end
 

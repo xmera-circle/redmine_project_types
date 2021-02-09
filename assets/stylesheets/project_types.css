@@ -11,3 +11,12 @@
 table.list.project_types td.center {
   text-align: center;
 }
+/* Padding */
+.controller-custom_fields .splitcontentright div.pad-1 {
+	padding-bottom: 1rem;
+}
+/* Required Asterix */
+label.required:after {
+    content: " *";
+    color: red;
+}

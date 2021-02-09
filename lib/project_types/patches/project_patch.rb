@@ -30,14 +30,17 @@ module ProjectTypes
         base.class_eval do
           include ProjectTypes::Switch::Modules
                 
-          enable_switch(:enabled_modules) if ProjectTypes.any?
+          enable_switch(:enabled_modules) #if ProjectTypes.any?
 
           after_commit do |project|
             if ProjectTypes.any?
               project.synchronise_modules 
               project.synchronise_projects_trackers
             end
-          end 
+          end
+
+         #validates_associated :project_type
+         #validates_presence_of :project_type_id, if: ProjectTypes.any?
         end
       end
 
@@ -71,6 +74,22 @@ module ProjectTypes
           member = Member.new(:project => self, :principal => user, :roles => [role])
           self.members << member
           member
+        end
+
+        ##
+        # Selects only those custom_fields and its values when they are 
+        # assigned to the projects project_type.
+        #
+        # @override This is overwritten from Project#visible_custom_field_values
+        #
+        def visible_custom_field_values(user = nil)
+          return super(user) unless project_type_id.present?
+
+          user ||= User.current
+          custom_field_values.select do |value|
+            value.custom_field.project_types.include?(project_type) &&
+            value.custom_field.visible_by?(project, user)
+          end
         end
       end
     end

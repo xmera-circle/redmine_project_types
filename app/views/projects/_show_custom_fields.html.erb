@@ -1,0 +1,15 @@
+<% if @project.custom_field_values.any? {|value| value.custom_field.project_type_ids.include? @project.project_type_id } %>
+<div class="custom-fields box">
+  <h3 class="icon icon-custom-fields custom-fields"><%=l(:label_project_custom_fields)%></h3>
+  <table class="list">
+    <tbody>
+      <% render_custom_field_values(@project) do |custom_field, formatted| %>
+        <tr>
+          <td class='name'><%= custom_field.name %>:</td>
+          <td class='name'><%= formatted %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<% end %>

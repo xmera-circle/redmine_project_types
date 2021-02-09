@@ -1,10 +1,10 @@
 # German strings go here for Rails i18n
 de:
-  # Berechtigungen
+  # Permissions
   permission_view_project_types: Projekttypen ansehen
   permission_manage_project_types: Projekttypen verwalten
   
-  # Projektmodul
+  # Projektmodule
   project_module_project_types: Projekttypen
   
   # Labels
@@ -20,12 +20,17 @@ de:
   label_project_type: Projekttyp
   label_project_new_default_values: Neues Projekt - Standardwerte
   label_issue_custom_field_plural: Benutzerdefinierte Felder - Tickets
+  label_project_custom_field_plural: Benutzerdefinierte Felder - Projekte
+  label_project_custom_fields: Projektdaten
   
-  # Texte
+  # Texts
   text_select_project_modules: 'Aktivierte Module'
   text_project_type_is_public_non_member: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind für alle angemeldeten Benutzer zugänglich!'
   text_project_type_is_public_anonymous: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind ohne Anmeldung frei zugänglich!'
   
-  # Fehlermeldungen
+  # Error Messages
   error_unable_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, da es verbundene Projekte gibt.
   error_can_not_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, da es verbundene Projekte gibt
+
+  # Fields
+  field_project_type: Projekttyp

@@ -20,6 +20,8 @@ en:
   label_project_type: Project Type
   label_project_new_default_values: New Project - Default Values
   label_issue_custom_field_plural: Custom Fields - Tickets
+  label_project_custom_field_plural: Custom Fields - Projects
+  label_project_custom_fields: Project Data
 
   # Texts
   text_select_project_modules: 'Activated modules'
@@ -27,3 +29,6 @@ en:
   # Error messages
   error_unable_delete_project_type: Unable to delete project type due to related projects
   error_can_not_delete_project_type: Cannot delete project type due to related projects
+
+  # Fields
+  field_project_type: Project Type

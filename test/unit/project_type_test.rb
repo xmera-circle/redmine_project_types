@@ -91,6 +91,13 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert_equal issue_custom_field_association, association.options
   end
 
+  test "should have many project_custom_fields" do
+    association = ProjectType.reflect_on_association(:project_custom_fields)
+    assert_equal :project_custom_fields, association.name
+    assert_equal :has_and_belongs_to_many, association.macro
+    assert_equal project_custom_field_association, association.options
+  end
+
   private
 
   def project_type(id)
@@ -106,7 +113,8 @@ class ProjectTypeTest < ActiveSupport::TestCase
       position
       enabled_module_names
       tracker_ids
-      issue_custom_field_ids]
+      issue_custom_field_ids
+      project_custom_field_ids]
   end
 
   def enabled_modules_association
@@ -119,6 +127,12 @@ class ProjectTypeTest < ActiveSupport::TestCase
 
   def issue_custom_field_association
     Hash({ class_name: 'IssueCustomField', 
+           join_table: 'custom_fields_project_types',
+           association_foreign_key: 'custom_field_id'})
+  end
+
+  def project_custom_field_association
+    Hash({ class_name: 'ProjectCustomField', 
            join_table: 'custom_fields_project_types',
            association_foreign_key: 'custom_field_id'})
   end

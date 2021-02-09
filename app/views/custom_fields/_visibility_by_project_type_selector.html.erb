@@ -26,8 +26,7 @@
       <%= toggle_checkboxes_link("#custom_field_project_type_ids input[type=checkbox]:enabled") %>
       <%= l(:label_project_type_plural) %>
     </legend>
-    <p><%= f.check_box :is_for_all, :data => {:disables => '#custom_field_project_type_ids input'} %></p>
-
+   
     <div id="custom_field_project_type_ids">
       <% project_type_ids = @custom_field.project_type_ids.to_a %>
       <%= tag.ul class: 'projects root' do %>

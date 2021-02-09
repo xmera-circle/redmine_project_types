@@ -28,15 +28,24 @@ class ProjectType < ActiveRecord::Base
   include ProjectTypes::Synchronisation::IssueCustomFields
 
   has_many :projects, autosave: true
+
   has_many :enabled_modules,
            class_name: 'EnabledProjectTypeModule', 
            :dependent => :delete_all
+
   has_and_belongs_to_many :trackers, 
                           lambda {order(:position)},
                           autosave: true
+
   has_and_belongs_to_many :issue_custom_fields,
                           lambda {order(:position)},
                           class_name: 'IssueCustomField',
+                          join_table: "#{table_name_prefix}custom_fields_project_types#{table_name_suffix}",
+                          association_foreign_key: 'custom_field_id'
+
+  has_and_belongs_to_many :project_custom_fields,
+                          lambda {order(:position)},
+                          class_name: 'ProjectCustomField',
                           join_table: "#{table_name_prefix}custom_fields_project_types#{table_name_suffix}",
                           association_foreign_key: 'custom_field_id'
 
@@ -50,7 +59,7 @@ class ProjectType < ActiveRecord::Base
   end
 
   acts_as_positioned
-
+  
   scope :sorted, lambda { order(:position) }
 
   ##
@@ -87,7 +96,9 @@ class ProjectType < ActiveRecord::Base
     :position,
     :enabled_module_names,
     :tracker_ids,
-    :issue_custom_field_ids)
+    :issue_custom_field_ids,
+    :project_custom_field_ids
+  )
 
   def is_public?
     is_public

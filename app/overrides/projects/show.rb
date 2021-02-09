@@ -1,4 +1,3 @@
-<%
 # frozen_string_literal: true
 #
 # Redmine plugin for xmera called Project Types Plugin.
@@ -17,14 +16,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
-%>
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-<%= error_messages_for 'projects' %>
+# Target is Redmines app/views/projects/show.html.erb file
+Deface::Override.new(
+  virtual_path: 'projects/show',
+  name: 'remove-custom-fields',
+  remove: "erb[silent]:contains('render_custom_field_values(@project)')",
+  closing_selector: "erb[silent]:contains('end')",
+  original: '',
+  disabled: ProjectTypes.missing?,
+  namespaced: true
+)
 
-<p> <%= label(:project, :project_type_id,) do %>
-			<%= l(:label_project_type) %><span class="required"> *</span>
-		<% end %>
-	<%= f.collection_select(:project_type_id, ::ProjectType.all.collect, :id, :name, {include_blank: "--- #{l(:actionview_instancetag_blank_option)} ---"}) %> 
-</p>
+Deface::Override.new(
+  virtual_path: 'projects/show',
+  name: 'add-custom-fields',
+  insert_before: "erb[silent]:contains('if User.current.allowed_to?(:view_issues, @project)')",
+  partial: 'projects/show_custom_fields',
+  original: '',
+  disabled: ProjectTypes.missing?,
+  namespaced: true
+)
 
