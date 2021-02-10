@@ -26,7 +26,7 @@ module ProjectTypes
     module ProjectPatch
       def self.prepended(base)
         base.extend(ClassMethods)
-        base.include(InstanceMethods) 
+        base.prepend(InstanceMethods) 
         base.class_eval do
           include Redmine::I18n
           include ProjectTypes::Switch::Modules
@@ -85,7 +85,7 @@ module ProjectTypes
         # @override This is overwritten from Project#visible_custom_field_values
         #
         def visible_custom_field_values(user = nil)
-          return super(user) unless ProjectTypes.any? || project_type_id.present?
+          return super(user) unless project_type_id.present? || ProjectTypes.any?
 
           user ||= User.current
           custom_field_values.select do |value|

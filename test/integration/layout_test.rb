@@ -56,7 +56,7 @@ class LayoutTest < Redmine::IntegrationTest
     assert_response :success
     assert_select '#main-menu', 1
     assert_select '#main-menu a.issues', 1
-    assert_select 'a[href="/issues/1"]', :text => /Cannot print recipes/
+    assert_select 'a[href="/issues/1"]', text: /Cannot print recipes/
   end
 
   def test_disabled_module_selection_in_project_settings
@@ -126,6 +126,12 @@ class LayoutTest < Redmine::IntegrationTest
   end
 
   def test_visibility_project_custom_fields_in_project_settings
+    f1 = ProjectCustomField.generate!(field_format: 'list', 
+                                      possible_values: %w(Foo Bar),
+                                      multiple: true)
+    f1.project_type_ids = [2]
+    assert_equal [2], f1.project_type_ids
+
     project(id: 1, type: 1)
     ProjectCustomField.first.project_type_ids = [1]
     log_user('jsmith', 'jsmith')
