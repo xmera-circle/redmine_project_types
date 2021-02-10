@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -18,8 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 class ViewProjectsFormTopHookListener < Redmine::Hook::ViewListener
-  render_on :view_projects_form_top, 
+  render_on :view_projects_form_top,
             partial: 'hooks/view_projects_form_top'
 end

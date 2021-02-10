@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 #
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -32,7 +33,7 @@ module ProjectTypes
       # or nil if the module is not enabled for the project
       def enabled_module(name)
         name = name.to_s
-        enabled_modules.detect {|m| m.name == name}
+        enabled_modules.detect { |m| m.name == name }
       end
 
       # Return true if the module with the given name is enabled
@@ -41,9 +42,13 @@ module ProjectTypes
       end
 
       def enabled_module_names=(module_names)
-        if module_names && module_names.is_a?(Array)
+        if module_names.is_a?(Array)
           module_names = module_names.collect(&:to_s).reject(&:blank?)
-          self.enabled_modules = module_names.collect {|name| enabled_modules.detect {|mod| mod.name == name} || EnabledProjectTypeModule.new(name: name)}
+          self.enabled_modules = module_names.collect do |name|
+            enabled_modules.detect do |mod|
+              mod.name == name
+            end || EnabledProjectTypeModule.new(name: name)
+          end
         else
           enabled_modules.clear
         end
@@ -60,7 +65,7 @@ module ProjectTypes
       #   project_type.enable_module!(:issue_tracking)
       #   project_type.enable_module!("issue_tracking")
       def enable_module!(name)
-        enabled_modules << EnabledProjectTypeModule.new(:name => name.to_s) unless module_enabled?(name)
+        enabled_modules << EnabledProjectTypeModule.new(name: name.to_s) unless module_enabled?(name)
       end
 
       # Disable a module if it exists
@@ -70,7 +75,7 @@ module ProjectTypes
       #   project_type.disable_module!("issue_tracking")
       #   project_type.disable_module!(project_type.enabled_modules.first)
       def disable_module!(target)
-        target = enabled_modules.detect{|mod| target.to_s == mod.name} unless enabled_modules.include?(target)
+        target = enabled_modules.detect { |mod| target.to_s == mod.name } unless enabled_modules.include?(target)
         target.destroy unless target.blank?
       end
     end

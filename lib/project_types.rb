@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -55,7 +56,7 @@ module ProjectTypes
 
     def any?
       return false unless table_found?
-          
+
       ProjectType.any?
     end
 

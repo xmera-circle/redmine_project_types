@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -19,45 +20,47 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 module ProjectTypesHelper
- def modules_multiselect(project_type_id, choices, options={})
-  hidden_field_tag("project_type[enabled_module_names][]", '').html_safe +
-  choices.collect do |choice|
-    text, value = (choice.is_a?(Array) ? choice : [choice, choice])
-    content_tag(
-      'label',
-      check_box_tag(
-        "project_type[enabled_module_names][]",
-        value,
-        @project_type.module_enabled?(value),
-        :id => nil
-      ) + text.to_s,
-      :class => 'floating'
-    )
-    end.join.html_safe
+  def modules_multiselect(_project_type_id, choices, _options = {})
+    hidden_field_tag('project_type[enabled_module_names][]', '').html_safe +
+      choices.collect do |choice|
+        text, value = (choice.is_a?(Array) ? choice : [choice, choice])
+        content_tag(
+          'label',
+          check_box_tag(
+            'project_type[enabled_module_names][]',
+            value,
+            @project_type.module_enabled?(value),
+            id: nil
+          ) + text.to_s,
+          class: 'floating'
+        )
+      end.join.html_safe
   end
 
   def available_project_modules
-    Redmine::AccessControl.available_project_modules.collect {|m| [l_or_humanize(m, :prefix => "project_module_"), m.to_s] }
+    Redmine::AccessControl.available_project_modules.collect do |m|
+      [l_or_humanize(m, prefix: 'project_module_'), m.to_s]
+    end
   end
-  
-  def trackers_multiselect(project_type_id, choices, options={})
-    hidden_field_tag("project_type[tracker_ids][]", '').html_safe +
-    choices.collect do |choice|
-      text, value = (choice.is_a?(Array) ? choice : [choice, choice])
-      content_tag(
-        'label',
-        check_box_tag(
-          "project_type[tracker_ids][]",
-          value,
-          @project_type.tracker_assigned?(value),
-          :id => nil
+
+  def trackers_multiselect(_project_type_id, choices, _options = {})
+    hidden_field_tag('project_type[tracker_ids][]', '').html_safe +
+      choices.collect do |choice|
+        text, value = (choice.is_a?(Array) ? choice : [choice, choice])
+        content_tag(
+          'label',
+          check_box_tag(
+            'project_type[tracker_ids][]',
+            value,
+            @project_type.tracker_assigned?(value),
+            id: nil
           ) + text.to_s,
-        :class => 'floating'
+          class: 'floating'
         )
-    end.join.html_safe
+      end.join.html_safe
   end
 
   def available_issue_trackers
-    Tracker.sorted.collect {|t| [t.name, t.id.to_s]}
+    Tracker.sorted.collect { |t| [t.name, t.id.to_s] }
   end
 end

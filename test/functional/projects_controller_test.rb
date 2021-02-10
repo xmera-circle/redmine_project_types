@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -33,7 +34,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
            :attachments, :custom_fields, :custom_values, :time_entries,
            :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions,
            :project_types,
-           :enabled_project_type_modules   
+           :enabled_project_type_modules
 
   def setup
     log_user('admin', 'admin')
@@ -43,11 +44,11 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'Project.count' do
       post projects_path, params: {
         project: {
-          name: "blog",
-          description: "weblog",
+          name: 'blog',
+          description: 'weblog',
           homepage: 'http://weblog',
-          identifier: "blog",
-          custom_field_values:  {
+          identifier: 'blog',
+          custom_field_values: {
             '3': 'Beta'
           },
           is_public: true,

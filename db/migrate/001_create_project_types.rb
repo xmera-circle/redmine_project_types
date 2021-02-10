@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -27,10 +28,8 @@ class CreateProjectTypes < ActiveRecord::Migration[4.2]
       end
     end
   end
-  
+
   def self.down
-    if table_exists?(:project_types)
-      drop_table :project_types
-    end
+    drop_table :project_types if table_exists?(:project_types)
   end
 end

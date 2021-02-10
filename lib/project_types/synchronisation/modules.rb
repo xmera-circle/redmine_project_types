@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -21,18 +22,18 @@
 module ProjectTypes
   module Synchronisation
     ##
-    # The :enabled_modules table will be synchronized with the 
+    # The :enabled_modules table will be synchronized with the
     # :enabled_project_type_modules table.
     #
-    # This is necessary since there are some methods in the core that 
+    # This is necessary since there are some methods in the core that
     # refer directly to EnabledModule class:
     #
     #  - lib/redmine.rb: Redmine::MenuManager.map :application_menu do |menu| etc.
-    #  - app/model/project.rb: 
+    #  - app/model/project.rb:
     #     - Project#rolled_up_trackers_base_scope
     #     - Project.allowed_to_condition
     #
-    # These methods would not reached via delegation as done for other related 
+    # These methods would not reached via delegation as done for other related
     # methods which are defined in ProjectTypes::Association::Modules.
     #
     module Modules

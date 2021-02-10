@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -24,16 +25,14 @@ class ProjectPatchTest < ActiveSupport::TestCase
   include Redmine::I18n
   extend RedmineProjectTypes::LoadFixtures
 
-  fixtures :projects, 
-           :members, 
-           :member_roles, 
-           :roles, 
-           :users, 
+  fixtures :projects,
+           :members,
+           :member_roles,
+           :roles,
+           :users,
            :project_types
-   
-  def setup
-    #
-  end
+
+  def setup; end
 
   test 'should belong_to project_type' do
     assert association = Project.reflect_on_association(:project_type)
@@ -46,7 +45,7 @@ class ProjectPatchTest < ActiveSupport::TestCase
     assert_equal module_options, association&.options
   end
 
-  test "should respond to synchronize_modules" do
+  test 'should respond to synchronize_modules' do
     assert project(id: 1).respond_to? :synchronise_modules
   end
 
@@ -65,13 +64,13 @@ class ProjectPatchTest < ActiveSupport::TestCase
   test 'should not have safe tracker_ids attribute' do
     assert_not project(id: 1).safe_attribute? 'tracker_ids'
   end
-    
+
   test 'projects without project type should be nil' do
     assert !project(id: 6).project_type_id
   end
 
   test 'default_member_role should not exist without project type' do
-    assert_equal project_type(1).default_member_role, 
+    assert_equal project_type(1).default_member_role,
                  project(id: 1, type_id: 1).default_member_role
     assert_not project(id: 2).default_member_role
   end
@@ -80,7 +79,7 @@ class ProjectPatchTest < ActiveSupport::TestCase
     new_project = create_project_with_project_type('First test project', 2)
     assert_equal Setting.default_projects_modules, new_project.enabled_module_names
     project_type(2).disable_module! :wiki
-    assert_equal Setting.default_projects_modules-[:wiki], new_project.enabled_module_names
+    assert_equal Setting.default_projects_modules - [:wiki], new_project.enabled_module_names
   end
 
   test 'should create wiki when wiki module enabled first time' do
@@ -92,7 +91,7 @@ class ProjectPatchTest < ActiveSupport::TestCase
     assert_difference 'Project.count' do
       new_project = create_project_with_project_type('Second test project', 3)
       assert_equal 3, new_project.project_type_id
-    end 
+    end
   end
 
   test 'create new project without project type should fail' do
@@ -100,7 +99,7 @@ class ProjectPatchTest < ActiveSupport::TestCase
       new_project = new_project_without_project_type('Third test project')
       assert_not new_project.valid?
       assert_equal ['needs to be selected.'], new_project.errors.messages[:project_type]
-    end 
+    end
   end
 
   private
@@ -109,24 +108,22 @@ class ProjectPatchTest < ActiveSupport::TestCase
     Hash({ class_name: 'EnabledProjectTypeModule',
            foreign_key: :project_type_id,
            through: :project_type,
-           source: :enabled_modules})
+           source: :enabled_modules })
   end
 
   def create_project_with_project_type(name, project_type_id)
     attrs = { name: name,
               identifier: name.downcase.gsub(' ', '_'),
               project_type_id: project_type_id,
-              tracker_ids: ['']}
-    project = Project.create(attrs)
-    project
+              tracker_ids: [''] }
+    Project.create(attrs)
   end
 
   def new_project_without_project_type(name)
     attrs = { name: name,
               identifier: name.downcase.gsub(' ', '_'),
-              tracker_ids: ['']}
-    project = Project.new(attrs)
-    project
+              tracker_ids: [''] }
+    Project.new(attrs)
   end
 
   def project(id:, type_id: nil)
@@ -137,6 +134,6 @@ class ProjectPatchTest < ActiveSupport::TestCase
   end
 
   def project_type(id)
-     ProjectType.find(id.to_i)
+    ProjectType.find(id.to_i)
   end
 end

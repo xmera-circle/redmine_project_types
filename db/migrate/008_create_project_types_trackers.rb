@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -24,7 +25,8 @@ class CreateProjectTypesTrackers < ActiveRecord::Migration[4.2]
       t.column :project_type_id, :integer, default: 0, null: false
       t.column :tracker_id, :integer, default: 0, null: false
     end
-    add_index :project_types_trackers, [:project_type_id, :tracker_id], name: :project_types_trackers_unique, unique: true
+    add_index :project_types_trackers, %i[project_type_id tracker_id], name: :project_types_trackers_unique,
+                                                                       unique: true
   end
 
   def self.down

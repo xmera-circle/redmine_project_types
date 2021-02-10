@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -24,8 +25,8 @@ class CreateCustomFieldsProjectTypes < ActiveRecord::Migration[4.2]
       t.column :custom_field_id, :integer, default: 0, null: false
       t.column :project_type_id, :integer, default: 0, null: false
     end
-    add_index :custom_fields_project_types, 
-              [:custom_field_id, :project_type_id], 
+    add_index :custom_fields_project_types,
+              %i[custom_field_id project_type_id],
               unique: true,
               name: :index_cf_pt_on_cf_id_and_pt_id
   end

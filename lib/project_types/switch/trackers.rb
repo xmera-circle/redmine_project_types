@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 #
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -29,10 +30,10 @@ module ProjectTypes
 
       module ClassMethods
         def trackers
-          unless self.included_modules.include?(ProjectTypes::Switch::Trackers::InstanceMethods)
-            send :include, ProjectTypes::Switch::Trackers::InstanceMethods    
+          unless included_modules.include?(ProjectTypes::Switch::Trackers::InstanceMethods)
+            send :include, ProjectTypes::Switch::Trackers::InstanceMethods
           end
-          unless self.reflect_on_association(:project_types)
+          unless reflect_on_association(:project_types)
             has_and_belongs_to_many :project_types,
                                     autosave: true,
                                     after_add: :add_projects_tracker,
@@ -50,11 +51,11 @@ module ProjectTypes
         end
 
         def add_projects_tracker(project_type)
-          project_type. synchronise_projects_tracker(self)
+          project_type.synchronise_projects_tracker(self)
         end
 
         def remove_projects_tracker(project_type)
-          project_type. synchronise_projects_tracker(self)
+          project_type.synchronise_projects_tracker(self)
         end
 
         module ClassMethods
@@ -68,6 +69,7 @@ module ProjectTypes
           #
           def delete_safe_attribute_names(*args)
             return if args.empty?
+
             attributes = []
             @safe_attributes.collect do |elements, options|
               args.each do |name|

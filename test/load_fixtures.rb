@@ -1,4 +1,6 @@
-module RedmineProjectTypes 
+# frozen_string_literal: true
+
+module RedmineProjectTypes
   ##
   # Redmine cannot load plugin fixtures by default.
   # This module loads first plugin fixtures and then Redmine fixtures

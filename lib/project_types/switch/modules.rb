@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 #
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -29,56 +30,54 @@ module ProjectTypes
 
       module ClassMethods
         def enabled_modules
-          unless self.included_modules.include?(ProjectTypes::Switch::Modules::Association)
+          unless included_modules.include?(ProjectTypes::Switch::Modules::Association)
             send :prepend, ProjectTypes::Switch::Modules::Association
           end
-          unless self.included_modules.include?(ProjectTypes::Switch::Modules::InstanceMethods)
-            send :include, ProjectTypes::Switch::Modules::InstanceMethods    
+          unless included_modules.include?(ProjectTypes::Switch::Modules::InstanceMethods)
+            send :include, ProjectTypes::Switch::Modules::InstanceMethods
           end
-          unless self.reflect_on_association(:project_type)
-            belongs_to :project_type
-          end
-          unless self.reflect_on_association(:project_type_modules)
+          belongs_to :project_type unless reflect_on_association(:project_type)
+          unless reflect_on_association(:project_type_modules)
             ##
             # Redirects the EnabledModule association to be dependent
             # on the project_type_id instead of project_id.
             # That is, all requests are transferred through the ProjectType model.
             #
-            has_many :project_type_modules, 
-                      class_name: 'EnabledProjectTypeModule', 
-                      foreign_key: :project_type_id,
-                      through: :project_type,
-                      source: :enabled_modules
-    
+            has_many :project_type_modules,
+                     class_name: 'EnabledProjectTypeModule',
+                     foreign_key: :project_type_id,
+                     through: :project_type,
+                     source: :enabled_modules
+
             ##
             # Since ProjectType model is now responsible for some configuration
-            # the respective methods are delegated to it. Delegating to 
+            # the respective methods are delegated to it. Delegating to
             # enabled_modules will take place by super as defined below.
             #
             # @note: Some delegations might meanwhile be redundant since enabled
             #   modules are synchronised. This should be checked and revised. The
-            #   respective methods which might be eliminated are in 
+            #   respective methods which might be eliminated are in
             #   ProjectTypes::Association::Modules module.
             #
             delegate :is_public,
-                    :is_public?, 
-                    :default_member_role,
-                    :enabled_modules,
-                    :enabled_module_names,
-                    :enabled_module_names=,
-                    :enabled_module,
-                    :module_enabled?,
-                    :enable_module!,
-                    :disable_module!,
-                    :synchronise_modules,
-                    :synchronise_projects_trackers,
-                    :synchronise_custom_fields_projects,
-                    to: :project_type, 
-                    allow_nil: true
+                     :is_public?,
+                     :default_member_role,
+                     :enabled_modules,
+                     :enabled_module_names,
+                     :enabled_module_names=,
+                     :enabled_module,
+                     :module_enabled?,
+                     :enable_module!,
+                     :disable_module!,
+                     :synchronise_modules,
+                     :synchronise_projects_trackers,
+                     :synchronise_custom_fields_projects,
+                     to: :project_type,
+                     allow_nil: true
 
             safe_attributes :project_type_id
-            delete_safe_attribute_names :is_public, 
-                                        :enabled_module_names, 
+            delete_safe_attribute_names :is_public,
+                                        :enabled_module_names,
                                         :tracker_ids
           end
         end
@@ -86,20 +85,20 @@ module ProjectTypes
 
       ##
       # This module overrides Project#enabled_modules, where super refers to
-      # the original method which again is delegated to 
+      # the original method which again is delegated to
       # ProjectType#enabled_modules as defined above.
       #
       module Association
         ##
-        # If there is a project_type_id the association is redirected via 
+        # If there is a project_type_id the association is redirected via
         # ProjectType model to get the enabled modules. If no project_type_id
-        # exist, the linkage is made manually what gives an empty 
+        # exist, the linkage is made manually what gives an empty
         # ActiveRecord::Association::CollectionProxy instead of nil
-        # 
+        #
         # @return [ActiveRecord::Association::CollectionProxy]
         #
         def enabled_modules
-          project_type_id ? super : self.project_type_modules
+          project_type_id ? super : project_type_modules
         end
       end
 
@@ -119,6 +118,7 @@ module ProjectTypes
           #
           def delete_safe_attribute_names(*args)
             return if args.empty?
+
             attributes = []
             @safe_attributes.collect do |elements, options|
               args.each do |name|

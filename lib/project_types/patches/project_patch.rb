@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin..
 #
@@ -26,23 +27,22 @@ module ProjectTypes
     module ProjectPatch
       def self.prepended(base)
         base.extend(ClassMethods)
-        base.prepend(InstanceMethods) 
+        base.prepend(InstanceMethods)
         base.class_eval do
           include Redmine::I18n
           include ProjectTypes::Switch::Modules
-          after_initialize do         
+          after_initialize do
             enable_switch(:enabled_modules) if ProjectTypes.any?
           end
 
           after_commit do |project|
             if ProjectTypes.any?
-              project.synchronise_modules 
+              project.synchronise_modules
               project.synchronise_projects_trackers
             end
           end
 
           validate :presence_of_project_type_id
-
         end
       end
 
@@ -67,19 +67,19 @@ module ProjectTypes
         # Adds user as a project member with the default role of the project type.
         # Used when a non-admin user creates a project.
         #
-        # @override This is overwritten from Project#add_default_member 
+        # @override This is overwritten from Project#add_default_member
         #
         def add_default_member(user)
           return super(user) unless project_type_id.present?
 
           role = default_member_role
-          member = Member.new(:project => self, :principal => user, :roles => [role])
-          self.members << member
+          member = Member.new(project: self, principal: user, roles: [role])
+          members << member
           member
         end
 
         ##
-        # Selects only those custom_fields and its values when they are 
+        # Selects only those custom_fields and its values when they are
         # assigned to the projects project_type.
         #
         # @override This is overwritten from Project#visible_custom_field_values
@@ -90,7 +90,7 @@ module ProjectTypes
           user ||= User.current
           custom_field_values.select do |value|
             value.custom_field.project_types.include?(project_type) &&
-            value.custom_field.visible_by?(project, user)
+              value.custom_field.visible_by?(project, user)
           end
         end
 
@@ -107,6 +107,6 @@ end
 # Apply patch
 Rails.configuration.to_prepare do
   unless Project.included_modules.include?(ProjectTypes::Patches::ProjectPatch)
-    Project.send(:prepend, ProjectTypes::Patches::ProjectPatch)
+    Project.prepend ProjectTypes::Patches::ProjectPatch
   end
 end

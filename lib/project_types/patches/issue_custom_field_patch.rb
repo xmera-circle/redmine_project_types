@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -23,15 +24,15 @@ module ProjectTypes
     module IssueCustomFieldPatch
       def self.prepended(base)
         base.extend(ClassMethods)
-        base.include(InstanceMethods) 
+        base.include(InstanceMethods)
         base.class_eval do
           include ProjectTypes::Switch::IssueCustomFields
-          after_initialize do    
+          after_initialize do
             enable_switch(:issue_custom_fields) if ProjectTypes.any?
           end
         end
-      end      
-      
+      end
+
       module ClassMethods
         def enable_switch(name)
           send name
@@ -41,10 +42,10 @@ module ProjectTypes
       module InstanceMethods
         def enable_switch(name)
           self.class.enable_switch(name)
-        end  
+        end
       end
     end
-  end   
+  end
 end
 
 # Apply patch

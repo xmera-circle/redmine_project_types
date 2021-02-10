@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -23,7 +24,7 @@ Deface::Override.new(
   virtual_path: 'projects/_form',
   name: 'add-project-type-selection',
   insert_top: 'div.box.tabular',
-  text: "<%= call_hook(:view_projects_form_top, :project => @project, :f => f) %>",
+  text: '<%= call_hook(:view_projects_form_top, :project => @project, :f => f) %>',
   original: '5d0124c1829499ebafc294594acf1f585faf0938',
   disabled: ProjectTypes.missing?,
   namespaced: true

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -21,7 +22,7 @@
 module ProjectTypes
   module Synchronisation
     ##
-    # The :custom_fields_projects table will be synchronized with the 
+    # The :custom_fields_projects table will be synchronized with the
     # :custom_fields_project_types table.
     #
     # This is necessary in order to use the design of the core application,

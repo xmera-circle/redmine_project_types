@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -23,17 +24,15 @@ require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 class TrackerPatchTest < ActiveSupport::TestCase
   extend RedmineProjectTypes::LoadFixtures
 
-  fixtures :projects, 
-           :members, 
-           :member_roles, 
-           :roles, 
+  fixtures :projects,
+           :members,
+           :member_roles,
+           :roles,
            :users,
            :trackers,
            :project_types
-   
-  def setup
-    #
-  end
+
+  def setup; end
 
   # test 'should have and belong to many project_types' do
   #   assert association = Tracker.reflect_on_association(:project_types)
@@ -58,7 +57,6 @@ class TrackerPatchTest < ActiveSupport::TestCase
     assert tracker(id: 1).respond_to? :remove_projects_tracker
   end
 
-  
   private
 
   def tracker(id:)

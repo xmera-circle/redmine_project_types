@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -27,10 +28,10 @@ class LayoutTest < Redmine::IntegrationTest
   include RedmineProjectTypes::CreateProjectType
   include Redmine::I18n
 
-  fixtures :projects,  :issue_statuses, :issues,
+  fixtures :projects, :issue_statuses, :issues,
            :enumerations, :issue_categories,
            :projects_trackers, :trackers,
-           :roles, :member_roles, :members,:users, 
+           :roles, :member_roles, :members, :users,
            :custom_fields, :custom_values,
            :custom_fields_projects, :custom_fields_trackers,
            :project_types, :enabled_project_type_modules
@@ -77,9 +78,9 @@ class LayoutTest < Redmine::IntegrationTest
 
   def test_disabled_custom_fields_in_project_settings
     log_user('jsmith', 'jsmith')
-      get settings_project_path(id: 1, tab: 'issues')
-      assert_response :success
-      assert_select '#project_issue_custom_fields', 0
+    get settings_project_path(id: 1, tab: 'issues')
+    assert_response :success
+    assert_select '#project_issue_custom_fields', 0
   end
 
   def test_non_existence_of_project_selection_for_custom_fields
@@ -126,8 +127,8 @@ class LayoutTest < Redmine::IntegrationTest
   end
 
   def test_visibility_project_custom_fields_in_project_settings
-    f1 = ProjectCustomField.generate!(field_format: 'list', 
-                                      possible_values: %w(Foo Bar),
+    f1 = ProjectCustomField.generate!(field_format: 'list',
+                                      possible_values: %w[Foo Bar],
                                       multiple: true)
     f1.project_type_ids = [2]
     assert_equal [2], f1.project_type_ids
@@ -139,7 +140,6 @@ class LayoutTest < Redmine::IntegrationTest
     assert_response :success
     assert_select '#project_custom_field_values_3', 1
   end
-
 
   private
 

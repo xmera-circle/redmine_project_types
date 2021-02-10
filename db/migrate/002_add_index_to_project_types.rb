@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -19,11 +20,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class AddIndexToProjectTypes < ActiveRecord::Migration[4.2]
-  def self.up   
+  def self.up
     add_index :project_types, :name, unique: true unless index_exists?(:project_types, :name)
   end
-  
-  def self.down 
+
+  def self.down
     remove_index :project_types, :name if index_exists?(:project_types, :name)
   end
 end

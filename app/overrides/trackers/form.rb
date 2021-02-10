@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -22,8 +23,8 @@
 Deface::Override.new(
   virtual_path: 'trackers/_form',
   name: 'remove-project-list',
-  replace: "div.splitcontentright",
-  partial: "trackers/project_types",
+  replace: 'div.splitcontentright',
+  partial: 'trackers/project_types',
   disabled: ProjectTypes.missing?,
   original: '570b247e7ac59c8c751282f89dd9011b7fe6f945',
   namespaced: true

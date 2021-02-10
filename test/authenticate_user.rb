@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RedmineProjectTypes
   ##
   # Provide user login test

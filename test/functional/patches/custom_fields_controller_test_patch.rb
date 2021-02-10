@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 class CustomFieldsControllerTest
-  define_method("test_new_issue_custom_field") do
-    get :new, :params => {
-        :type => 'IssueCustomField'
-      }
+  define_method('test_new_issue_custom_field') do
+    get :new, params: {
+      type: 'IssueCustomField'
+    }
     assert_response :success
 
     assert_select 'form#custom_field_form' do
       assert_select 'select#custom_field_field_format[name=?]', 'custom_field[field_format]' do
-        assert_select 'option[value=user]', :text => 'User'
-        assert_select 'option[value=version]', :text => 'Version'
+        assert_select 'option[value=user]', text: 'User'
+        assert_select 'option[value=version]', text: 'Version'
       end
 
       # Visibility

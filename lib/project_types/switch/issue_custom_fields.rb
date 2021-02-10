@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 #
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -29,13 +30,13 @@ module ProjectTypes
 
       module ClassMethods
         def issue_custom_fields
-          unless self.included_modules.include?(ProjectTypes::Switch::IssueCustomFields::InstanceMethods)
-            send :include, ProjectTypes::Switch::IssueCustomFields::InstanceMethods    
+          unless included_modules.include?(ProjectTypes::Switch::IssueCustomFields::InstanceMethods)
+            send :include, ProjectTypes::Switch::IssueCustomFields::InstanceMethods
           end
-          unless self.reflect_on_association(:project_types)
-            has_and_belongs_to_many :project_types, 
-                                    join_table: "#{table_name_prefix}custom_fields_project_types#{table_name_suffix}", 
-                                    foreign_key: "custom_field_id", 
+          unless reflect_on_association(:project_types)
+            has_and_belongs_to_many :project_types,
+                                    join_table: "#{table_name_prefix}custom_fields_project_types#{table_name_suffix}",
+                                    foreign_key: 'custom_field_id',
                                     autosave: true,
                                     after_add: :add_custom_fields_projects,
                                     after_remove: :remove_custom_fields_projects
@@ -43,7 +44,7 @@ module ProjectTypes
             safe_attributes :project_type_ids
 
             delete_safe_attribute_names :project_ids
-          end 
+          end
         end
       end
 

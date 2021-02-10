@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -22,9 +23,8 @@ class AddDefaultMemberRoleIdIndexToProjectType < ActiveRecord::Migration[4.2]
   def self.up
     add_index :project_types, :default_member_role_id unless index_exists?(:project_types, :default_member_role_id)
   end
-  
+
   def self.down
     remove_index :project_types, :default_member_role_id if index_exists?(:project_types, :default_member_role_id)
   end
-  
 end

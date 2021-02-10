@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -20,10 +21,14 @@
 
 class AddDefaultValuesToProjectType < ActiveRecord::Migration[4.2]
   def self.up
-    add_column :project_types, :is_public, :boolean, :default => false, :null => false unless column_exists?(:project_types, :is_public)
-    add_column :project_types, :default_member_role_id, :integer, foreign_key: true unless column_exists?(:project_types, :default_member_role_id)
+    add_column :project_types, :is_public, :boolean, default: false, null: false unless column_exists?(
+      :project_types, :is_public
+    )
+    add_column :project_types, :default_member_role_id, :integer, foreign_key: true unless column_exists?(
+      :project_types, :default_member_role_id
+    )
   end
-  
+
   def self.down
     remove_column :project_types, :is_public if column_exists?(:project_types, :is_public)
     remove_column :project_types, :default_member_role_id if column_exists?(:project_types, :default_member_role_id)

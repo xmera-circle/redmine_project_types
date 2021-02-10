@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -28,10 +29,8 @@ class CreateEnabledProjectTypeModules < ActiveRecord::Migration[4.2]
       end
     end
   end
-  
+
   def self.down
-    if table_exists?(:enabled_project_type_modules)
-      drop_table :enabled_project_type_modules
-    end
+    drop_table :enabled_project_type_modules if table_exists?(:enabled_project_type_modules)
   end
 end

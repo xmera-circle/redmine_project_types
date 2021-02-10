@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -32,26 +33,26 @@ class ProjectTypesController < ApplicationController
 
   def new
     @issue_custom_fields = IssueCustomField.sorted.to_a
-    @project_custom_fields = ProjectCustomField.sorted.to_a 
+    @project_custom_fields = ProjectCustomField.sorted.to_a
     @project_type = ProjectType.new
   end
 
   def create
     @issue_custom_fields = IssueCustomField.sorted.to_a
-    @project_custom_fields = ProjectCustomField.sorted.to_a 
+    @project_custom_fields = ProjectCustomField.sorted.to_a
     @project_type = ProjectType.new
     @project_type.safe_attributes = params[:project_type]
     if @project_type.save
       flash[:notice] = l(:notice_successful_create)
       redirect_to project_types_path
-    else 
+    else
       render :new
     end
   end
 
   def edit
     @issue_custom_fields = IssueCustomField.sorted.to_a
-    @project_custom_fields = ProjectCustomField.sorted.to_a 
+    @project_custom_fields = ProjectCustomField.sorted.to_a
     find_project_type(secure_id_from_params)
   end
 
@@ -60,29 +61,29 @@ class ProjectTypesController < ApplicationController
     @project_type.safe_attributes = params[:project_type]
     if @project_type.save
       respond_to do |format|
-        format.html {
+        format.html do
           flash[:notice] = l(:notice_successful_update)
           redirect_to project_types_path
-        }
+        end
         format.js { head 200 }
       end
     else
       respond_to do |format|
-        format.html {
+        format.html do
           edit
           render action: 'edit'
-        }
+        end
         format.js { head 422 }
       end
     end
   end
-  
+
   def destroy
     find_project_type(secure_id_from_params)
-    unless @project_type.projects.empty?
-      flash[:error] = l(:error_can_not_delete_project_type)
-    else
+    if @project_type.projects.empty?
       @project_type.destroy
+    else
+      flash[:error] = l(:error_can_not_delete_project_type)
     end
     redirect_to project_types_path
   end

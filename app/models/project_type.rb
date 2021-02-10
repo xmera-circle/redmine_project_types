@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -30,21 +31,21 @@ class ProjectType < ActiveRecord::Base
   has_many :projects, autosave: true
 
   has_many :enabled_modules,
-           class_name: 'EnabledProjectTypeModule', 
-           :dependent => :delete_all
+           class_name: 'EnabledProjectTypeModule',
+           dependent: :delete_all
 
-  has_and_belongs_to_many :trackers, 
-                          lambda {order(:position)},
+  has_and_belongs_to_many :trackers,
+                          -> { order(:position) },
                           autosave: true
 
   has_and_belongs_to_many :issue_custom_fields,
-                          lambda {order(:position)},
+                          -> { order(:position) },
                           class_name: 'IssueCustomField',
                           join_table: "#{table_name_prefix}custom_fields_project_types#{table_name_suffix}",
                           association_foreign_key: 'custom_field_id'
 
   has_and_belongs_to_many :project_custom_fields,
-                          lambda {order(:position)},
+                          -> { order(:position) },
                           class_name: 'ProjectCustomField',
                           join_table: "#{table_name_prefix}custom_fields_project_types#{table_name_suffix}",
                           association_foreign_key: 'custom_field_id'
@@ -59,31 +60,27 @@ class ProjectType < ActiveRecord::Base
   end
 
   acts_as_positioned
-  
-  scope :sorted, lambda { order(:position) }
+
+  scope :sorted, -> { order(:position) }
 
   ##
   # Same as for Project class. That is, all global project settings will
   # now be applied to project types. Exception is the project identifier which
   # should be kept globally for simplicity.
   #
-  def initialize(attributes=nil, *args)
+  def initialize(attributes = nil, *args)
     super
 
     initialized = (attributes || {}).stringify_keys
-    if !initialized.key?('is_public')
-      self.is_public = default_project_public
-    end
-    if !initialized.key?('enabled_module_names')
-      self.enabled_module_names = default_project_modules
-    end
+    self.is_public = default_project_public unless initialized.key?('is_public')
+    self.enabled_module_names = default_project_modules unless initialized.key?('enabled_module_names')
     if !initialized.key?('trackers') && !initialized.key?('tracker_ids')
       default = default_project_trackers
-      if default.is_a?(Array)
-        self.trackers = Tracker.where(:id => default.map(&:to_i)).sorted.to_a
-      else
-        self.trackers = Tracker.sorted.to_a
-      end
+      self.trackers = if default.is_a?(Array)
+                        Tracker.where(id: default.map(&:to_i)).sorted.to_a
+                      else
+                        Tracker.sorted.to_a
+                      end
     end
   end
 
@@ -135,7 +132,9 @@ class ProjectType < ActiveRecord::Base
         type.enabled_module_names = type.default_project_modules
         type.is_public = type.default_project_public
       end
-      raise "Unable to create the system project type (#{project_type.errors.full_messages.join(',')})." if project_type.new_record?
+      if project_type.new_record?
+        raise "Unable to create the system project type (#{project_type.errors.full_messages.join(',')})."
+      end
     end
     project_type
   end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -33,7 +34,7 @@ class TrackersControllerTest < ActionDispatch::IntegrationTest
            :attachments, :custom_fields, :custom_values, :time_entries,
            :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions,
            :project_types,
-           :enabled_project_type_modules   
+           :enabled_project_type_modules
 
   def setup
     log_user('admin', 'admin')
@@ -47,8 +48,8 @@ class TrackersControllerTest < ActionDispatch::IntegrationTest
     ProjectType.find(3).project_ids = [3]
     put tracker_path(
       id: 1,
-      tracker: {name: 'Renamed tracker', 
-                project_type_ids: ['', '1', '2']}
+      tracker: { name: 'Renamed tracker',
+                 project_type_ids: ['', '1', '2'] }
     )
     assert_redirected_to action: :index
     assert ProjectType.find(1).trackers.include? tracker
@@ -58,5 +59,4 @@ class TrackersControllerTest < ActionDispatch::IntegrationTest
     assert Project.find(2).trackers.include? tracker
     assert Project.find(3).trackers.empty?
   end
-
 end

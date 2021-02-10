@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -35,7 +36,6 @@ class CustomFieldsControllerTest < ActionDispatch::IntegrationTest
            :custom_fields_trackers, :custom_fields_projects,
            :project_types, :enabled_project_type_modules
 
-
   def setup
     log_user('admin', 'admin')
   end
@@ -48,8 +48,8 @@ class CustomFieldsControllerTest < ActionDispatch::IntegrationTest
     ProjectType.find(3).project_ids = [3]
     put custom_field_path(
       id: custom_field.id,
-      custom_field: {name: 'Renamed issue custom field', 
-                project_type_ids: ['', '1', '2']}
+      custom_field: { name: 'Renamed issue custom field',
+                      project_type_ids: ['', '1', '2'] }
     )
     assert_redirected_to action: :edit
     custom_field = IssueCustomField.first
@@ -60,5 +60,4 @@ class CustomFieldsControllerTest < ActionDispatch::IntegrationTest
     assert Project.find(2).issue_custom_fields.to_a.include? custom_field
     assert Project.find(3).issue_custom_fields.empty?
   end
-
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -23,10 +24,10 @@ require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 class IssueCustomFieldPatchTest < ActiveSupport::TestCase
   extend RedmineProjectTypes::LoadFixtures
 
-  fixtures :projects, 
-           :members, 
-           :member_roles, 
-           :roles, 
+  fixtures :projects,
+           :members,
+           :member_roles,
+           :roles,
            :users,
            :trackers,
            :custom_fields,
@@ -34,10 +35,8 @@ class IssueCustomFieldPatchTest < ActiveSupport::TestCase
            :custom_fields_trackers,
            :custom_fields_projects,
            :project_types
-   
-  def setup
-    #
-  end
+
+  def setup; end
 
   # test 'should have and belong to many issue_custom_fields' do
   #   assert association = IssueCustomField.reflect_on_association(:issue_custom_fields)
@@ -62,7 +61,6 @@ class IssueCustomFieldPatchTest < ActiveSupport::TestCase
     assert issue_custom_field.respond_to? :remove_custom_fields_projects
   end
 
-  
   private
 
   def issue_custom_field

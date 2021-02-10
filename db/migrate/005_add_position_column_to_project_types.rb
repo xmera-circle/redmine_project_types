@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -22,7 +23,7 @@ class AddPositionColumnToProjectTypes < ActiveRecord::Migration[4.2]
   def self.up
     add_column :project_types, :position, :integer unless column_exists?(:project_types, :position)
   end
- 
+
   def self.down
     remove_column :project_types, :position if column_exists?(:project_types, :position)
   end

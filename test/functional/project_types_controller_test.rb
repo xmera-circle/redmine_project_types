@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -26,9 +27,9 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
   include RedmineProjectTypes::CreateProjectType
   include Redmine::I18n
 
-  fixtures :projects, 
+  fixtures :projects,
            :members, :member_roles, :roles, :users,
-           :trackers,:projects_trackers, :issue_statuses,
+           :trackers, :projects_trackers, :issue_statuses,
            :project_types
 
   test 'index by anonymous should redirect to login form' do
@@ -49,14 +50,14 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_template 'index'
   end
-  
+
   test 'should get new' do
     log_user('admin', 'admin')
     get new_project_type_url
     assert_response :success
     assert_template 'new'
   end
-  
+
   test 'should get edit' do
     log_user('admin', 'admin')
     get edit_project_type_url(id: 1)
@@ -82,7 +83,7 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should delete when it has no projects' do
     log_user('admin', 'admin')
-    post project_types_url, params: project_type_create_params(empty_modules)      
+    post project_types_url, params: project_type_create_params(empty_modules)
     assert_redirected_to(controller: 'project_types', action: 'index')
     assert_difference after_delete do
       delete "/project_types/#{ProjectType.last.id}", params: nil
@@ -106,7 +107,7 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
     assert_difference after_create_with_associates do
       post project_types_url, params: project_type_create_params(associates)
     end
-    assert_redirected_to(controller: 'project_types', action: 'index') 
+    assert_redirected_to(controller: 'project_types', action: 'index')
     assert_difference after_delete_with_associates do
       delete "/project_types/#{ProjectType.last.id}", params: nil
     end
@@ -126,42 +127,40 @@ class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
 
   def associates
     { enabled_module_names: ['', 'issue_tracking'],
-      tracker_ids: ['', 1,2],
+      tracker_ids: ['', 1, 2],
       issue_custom_field_ids: ['', 1, 2],
       project_custom_field_ids: ['', 3] }
   end
 
   def after_create_with_associates
-    { ->{ ProjectType.count } => 1 , 
-      ->{ ProjectType.last.enabled_modules.count } => 1, 
-      ->{ ProjectType.last.trackers.count } => 2,
-      ->{ ProjectType.last.issue_custom_field_ids.count } => 2,
-      ->{ ProjectType.last.project_custom_field_ids.count } => 1
-      }
+    { -> { ProjectType.count } => 1,
+      -> { ProjectType.last.enabled_modules.count } => 1,
+      -> { ProjectType.last.trackers.count } => 2,
+      -> { ProjectType.last.issue_custom_field_ids.count } => 2,
+      -> { ProjectType.last.project_custom_field_ids.count } => 1 }
   end
 
   def after_delete_with_associates
-    { ->{ ProjectType.count } => -1, 
-      ->{ ProjectType.last.enabled_modules.count } => -1, 
-      ->{ ProjectType.last.trackers.count } => -2,
-      ->{ ProjectType.last.issue_custom_field_ids.count } => -2,
-      ->{ ProjectType.last.project_custom_field_ids.count } => -1
-    }
-  end 
+    { -> { ProjectType.count } => -1,
+      -> { ProjectType.last.enabled_modules.count } => -1,
+      -> { ProjectType.last.trackers.count } => -2,
+      -> { ProjectType.last.issue_custom_field_ids.count } => -2,
+      -> { ProjectType.last.project_custom_field_ids.count } => -1 }
+  end
 
   def empty_modules
-     { enabled_module_names: [''] }
+    { enabled_module_names: [''] }
   end
 
   def after_create
-    { ->{ ProjectType.count } => 1 }
+    { -> { ProjectType.count } => 1 }
   end
 
   def project_type_update_params
-     { project_type: { name: 'changed' } }
+    { project_type: { name: 'changed' } }
   end
 
   def after_delete
-    { ->{ ProjectType.count } => -1 }
-  end  
+    { -> { ProjectType.count } => -1 }
+  end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -20,7 +21,7 @@
 
 # Target is redmines app/views/custom_fields/_form.html.erb file
 # Removes the list of projects from the custom_fields form since the the assignment
-# to a specific project is already defined by the assingment to a tracker which is 
+# to a specific project is already defined by the assingment to a tracker which is
 # still possible.
 
 Deface::Override.new(
@@ -28,7 +29,7 @@ Deface::Override.new(
   name: 'disables-project-list',
   replace: "erb[silent]:contains('if @custom_field.is_a?(IssueCustomField)')",
   closing_selector: "erb[silent]:contains('end')",
-  partial: "custom_fields/issue_related_fields",
+  partial: 'custom_fields/issue_related_fields',
   original: 'f53df0d8c1849ed72ee3f418def77fe73cd43c5b',
   disabled: ProjectTypes.missing?,
   namespaced: true

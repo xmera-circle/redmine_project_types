@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -23,75 +24,75 @@ require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 class ProjectTypeTest < ActiveSupport::TestCase
   include RedmineProjectTypes::LoadFixtures
 
-  fixtures :projects, 
+  fixtures :projects,
            :members, :member_roles, :roles, :users,
-           :trackers,:projects_trackers, :issue_statuses,
+           :trackers, :projects_trackers, :issue_statuses,
            :project_types
 
-  test "should not save project type without name" do
-    # note: enabled_module_names must be at least empty. Therefore, there is
+  test 'should not save project type without name' do
+    # NOTE: enabled_module_names must be at least empty. Therefore, there is
     # an empty hidden field in the view.
     project_type = ProjectType.new(enabled_module_names: [])
     assert_not project_type.valid?
     assert_equal [:name], project_type.errors.keys
   end
-  
-  test "should not save two project types with identical names" do
-    project_type = ProjectType.new(name: "name1", enabled_module_names: [])
+
+  test 'should not save two project types with identical names' do
+    project_type = ProjectType.new(name: 'name1', enabled_module_names: [])
     assert_not project_type.valid?
     assert_equal [:name], project_type.errors.keys
   end
-  
-  test "should order by position" do
+
+  test 'should order by position' do
     assert_equal 1, project_type(3).position - project_type(2).position
     assert_equal 1, project_type(2).position - project_type(1).position
   end
 
-  test "should respond to synchronise_modules" do
+  test 'should respond to synchronise_modules' do
     assert project_type(1).respond_to? :synchronise_modules
   end
 
-  test "should respond to is_public?" do
+  test 'should respond to is_public?' do
     assert project_type(1).respond_to? :is_public?
   end
 
-  test "should respond to default_member_role" do
+  test 'should respond to default_member_role' do
     assert project_type(1).respond_to? :default_member_role
   end
 
-  test "should have safe_attributes" do
+  test 'should have safe_attributes' do
     assert_equal safe_attribute_names, project_type(1).safe_attribute_names
   end
 
-  test "should have many projects" do
+  test 'should have many projects' do
     association = ProjectType.reflect_on_association(:projects)
     assert_equal :projects, association.name
     assert_equal :has_many, association.macro
     assert_equal Hash({ autosave: true }), association.options
   end
 
-  test "should have many enabled modules" do
+  test 'should have many enabled modules' do
     association = ProjectType.reflect_on_association(:enabled_modules)
     assert_equal :enabled_modules, association.name
     assert_equal :has_many, association.macro
     assert_equal enabled_modules_association, association.options
   end
 
-  test "should have many trackers" do
+  test 'should have many trackers' do
     association = ProjectType.reflect_on_association(:trackers)
     assert_equal :trackers, association.name
     assert_equal :has_and_belongs_to_many, association.macro
     assert_equal tracker_association, association.options
   end
 
-  test "should have many issue_custom_fields" do
+  test 'should have many issue_custom_fields' do
     association = ProjectType.reflect_on_association(:issue_custom_fields)
     assert_equal :issue_custom_fields, association.name
     assert_equal :has_and_belongs_to_many, association.macro
     assert_equal issue_custom_field_association, association.options
   end
 
-  test "should have many project_custom_fields" do
+  test 'should have many project_custom_fields' do
     association = ProjectType.reflect_on_association(:project_custom_fields)
     assert_equal :project_custom_fields, association.name
     assert_equal :has_and_belongs_to_many, association.macro
@@ -106,15 +107,15 @@ class ProjectTypeTest < ActiveSupport::TestCase
 
   def safe_attribute_names
     %w[name
-      description
-      identifier
-      is_public
-      default_member_role_id
-      position
-      enabled_module_names
-      tracker_ids
-      issue_custom_field_ids
-      project_custom_field_ids]
+       description
+       identifier
+       is_public
+       default_member_role_id
+       position
+       enabled_module_names
+       tracker_ids
+       issue_custom_field_ids
+       project_custom_field_ids]
   end
 
   def enabled_modules_association
@@ -126,14 +127,14 @@ class ProjectTypeTest < ActiveSupport::TestCase
   end
 
   def issue_custom_field_association
-    Hash({ class_name: 'IssueCustomField', 
+    Hash({ class_name: 'IssueCustomField',
            join_table: 'custom_fields_project_types',
-           association_foreign_key: 'custom_field_id'})
+           association_foreign_key: 'custom_field_id' })
   end
 
   def project_custom_field_association
-    Hash({ class_name: 'ProjectCustomField', 
+    Hash({ class_name: 'ProjectCustomField',
            join_table: 'custom_fields_project_types',
-           association_foreign_key: 'custom_field_id'})
+           association_foreign_key: 'custom_field_id' })
   end
 end

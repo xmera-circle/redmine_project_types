@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 #
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #

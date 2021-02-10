@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -23,5 +24,5 @@ class EnabledProjectTypeModule < ActiveRecord::Base
   acts_as_watchable
 
   validates_presence_of :name
-  validates_uniqueness_of :name, :scope => :project_type_id
+  validates_uniqueness_of :name, scope: :project_type_id
 end
