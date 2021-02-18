@@ -28,8 +28,10 @@
 <p><%= f.check_box :is_public %></p>
 <p class='warning'><%= Setting.login_required? ? l(:text_project_is_public_non_member) : l(:text_project_is_public_anonymous) %></p>
 <p><%= label(:project_types, :default_member_role_id,l(:label_project_type_default_member_role))%><%= f.collection_select(:default_member_role_id, Role.find_all_givable.collect, :id, :name, :include_blank => "--- #{l(:actionview_instancetag_blank_option)} ---") %> </p>
-<%= call_hook(:view_project_types_form_middle, :project => @project, :f => f) %>
+<%= call_hook(:view_project_types_form, :project_type => @project_type, :f => f) %>
 </div>
+
+<%= call_hook(:view_project_types_form_top_of_associates, :project_type => @project_type, :f => f) %>
 
 <% if @project_type.safe_attribute?('enabled_module_names') %>
   <fieldset class="box tabular" id="default-modules">

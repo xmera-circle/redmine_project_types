@@ -58,8 +58,16 @@ class ProjectTypesController < ApplicationController
 
   def update
     find_project_type(secure_id_from_params)
-    @project_type.safe_attributes = params[:project_type]
-    if @project_type.save
+    saved = false
+    begin
+      @project_type.safe_attributes = params[:project_type]
+      @project_type.save
+      saved = true
+    rescue StandardError
+      false
+    end
+
+    if saved
       respond_to do |format|
         format.html do
           flash[:notice] = l(:notice_successful_update)
@@ -83,7 +91,7 @@ class ProjectTypesController < ApplicationController
     if @project_type.projects.empty?
       @project_type.destroy
     else
-      flash[:error] = l(:error_can_not_delete_project_type)
+      flash[:error] = l(:error_can_not_delete_project_type, count: count)
     end
     redirect_to project_types_path
   end
@@ -96,5 +104,9 @@ class ProjectTypesController < ApplicationController
 
   def secure_id_from_params
     params[:id].to_i
+  end
+
+  def count
+    @project_type.projects.count
   end
 end

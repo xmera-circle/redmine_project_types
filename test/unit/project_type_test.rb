@@ -22,7 +22,7 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
 class ProjectTypeTest < ActiveSupport::TestCase
-  include RedmineProjectTypes::LoadFixtures
+  include ProjectTypes::LoadFixtures
 
   fixtures :projects,
            :members, :member_roles, :roles, :users,
@@ -61,7 +61,11 @@ class ProjectTypeTest < ActiveSupport::TestCase
   end
 
   test 'should have safe_attributes' do
-    assert_equal safe_attribute_names, project_type(1).safe_attribute_names
+    # The difference is a more stable criteria since a longer list on the right
+    # does not compromise the minimum requirement on the left.
+    # A longer list occurs when the :redmine_project_types_relations plugin
+    # is loaded.
+    assert_equal [], safe_attribute_names - project_type(1).safe_attribute_names
   end
 
   test 'should have many projects' do
@@ -135,6 +139,11 @@ class ProjectTypeTest < ActiveSupport::TestCase
   def project_custom_field_association
     Hash({ class_name: 'ProjectCustomField',
            join_table: 'custom_fields_project_types',
-           association_foreign_key: 'custom_field_id' })
+           association_foreign_key: 'custom_field_id',
+           before_remove: :integrity_of_project_custom_fields })
+  end
+
+  def skipped_message
+    'Redmine Project Types Relations is installed and will run this test!'
   end
 end

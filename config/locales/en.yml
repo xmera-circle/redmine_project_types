@@ -11,11 +11,9 @@ en:
   label_project_type_plural: Project Types
   label_project_type_new: New Type
   label_project_type_name: Name
+  label_project_type_value: Value
   label_project_type_description: Description
   label_project_type_default_is_public: New projects of this project type are public by default
-  label_project_type_default_modules: Default enabled modules for new projects of this project type
-  label_project_type_default_trackers: Default trackers for new projects of this project type
-  label_project_type_sequential_project_identifiers: Generate sequential project identifiers
   label_project_type_default_member_role: Role given to a non-admin user who creates a project of this project type
   label_project_type: Project Type
   label_project_new_default_values: New Project - Default Values
@@ -28,8 +26,9 @@ en:
   text_public_project_type_visibility_anonymous: With this selected project type the project will become publicly available. All contents are readable without login!
 
   # Error messages
-  error_unable_delete_project_type: Unable to delete project type due to related projects.
-  error_can_not_delete_project_type: Cannot delete project type due to related projects.
+  error_can_not_delete_project_type: Cannot delete project type due to %{count} related projects.
+  error_can_not_change_project_type: The project type cannot be changed because custom field values would get lost.
+  error_project_custom_field_has_projects_assigned: The project custom fiel cannot be changed, due to %{count} related projects.
   activerecord:
     errors:
       models:

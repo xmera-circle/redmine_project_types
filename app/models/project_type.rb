@@ -22,8 +22,8 @@
 class ProjectType < ActiveRecord::Base
   include Redmine::SafeAttributes
   include Redmine::I18n
-  include ProjectTypes::Association::Modules
-  include ProjectTypes::Association::Trackers
+  include ProjectTypes::Associations::Modules
+  include ProjectTypes::Associations::Trackers
   include ProjectTypes::Synchronisation::Modules
   include ProjectTypes::Synchronisation::Trackers
   include ProjectTypes::Synchronisation::IssueCustomFields
@@ -48,7 +48,8 @@ class ProjectType < ActiveRecord::Base
                           -> { order(:position) },
                           class_name: 'ProjectCustomField',
                           join_table: "#{table_name_prefix}custom_fields_project_types#{table_name_suffix}",
-                          association_foreign_key: 'custom_field_id'
+                          association_foreign_key: 'custom_field_id',
+                          before_remove: :integrity_of_project_custom_fields
 
   validates_presence_of :name
   validates_uniqueness_of :name
@@ -115,6 +116,23 @@ class ProjectType < ActiveRecord::Base
 
   def default_project_trackers
     Setting.default_projects_tracker_ids
+  end
+
+  ##
+  # This check raises an error if there are project custom fiels having projects
+  # assigned which again have values in the respective field.
+  #
+  def integrity_of_project_custom_fields(project_custom_field, error_object: nil)
+    return unless projects.any?
+
+    current_object = error_object || self
+    pairs = project_custom_field.custom_values.collect { |val| [val.customized_id, val.value] }
+    values_found = pairs.select { |pair| project_ids.include?(pair[0]) && pair[1].present? }
+
+    return unless values_found.present?
+
+    current_object.errors.add :base, l(:error_project_custom_field_has_projects_assigned, count: values_found.size)
+    raise ActiveModel::ValidationError, current_object
   end
 
   # unused

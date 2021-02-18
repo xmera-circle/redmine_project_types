@@ -33,7 +33,7 @@ Deface::Override.new(
   virtual_path: 'projects/settings/_issues',
   name: 'remove-custom-fields-from-project-settings',
   remove: '#project_issue_custom_fields',
-  original: '678ce8d0dbf350d65eca3d0b992daf7757d9df65',
+  original: 'e3aa79ae538fa5a9bf6328294dfee94c7258326b',
   disabled: ProjectTypes.missing?,
   namespaced: true
 )

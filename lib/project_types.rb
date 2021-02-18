@@ -27,19 +27,21 @@ require 'project_types/hooks/view_layouts_base_html_head_hook_listener'
 require 'project_types/hooks/view_projects_form_top_hook_listener'
 
 # Plugin patches
+require 'project_types/patches/custom_fields_controller_patch'
 require 'project_types/patches/issue_custom_field_patch'
 require 'project_types/patches/project_custom_field_patch'
 require 'project_types/patches/project_patch'
 require 'project_types/patches/tracker_patch'
 
 # Association
-require 'project_types/association/modules'
-require 'project_types/association/trackers'
+require 'project_types/associations/modules'
+require 'project_types/associations/trackers'
 
 # Switch
 require 'project_types/switch/modules'
 require 'project_types/switch/trackers'
 require 'project_types/switch/issue_custom_fields'
+require 'project_types/switch/project_custom_fields'
 
 # Synchronization
 require 'project_types/synchronisation/modules'

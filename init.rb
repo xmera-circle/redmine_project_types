@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -24,21 +25,21 @@ Redmine::Plugin.register :redmine_project_types do
   name 'Redmine Project Types'
   author 'Liane Hampe, xmera'
   description 'This is a plugin for defining project types with individual project default settings.'
-  version '3.0.1'
+  version '3.0.2'
   url 'https://circle.xmera.de/projects/redmine-project-types'
   author_url 'https://circle.xmera.de/users/5'
-  
+
   requires_redmine version_or_higher: '4.1.1'
 
-  menu :admin_menu, :project_types, { controller: 'project_types', action: 'index' }, 
-                                    caption: :label_project_type_plural, 
-                                    html: { class: 'icon icon-types' }, 
-                                    first: true
+  menu :admin_menu, :project_types, { controller: 'project_types', action: 'index' },
+       caption: :label_project_type_plural,
+       html: { class: 'icon icon-types' },
+       first: true
 end
 
 # Adds the project types app/overrides directory to Rails' search paths for deface overrides
 Rails.application.paths['app/overrides'] ||= []
-project_types_overwrite_dir = "#{Redmine::Plugin.directory}/redmine_project_types/app/overrides".freeze
+project_types_overwrite_dir = "#{Redmine::Plugin.directory}/redmine_project_types/app/overrides"
 unless Rails.application.paths['app/overrides'].include?(project_types_overwrite_dir)
   Rails.application.paths['app/overrides'] << project_types_overwrite_dir
 end

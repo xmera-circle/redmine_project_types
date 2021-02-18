@@ -22,7 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 module ProjectTypes
-  module Association
+  module Associations
     module Trackers
       def tracker_assigned?(id)
         trackers.to_a.map(&:id).include? id.to_i

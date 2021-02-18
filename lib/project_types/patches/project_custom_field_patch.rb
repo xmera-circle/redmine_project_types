@@ -23,13 +23,25 @@ module ProjectTypes
   module Patches
     module ProjectCustomFieldPatch
       def self.prepended(base)
+        base.extend(ClassMethods)
+        base.include(InstanceMethods)
         base.class_eval do
-          has_and_belongs_to_many :project_types,
-                                  join_table: "#{table_name_prefix}custom_fields_project_types#{table_name_suffix}",
-                                  foreign_key: 'custom_field_id',
-                                  autosave: true
+          include ProjectTypes::Switch::ProjectCustomFields
+          after_initialize do
+            enable_switch(:project_custom_fields) if ProjectTypes.any?
+          end
+        end
+      end
 
-          safe_attributes 'project_type_ids'
+      module ClassMethods
+        def enable_switch(name)
+          send name
+        end
+      end
+
+      module InstanceMethods
+        def enable_switch(name)
+          self.class.enable_switch(name)
         end
       end
     end

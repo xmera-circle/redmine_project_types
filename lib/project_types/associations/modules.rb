@@ -22,7 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 module ProjectTypes
-  module Association
+  module Associations
     ##
     # Copied or overridden from Project class to be available for ProjectType class.
     # Focused on methods which create EnabledModule objects in order to

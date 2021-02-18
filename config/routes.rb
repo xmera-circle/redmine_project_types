@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -21,4 +22,4 @@
 # Plugin's routes
 # See: http://guides.rubyonrails.org/routing.html
 
- resources :project_types
+resources :project_types

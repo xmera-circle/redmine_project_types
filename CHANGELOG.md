@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 3.0.2 - 2021-02-18
+
+### Added
+
+* ProjectType form hook on top of association sections
+* ProjectType instance name to be visible in the project data box on project
+  overview page
+* validation for project custom fields
+* rendering conditions to views
+* custom field controller patch
+* further tests
+
+### Changed
+
+* ProjectTypesController#update in order to render error message from validation
+  of associates
+* ProjectType form hook name
+* some tests due to changes coming along with project_type_relations
+
 ## 3.0.1 - 2021-02-10
 
 ### Fixed
@@ -15,8 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-* 'already initialized constant' warnings for associations by introducing 
+* 'already initialized constant' warnings for associations by introducing
 a condition
+
 ### Added
 
 * project_type_id for ProjectCustomField class in order to display them only if

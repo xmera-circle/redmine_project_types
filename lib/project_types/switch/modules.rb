@@ -33,10 +33,13 @@ module ProjectTypes
           unless included_modules.include?(ProjectTypes::Switch::Modules::Association)
             send :prepend, ProjectTypes::Switch::Modules::Association
           end
+
           unless included_modules.include?(ProjectTypes::Switch::Modules::InstanceMethods)
             send :include, ProjectTypes::Switch::Modules::InstanceMethods
           end
+
           belongs_to :project_type unless reflect_on_association(:project_type)
+
           unless reflect_on_association(:project_type_modules)
             ##
             # Redirects the EnabledModule association to be dependent

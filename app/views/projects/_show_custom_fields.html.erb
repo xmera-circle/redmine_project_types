@@ -1,15 +1,47 @@
-<% if @project.custom_field_values.any? {|value| value.custom_field.project_type_ids.include? @project.project_type_id } %>
-<div class="custom-fields box">
-  <h3 class="icon icon-custom-fields custom-fields"><%=l(:label_project_custom_fields)%></h3>
-  <table class="list">
-    <tbody>
-      <% render_custom_field_values(@project) do |custom_field, formatted| %>
+<%
+# frozen_string_literal: true
+#
+# Redmine plugin for xmera called Project Types Plugin.
+#
+# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
+%>
+
+<% if ProjectTypes.any? %>
+  <div class="custom-fields box">
+    <h3 class="icon icon-custom-fields custom-fields"><%=l(:label_project_custom_fields)%></h3>
+    <table class="list">
+      <thead>
         <tr>
-          <td class='name'><%= custom_field.name %>:</td>
-          <td class='name'><%= formatted %></td>
+          <th class='name'><%= l(:label_project_type_name) %></th>
+          <th class='name'><%= l(:label_project_type_value) %></th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        <tr>
+          <td class='name'><%= l(:label_project_type) %>:</td>
+          <td class='name'><%= @project.project_type.name %></td>
+        </tr>
+        <% render_custom_field_values(@project) do |custom_field, formatted| %>
+          <tr>
+            <td class='name'><%= custom_field.name %>:</td>
+            <td class='name'><%= formatted %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% end %>
