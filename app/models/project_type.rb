@@ -123,10 +123,10 @@ class ProjectType < ActiveRecord::Base
   # assigned which again have values in the respective field.
   #
   def integrity_of_project_custom_fields(project_custom_field, error_object: nil)
-    return unless projects.any?
+    return unless ProjectTypes.any? || projects.any?
 
     current_object = error_object || self
-    pairs = project_custom_field.custom_values.collect { |val| [val.customized_id, val.value] }
+    pairs = project_custom_field.custom_values.collect { |val| [val.customized_id, val.value] unless val.nil? }
     values_found = pairs.select { |pair| project_ids.include?(pair[0]) && pair[1].present? }
 
     return unless values_found.present?

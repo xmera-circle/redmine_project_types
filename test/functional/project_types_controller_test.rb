@@ -33,6 +33,11 @@ module ProjectTypes
              :trackers, :projects_trackers, :issue_statuses,
              :project_types
 
+    def teardown
+      project_type = ProjectType.find_by_name('Lore ipsum')
+      project_type&.delete
+    end
+    
     test 'index by anonymous should redirect to login form' do
       User.anonymous
       get project_types_url

@@ -58,14 +58,7 @@ class ProjectTypesController < ApplicationController
 
   def update
     find_project_type(secure_id_from_params)
-    saved = false
-    begin
-      @project_type.safe_attributes = params[:project_type]
-      @project_type.save
-      saved = true
-    rescue StandardError
-      false
-    end
+    saved = save_with_project_type_relation_change
 
     if saved
       respond_to do |format|
@@ -108,5 +101,16 @@ class ProjectTypesController < ApplicationController
 
   def count
     @project_type.projects.count
+  end
+
+  def save_with_project_type_relation_change
+    @project_type.safe_attributes = params[:project_type]
+    @project_type.save
+    saved = true
+  rescue StandardError => e
+    logger.error e.message
+    saved = false
+  ensure 
+    return saved && @project_type.save
   end
 end

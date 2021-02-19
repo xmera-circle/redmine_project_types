@@ -33,7 +33,7 @@
       <tbody>
         <tr>
           <td class='name'><%= l(:label_project_type) %>:</td>
-          <td class='name'><%= @project.project_type.name %></td>
+          <td class='name'><%= @project.project_type&.name %></td>
         </tr>
         <% render_custom_field_values(@project) do |custom_field, formatted| %>
           <tr>

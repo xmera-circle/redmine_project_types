@@ -12,7 +12,7 @@ module ProjectTypes
 
       module InstanceMethods
         def update
-          saved = validate_custom_field_project_type_change
+          saved = save_with_custom_field_project_type_change
 
           if saved
             call_hook(:controller_custom_fields_edit_after_save, params: params, custom_field: @custom_field)
@@ -33,12 +33,14 @@ module ProjectTypes
 
         private
 
-        def validate_custom_field_project_type_change
+        def save_with_custom_field_project_type_change
           @custom_field.safe_attributes = params[:custom_field]
-          @custom_field.save
           saved = true
-        rescue StandardError
-          false
+        rescue StandardError => e
+          logger.error e.message
+          saved = false
+        ensure 
+          return saved && @custom_field.save
         end
       end
     end

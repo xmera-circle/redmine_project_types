@@ -85,6 +85,8 @@ module ProjectTypes
         #   by acts_as_customizable plugin.
         #
         def available_custom_fields
+          return super unless ProjectType.any?
+
           new_record? || project_type_id.nil? ? [] : project_type.project_custom_fields.sorted.to_a
         end
 
