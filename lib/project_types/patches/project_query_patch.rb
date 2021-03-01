@@ -49,7 +49,7 @@ module ProjectTypes
         def initialize_available_filters
           super
           add_available_filter(
-            "project_type_id",
+            'project_type_id',
             :type => :list_subprojects, :values => lambda { project_type_values }, :label => :label_project_type
           )
         end
