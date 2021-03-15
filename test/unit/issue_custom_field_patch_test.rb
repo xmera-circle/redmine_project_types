@@ -23,55 +23,55 @@ require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
 module ProjectTypes
   class IssueCustomFieldPatchTest < ActiveSupport::TestCase
-    extend ProjectTypes::LoadFixtures
+    # extend ProjectTypes::LoadFixtures
 
-    fixtures :projects,
-             :members,
-             :member_roles,
-             :roles,
-             :users,
-             :trackers,
-             :custom_fields,
-             :custom_values,
-             :custom_fields_trackers,
-             :custom_fields_projects,
-             :project_types
+    # fixtures :projects,
+    #          :members,
+    #          :member_roles,
+    #          :roles,
+    #          :users,
+    #          :trackers,
+    #          :custom_fields,
+    #          :custom_values,
+    #          :custom_fields_trackers,
+    #          :custom_fields_projects,
+    #          :project_types
 
-    def setup; end
+    # def setup; end
 
-    # test 'should have and belong to many issue_custom_fields' do
-    #   assert association = IssueCustomField.reflect_on_association(:issue_custom_fields)
-    #   assert_equal :issue_custom_fields, association.name
-    #   assert_equal :has_and_belongs_to_many, association.macro
-    #   assert_equal issue_custom_field_options, association.options
+    # # test 'should have and belong to many issue_custom_fields' do
+    # #   assert association = IssueCustomField.reflect_on_association(:issue_custom_fields)
+    # #   assert_equal :issue_custom_fields, association.name
+    # #   assert_equal :has_and_belongs_to_many, association.macro
+    # #   assert_equal issue_custom_field_options, association.options
+    # # end
+
+    # test 'should not have safe project_ids attribute' do
+    #   assert_not issue_custom_field.safe_attribute? 'project_ids'
     # end
 
-    test 'should not have safe project_ids attribute' do
-      assert_not issue_custom_field.safe_attribute? 'project_ids'
-    end
+    # test 'should have safe project_type_ids attribute' do
+    #   assert issue_custom_field.safe_attribute? 'project_type_ids'
+    # end
 
-    test 'should have safe project_type_ids attribute' do
-      assert issue_custom_field.safe_attribute? 'project_type_ids'
-    end
+    # test 'should respond to add_custom_field_projects' do
+    #   assert issue_custom_field.respond_to? :add_custom_fields_projects
+    # end
 
-    test 'should respond to add_custom_field_projects' do
-      assert issue_custom_field.respond_to? :add_custom_fields_projects
-    end
+    # test 'should respond to remove_custom_field_projects' do
+    #   assert issue_custom_field.respond_to? :remove_custom_fields_projects
+    # end
 
-    test 'should respond to remove_custom_field_projects' do
-      assert issue_custom_field.respond_to? :remove_custom_fields_projects
-    end
+    # private
 
-    private
+    # def issue_custom_field
+    #   IssueCustomField.first
+    # end
 
-    def issue_custom_field
-      IssueCustomField.first
-    end
-
-    def issue_custom_field_options
-      Hash({ autosave: true,
-             after_add: :add_custom_field_projects,
-             after_remove: :remove_custom_field_projects })
-    end
+    # def issue_custom_field_options
+    #   Hash({ autosave: true,
+    #          after_add: :add_custom_field_projects,
+    #          after_remove: :remove_custom_field_projects })
+    # end
   end
 end

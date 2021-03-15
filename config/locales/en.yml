@@ -16,9 +16,7 @@ en:
   label_project_type_default_is_public: New projects of this project type are public by default
   label_project_type_default_member_role: Role given to a non-admin user who creates a project of this project type
   label_project_type: Project Type
-  label_project_new_default_values: New Project - Default Values
-  label_issue_custom_field_plural: Custom Fields - Tickets
-  label_project_custom_field_plural: Custom Fields - Projects
+  label_master_project: Master Project
   label_project_custom_fields: Project Data
 
   # Texts

@@ -1,5 +1,5 @@
-<%
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -18,16 +18,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-%>
 
-<%= error_messages_for 'project_type' %>
+class MasterProject < Project
 
-<div class="box tabular settings">
-<p><%= f.text_field :name, size: 30, :required => true %></p>
-<p><%= f.text_area :description, size: "5x5" %></p>
-<%= call_hook(:view_project_types_form, :project_type => @project_type, :f => f) %>
-</div>
+  class << self
+    def of(project_type)
+      name = project_type.name
+      find_or_create_by(name: name, 
+                        identifier: name.parameterize,
+                        parent_id: master_parent.id)
+    end
 
-<%= call_hook(:view_project_types_form_top_of_associates, :project_type => @project_type, :f => f) %>
+    def master_parent
+      find_or_create_by(name: 'Masterobjekte',
+                        identifier: name.parameterize)
+    end
+  end
 
-
+  private
+  
+  def master_project?
+    true
+  end
+end

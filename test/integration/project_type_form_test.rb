@@ -1,9 +1,9 @@
-<%
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
+#  Copyright (C) 2017-18 Liane Hampe <liane.hampe@xmera.de>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,16 +18,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-%>
 
-<%= error_messages_for 'project_type' %>
+require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
+require File.expand_path("#{File.dirname(__FILE__)}/../load_fixtures")
 
-<div class="box tabular settings">
-<p><%= f.text_field :name, size: 30, :required => true %></p>
-<p><%= f.text_area :description, size: "5x5" %></p>
-<%= call_hook(:view_project_types_form, :project_type => @project_type, :f => f) %>
-</div>
+module ProjectTypes
+  class ProjectTypeFormTest < Redmine::IntegrationTest
+    extend ProjectTypes::LoadFixtures
+    include ProjectTypes::AuthenticateUser
+    include ProjectTypes::CreateProjectType
+    include Redmine::I18n
 
-<%= call_hook(:view_project_types_form_top_of_associates, :project_type => @project_type, :f => f) %>
+    fixtures :users, :project_types
 
-
+    test 'project type form fields' do
+      log_user('admin', 'admin')
+      get new_project_type_path
+      assert_response :success
+      assert_select '#project_type_name'
+      assert_select '#project_type_description'
+    end
+   
+  end
+end

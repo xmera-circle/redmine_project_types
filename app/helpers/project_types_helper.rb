@@ -20,6 +20,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 module ProjectTypesHelper
+  def link_to_master(project_type)
+    master = project_type.master
+    return '' unless master
+
+    link_to master.name, project_path(master)
+  end
+
   def modules_multiselect(_project_type_id, choices, _options = {})
     hidden_field_tag('project_type[enabled_module_names][]', '').html_safe +
       choices.collect do |choice|

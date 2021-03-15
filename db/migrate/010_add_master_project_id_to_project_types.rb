@@ -1,5 +1,5 @@
-<%
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -18,16 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-%>
 
-<%= error_messages_for 'project_type' %>
+class AddMasterProjectIdToProjectTypes < ActiveRecord::Migration[4.2]
+  def self.up
+    add_column :project_types, :master_project_id, :integer, null: true unless column_exists?(:project_types, :master_project_id)
+    add_index :project_types, :master_project_id unless index_exists?(:project_types, :master_project_id)
+  end
 
-<div class="box tabular settings">
-<p><%= f.text_field :name, size: 30, :required => true %></p>
-<p><%= f.text_area :description, size: "5x5" %></p>
-<%= call_hook(:view_project_types_form, :project_type => @project_type, :f => f) %>
-</div>
-
-<%= call_hook(:view_project_types_form_top_of_associates, :project_type => @project_type, :f => f) %>
-
-
+  def self.down
+    remove_index :project_types, :master_project_id if index_exists?(:project_types, :master_project_id)
+    remove_column :project_types, :master_project_id if column_exists?(:project_types, :master_project_id)
+  end
+end

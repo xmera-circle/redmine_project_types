@@ -1,5 +1,5 @@
-<%
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -18,16 +18,40 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-%>
 
-<%= error_messages_for 'project_type' %>
+require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
-<div class="box tabular settings">
-<p><%= f.text_field :name, size: 30, :required => true %></p>
-<p><%= f.text_area :description, size: "5x5" %></p>
-<%= call_hook(:view_project_types_form, :project_type => @project_type, :f => f) %>
-</div>
+class MasterProjectTest < ActiveSupport::TestCase
+  extend ProjectTypes::LoadFixtures
 
-<%= call_hook(:view_project_types_form_top_of_associates, :project_type => @project_type, :f => f) %>
+  fixtures :projects,
+          :members, :member_roles, :roles, :users,
+          :trackers, :projects_trackers, :issue_statuses,
+          :project_types
 
+  test 'should respond to of' do
+    assert MasterProject.respond_to? :of
+  end
+
+
+  test 'should respond to master_project?' do
+    assert master.respond_to? :master_project?, true
+  end
+
+  test 'should be a master project' do
+    assert master.send :master_project?
+  end
+
+  test 'should create master parent' do
+    assert master
+    assert_equal 'Masterobjekte', master.name
+  end
+
+  private
+
+  def master
+    MasterProject.master_parent
+  end
+
+end
 

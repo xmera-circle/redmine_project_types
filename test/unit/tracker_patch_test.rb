@@ -23,51 +23,51 @@ require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
 module ProjectTypes
   class TrackerPatchTest < ActiveSupport::TestCase
-    extend ProjectTypes::LoadFixtures
+    # extend ProjectTypes::LoadFixtures
 
-    fixtures :projects,
-             :members,
-             :member_roles,
-             :roles,
-             :users,
-             :trackers,
-             :project_types
+    # fixtures :projects,
+    #          :members,
+    #          :member_roles,
+    #          :roles,
+    #          :users,
+    #          :trackers,
+    #          :project_types
 
-    def setup; end
+    # def setup; end
 
-    # test 'should have and belong to many project_types' do
-    #   assert association = Tracker.reflect_on_association(:project_types)
-    #   sleep(2) # Sometimes the association is nil but when debugging it is o.k.
-    #   assert_equal :project_types, association&.name
-    #   assert_equal project_type_options, association&.options
+    # # test 'should have and belong to many project_types' do
+    # #   assert association = Tracker.reflect_on_association(:project_types)
+    # #   sleep(2) # Sometimes the association is nil but when debugging it is o.k.
+    # #   assert_equal :project_types, association&.name
+    # #   assert_equal project_type_options, association&.options
+    # # end
+
+    # test 'should not have safe project_ids attribute' do
+    #   assert_not tracker(id: 1).safe_attribute? 'project_ids'
     # end
 
-    test 'should not have safe project_ids attribute' do
-      assert_not tracker(id: 1).safe_attribute? 'project_ids'
-    end
+    # test 'should have safe project_type_ids attribute' do
+    #   assert tracker(id: 1).safe_attribute? 'project_type_ids'
+    # end
 
-    test 'should have safe project_type_ids attribute' do
-      assert tracker(id: 1).safe_attribute? 'project_type_ids'
-    end
+    # test 'should respond to add_projects_tracker' do
+    #   assert tracker(id: 1).respond_to? :add_projects_tracker
+    # end
 
-    test 'should respond to add_projects_tracker' do
-      assert tracker(id: 1).respond_to? :add_projects_tracker
-    end
+    # test 'should respond to remove_projects_tracker' do
+    #   assert tracker(id: 1).respond_to? :remove_projects_tracker
+    # end
 
-    test 'should respond to remove_projects_tracker' do
-      assert tracker(id: 1).respond_to? :remove_projects_tracker
-    end
+    # private
 
-    private
+    # def tracker(id:)
+    #   Tracker.find(id.to_i)
+    # end
 
-    def tracker(id:)
-      Tracker.find(id.to_i)
-    end
-
-    def project_type_options
-      Hash({ autosave: true,
-             after_add: :add_projects_tracker,
-             after_remove: :remove_projects_tracker })
-    end
+    # def project_type_options
+    #   Hash({ autosave: true,
+    #          after_add: :add_projects_tracker,
+    #          after_remove: :remove_projects_tracker })
+    # end
   end
 end

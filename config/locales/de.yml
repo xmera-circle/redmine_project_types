@@ -9,16 +9,14 @@ de:
   
   # Labels
   label_project_type_plural: Projekttypen
-  label_project_type_new: Neuer Typ
+  label_project_type_new: Neuer Projekttyp
   label_project_type_name: Bezeichnung
   label_project_type_value: Wert
   label_project_type_description: Beschreibung
   label_project_type_default_is_public: Neue Projekte mit diesem Projekttypen sind standardmäßig öffentlich
   label_project_type_default_member_role: Rolle, die einem Nicht-Administrator zugeordnet wird, der ein Projekt mit diesem Projekttyp erstellt
   label_project_type: Projekttyp
-  label_project_new_default_values: Neues Projekt - Standardwerte
-  label_issue_custom_field_plural: Benutzerdefinierte Felder - Tickets
-  label_project_custom_field_plural: Benutzerdefinierte Felder - Projekte
+  label_master_project: Masterprojekt
   label_project_custom_fields: Projektdaten
   
   # Texts

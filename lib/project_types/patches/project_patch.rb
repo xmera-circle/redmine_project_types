@@ -29,15 +29,17 @@ module ProjectTypes
         base.class_eval do
           include Redmine::I18n
           include ProjectTypes::Switch::Modules
-          after_initialize do
-            enable_switch(:enabled_modules) if ProjectTypes.any?
-          end
+          belongs_to :project_type
+          safe_attributes :project_type_id
+          # after_initialize do
+          #   enable_switch(:enabled_modules) if ProjectTypes.any?
+          # end
 
           after_commit do |project|
-            if ProjectTypes.any?
-              project.synchronise_modules
-              project.synchronise_projects_trackers
-            end
+            # if ProjectTypes.any?
+            #   project.synchronise_modules
+            #   project.synchronise_projects_trackers
+            # end
           end
 
           before_validation :revise_project_type_dependencies
@@ -84,11 +86,11 @@ module ProjectTypes
         # @override Overwrites Project#available_custom_fields defined
         #   by acts_as_customizable plugin.
         #
-        def available_custom_fields
-          return super unless ProjectType.any?
+        # def available_custom_fields
+        #   return super unless ProjectType.any?
 
-          new_record? || project_type_id.nil? ? [] : project_type.project_custom_fields.sorted.to_a
-        end
+        #   new_record? || project_type_id.nil? ? [] : project_type.project_custom_fields.sorted.to_a
+        # end
 
         ##
         # Selects only those custom_fields and its values when they are
@@ -96,15 +98,15 @@ module ProjectTypes
         #
         # @override This is overwritten from Project#visible_custom_field_values
         #
-        def visible_custom_field_values(user = nil)
-          return super(user) unless project_type_id.present? || ProjectTypes.any?
+        # def visible_custom_field_values(user = nil)
+        #   return super(user) unless project_type_id.present? || ProjectTypes.any?
 
-          user ||= User.current
-          custom_field_values.select do |value|
-            value.custom_field.project_type_ids.include?(project_type_id) &&
-              value.custom_field.visible_by?(project, user)
-          end
-        end
+        #   user ||= User.current
+        #   custom_field_values.select do |value|
+        #     value.custom_field.project_type_ids.include?(project_type_id) &&
+        #       value.custom_field.visible_by?(project, user)
+        #   end
+        # end
 
         ##
         # A change in the project type will delete custom field values of the
@@ -150,10 +152,15 @@ module ProjectTypes
         end
 
         def presence_of_project_type_id
-          return unless ProjectTypes.any?
+          return if master_project?
 
           errors.add :project_type, :error_project_type_missing unless project_type_id.present?
         end
+
+        def master_project?
+          false
+        end
+
 
         ##
         # This method is analogous to

@@ -22,7 +22,7 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
 class ProjectTypeTest < ActiveSupport::TestCase
-  include ProjectTypes::LoadFixtures
+  extend ProjectTypes::LoadFixtures
 
   fixtures :projects,
            :members, :member_roles, :roles, :users,
@@ -30,15 +30,13 @@ class ProjectTypeTest < ActiveSupport::TestCase
            :project_types
 
   test 'should not save project type without name' do
-    # NOTE: enabled_module_names must be at least empty. Therefore, there is
-    # an empty hidden field in the view.
-    project_type = ProjectType.new(enabled_module_names: [])
+    project_type = ProjectType.new
     assert_not project_type.valid?
     assert_equal [:name], project_type.errors.keys
   end
 
   test 'should not save two project types with identical names' do
-    project_type = ProjectType.new(name: 'name1', enabled_module_names: [])
+    project_type = ProjectType.new(name: 'name1')
     assert_not project_type.valid?
     assert_equal [:name], project_type.errors.keys
   end
@@ -48,16 +46,12 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert_equal 1, project_type(2).position - project_type(1).position
   end
 
-  test 'should respond to synchronise_modules' do
-    assert project_type(1).respond_to? :synchronise_modules
-  end
-
   test 'should respond to is_public?' do
     assert project_type(1).respond_to? :is_public?
   end
 
-  test 'should respond to default_member_role' do
-    assert project_type(1).respond_to? :default_member_role
+  test 'should respond to master_parent' do
+    assert project_type(1).respond_to? :master_parent
   end
 
   test 'should have safe_attributes' do
@@ -68,39 +62,32 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert_equal [], safe_attribute_names - project_type(1).safe_attribute_names
   end
 
+  test 'should belong to master project' do
+    association = ProjectType.reflect_on_association(:master)
+    assert_equal :master, association.name
+    assert_equal :belongs_to, association.macro
+    assert_equal master_association, association.options
+  end
+
+  test 'should create master for new project type' do
+    name = 'New Project Type'
+    new_project_type = ProjectType.create(name: name)
+    assert_equal name, new_project_type.master.name
+  end
+
+  test 'should update master for existing project type' do
+    changed_name = 'Changed name1'
+    type = project_type(1)
+    type.name = changed_name
+    type.save
+    assert_equal changed_name, type.master.name
+    assert_equal type.master_project_id, type.master.id
+  end
+
   test 'should have many projects' do
     association = ProjectType.reflect_on_association(:projects)
     assert_equal :projects, association.name
     assert_equal :has_many, association.macro
-    assert_equal Hash({ autosave: true }), association.options
-  end
-
-  test 'should have many enabled modules' do
-    association = ProjectType.reflect_on_association(:enabled_modules)
-    assert_equal :enabled_modules, association.name
-    assert_equal :has_many, association.macro
-    assert_equal enabled_modules_association, association.options
-  end
-
-  test 'should have many trackers' do
-    association = ProjectType.reflect_on_association(:trackers)
-    assert_equal :trackers, association.name
-    assert_equal :has_and_belongs_to_many, association.macro
-    assert_equal tracker_association, association.options
-  end
-
-  test 'should have many issue_custom_fields' do
-    association = ProjectType.reflect_on_association(:issue_custom_fields)
-    assert_equal :issue_custom_fields, association.name
-    assert_equal :has_and_belongs_to_many, association.macro
-    assert_equal issue_custom_field_association, association.options
-  end
-
-  test 'should have many project_custom_fields' do
-    association = ProjectType.reflect_on_association(:project_custom_fields)
-    assert_equal :project_custom_fields, association.name
-    assert_equal :has_and_belongs_to_many, association.macro
-    assert_equal project_custom_field_association, association.options
   end
 
   private
@@ -112,38 +99,13 @@ class ProjectTypeTest < ActiveSupport::TestCase
   def safe_attribute_names
     %w[name
        description
-       identifier
-       is_public
-       default_member_role_id
        position
-       enabled_module_names
-       tracker_ids
-       issue_custom_field_ids
-       project_custom_field_ids]
+       master_project_id]
   end
 
-  def enabled_modules_association
-    Hash({ class_name: 'EnabledProjectTypeModule', dependent: :delete_all })
-  end
-
-  def tracker_association
-    Hash({ autosave: true })
-  end
-
-  def issue_custom_field_association
-    Hash({ class_name: 'IssueCustomField',
-           join_table: 'custom_fields_project_types',
-           association_foreign_key: 'custom_field_id' })
-  end
-
-  def project_custom_field_association
-    Hash({ class_name: 'ProjectCustomField',
-           join_table: 'custom_fields_project_types',
-           association_foreign_key: 'custom_field_id',
-           before_remove: :integrity_of_project_custom_fields })
-  end
-
-  def skipped_message
-    'Redmine Project Types Relations is installed and will run this test!'
+  def master_association
+    Hash({ class_name: 'MasterProject',
+           foreign_key: :master_project_id,
+           autosave: true})
   end
 end

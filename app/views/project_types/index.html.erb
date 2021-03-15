@@ -34,8 +34,9 @@
 	  <thead><tr>
 	  <th class="name"><%=l(:label_project_type_name)%></th>
 		<th class="name"><%=l(:field_description)%></th>
-		<th><%=l(:field_is_public)%></th>
+		<th class="center"><%=l(:field_is_public) %></th>
 	  <%= call_hook(:view_project_types_table_header) %>
+		<th class="name"><%=l(:label_master_project)%></th>
 	  <th></th>
 		<th></th>
 	  </tr></thead>
@@ -46,6 +47,7 @@
 		<td class="name"><%= type.description %></td>
 		<td class="center"><%= checked_image type.is_public? %></td>
 		<%= call_hook(:view_project_types_table_data, :project => @project_types, :type => type) %>
+		<td class="name"><%= link_to_master type %></td>
 	  <td></td>
 	  <td class="buttons">
 	    <%= reorder_handle(type) %>
