@@ -2,22 +2,16 @@ project_type_001:
   id: 1
   name: name1
   description: description1
-  is_public: 0
   position: 1
-  default_member_role_id: 3
 
 project_type_002:
   id: 2
   name: name2
   description: description2
-  is_public: 1
   position: 2
-  default_member_role_id: 2
   
 project_type_003:
   id: 3
   name: name3
   description: description3
-  is_public: 0
   position: 3
-  default_member_role_id: 1
