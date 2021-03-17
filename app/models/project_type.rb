@@ -26,12 +26,15 @@ class ProjectType < ActiveRecord::Base
   has_many :projects
 
   has_one :master, 
-          class_name: 'MasterProject'
+          class_name: 'MasterProject',
+          inverse_of: :project_type,
+          autosave: true
 
   delegate :is_public?, to: :master, allow_nil: true
  
   validates_presence_of :name
   validates_uniqueness_of :name
+  validates_uniqueness_of :is_master_parent, conditions: -> { where.not(is_master_parent: false) }
 
   after_commit :update_master, on: %i[create update]
 
@@ -69,7 +72,13 @@ class ProjectType < ActiveRecord::Base
   end
 
   def create_master_project
-    create_master(master_attributes)
+    master_project = build_master(master_attributes)
+    unless master_project.valid?
+      deleted = self.delete
+      errors.add :master, master_project.errors.full_messages.join('/n')
+      raise ActiveRecord::RecordInvalid, deleted
+    end
+    master_project.save
   end
 
   def master_attributes

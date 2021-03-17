@@ -37,3 +37,4 @@ en:
 
   # Fields
   field_project_type: Project Type
+  field_is_master_parent: Parent project of all master projects

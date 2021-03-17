@@ -37,6 +37,7 @@ module ProjectTypes
       assert_response :success
       assert_select '#project_type_name'
       assert_select '#project_type_description'
+      assert_select '#project_type_is_master_parent'
     end
    
   end

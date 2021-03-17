@@ -41,6 +41,12 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert_equal [:name], project_type.errors.keys
   end
 
+  test 'should allow only one project type to be marked as is_master_parent' do
+    project_type = project_type(2)
+    assert_not project_type.update_attributes(is_master_parent: true)
+    assert_equal [:is_master_parent], project_type.errors.keys
+  end
+
   test 'should order by position' do
     assert_equal 1, project_type(3).position - project_type(2).position
     assert_equal 1, project_type(2).position - project_type(1).position
@@ -92,6 +98,12 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert_equal changed_name, type.master.name
   end
 
+  test 'should not save project_type if master project identifier exists' do
+    name = 'Subproject2'
+    assert_raise(ActiveRecord::RecordInvalid) { ProjectType.create(name: name) }
+    assert_not ProjectType.find_by(name: name)
+  end
+
   test 'should have many projects' do
     association = ProjectType.reflect_on_association(:projects)
     assert_equal :projects, association.name
@@ -112,6 +124,8 @@ class ProjectTypeTest < ActiveSupport::TestCase
   end
 
   def master_association
-    Hash({ class_name: 'MasterProject'})
+    Hash({ class_name: 'MasterProject',
+           inverse_of: :project_type,
+           autosave: true })
   end
 end

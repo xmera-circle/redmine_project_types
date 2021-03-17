@@ -20,6 +20,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class MasterProject < Project
+  belongs_to :project_type,
+              inverse_of: :master
+
   class << self; end
 
   private

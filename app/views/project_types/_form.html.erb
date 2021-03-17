@@ -25,6 +25,7 @@
 <div class="box tabular settings">
 <p><%= f.text_field :name, size: 30, :required => true %></p>
 <p><%= f.text_area :description, size: "5x5" %></p>
+<p><%= f.check_box :is_master_parent %></p>
 <%= call_hook(:view_project_types_form, :project_type => @project_type, :f => f) %>
 </div>
 

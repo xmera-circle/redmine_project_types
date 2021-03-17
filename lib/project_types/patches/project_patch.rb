@@ -28,8 +28,9 @@ module ProjectTypes
         base.prepend(InstanceMethods)
         base.class_eval do
           include Redmine::I18n
-          include ProjectTypes::Switch::Modules
-          belongs_to :project_type
+        #  include ProjectTypes::Switch::Modules
+          belongs_to :project_type,
+                      inverse_of: :projects
           safe_attributes :project_type_id
           # after_initialize do
           #   enable_switch(:enabled_modules) if ProjectTypes.any?
@@ -42,8 +43,8 @@ module ProjectTypes
             # end
           end
 
-          before_validation :revise_project_type_dependencies
-          validate :presence_of_project_type_id
+      #    before_validation :revise_project_type_dependencies
+      #    validate :presence_of_project_type_id
         end
       end
 
@@ -54,15 +55,15 @@ module ProjectTypes
         #
         # @note: Use this method interchangeable with the callback above!
         #
-        def enable_switch(name)
-          send name
-        end
+        # def enable_switch(name)
+        #   send name
+        # end
       end
 
       module InstanceMethods
-        def enable_switch(name)
-          self.class.enable_switch(name)
-        end
+        # def enable_switch(name)
+        #   self.class.enable_switch(name)
+        # end
 
         ##
         # Adds user as a project member with the default role of the project type.
@@ -70,14 +71,14 @@ module ProjectTypes
         #
         # @override This is overwritten from Project#add_default_member
         #
-        def add_default_member(user)
-          return super(user) unless project_type_id.present?
+        # def add_default_member(user)
+        #   return super(user) unless project_type_id.present?
 
-          role = default_member_role
-          member = Member.new(project: self, principal: user, roles: [role])
-          members << member
-          member
-        end
+        #   role = default_member_role
+        #   member = Member.new(project: self, principal: user, roles: [role])
+        #   members << member
+        #   member
+        # end
 
         ##
         # Defines the available_custom_fields in dependence of the underlying
@@ -112,12 +113,12 @@ module ProjectTypes
         # A change in the project type will delete custom field values of the
         # project type which was set before the change!
         #
-        def revise_project_type_dependencies
-          return unless ProjectTypes.any?
+        # def revise_project_type_dependencies
+        #   return unless ProjectTypes.any?
 
-          # prevent_custom_fields_from_deletion
-          delete_custom_fields_after_project_type_reassignment
-        end
+        #   # prevent_custom_fields_from_deletion
+        #   delete_custom_fields_after_project_type_reassignment
+        # end
 
         private
 
@@ -131,25 +132,25 @@ module ProjectTypes
         # when selecting another type. Hence. the old data of the project
         # custom field will be send to the controller and may cause conflicts.
         #
-        def prevent_custom_fields_from_deletion
-          if custom_field_values_changed? && project_type_id_changed? && values_present?
-            errors.add :base, l(:error_can_not_change_project_type)
-          elsif project_type_id_changed?
-            reset_project_custom_values!
-          end
-        end
+        # def prevent_custom_fields_from_deletion
+        #   if custom_field_values_changed? && project_type_id_changed? && values_present?
+        #     errors.add :base, l(:error_can_not_change_project_type)
+        #   elsif project_type_id_changed?
+        #     reset_project_custom_values!
+        #   end
+        # end
 
         ##
         # This method will delete the custom field values even if they have
         # are not empty.
         #
-        def delete_custom_fields_after_project_type_reassignment
-          reset_project_custom_values! if project_type_id_changed? && custom_field_values_changed?
-        end
+        # def delete_custom_fields_after_project_type_reassignment
+        #   reset_project_custom_values! if project_type_id_changed? && custom_field_values_changed?
+        # end
 
-        def values_present?
-          custom_field_values.any?(&:value_present?)
-        end
+        # def values_present?
+        #   custom_field_values.any?(&:value_present?)
+        # end
 
         def presence_of_project_type_id
           return if master_project?
@@ -176,10 +177,10 @@ module ProjectTypes
         #
         # @note: Existing custom field values will be deleted!
         #
-        def reset_project_custom_values!
-          @custom_field_values = nil
-          @custom_field_values_changed = false
-        end
+        # def reset_project_custom_values!
+        #   @custom_field_values = nil
+        #   @custom_field_values_changed = false
+        # end
       end
     end
   end

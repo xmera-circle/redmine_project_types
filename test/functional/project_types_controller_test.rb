@@ -35,7 +35,10 @@ module ProjectTypes
 
     def teardown
       project_type = ProjectType.find_by_name('Lore ipsum')
-      project_type&.delete
+      if project_type
+        project_type.master&.delete
+        project_type.delete
+      end
     end
     
     test 'index by anonymous should redirect to login form' do
@@ -74,7 +77,7 @@ module ProjectTypes
     test 'should redirect after create' do
       log_user('admin', 'admin')
       assert_difference after_create do
-        post project_types_url, params: project_type_create_params(empty_modules)
+        post project_types_url, params: project_type_create_params
       end
       assert_redirected_to(controller: 'project_types', action: 'index')
     end
@@ -87,15 +90,15 @@ module ProjectTypes
       assert_equal 'changed', type_to_change.name
     end
 
-    test 'should delete when it has no projects' do
-      log_user('admin', 'admin')
-      post project_types_url, params: project_type_create_params(empty_modules)
-      assert_redirected_to(controller: 'project_types', action: 'index')
-      assert_difference after_delete do
-        delete "/project_types/#{ProjectType.last.id}", params: nil
-      end
-      assert_redirected_to(controller: 'project_types', action: 'index')
-    end
+    # test 'should delete when it has no projects' do
+    #   log_user('admin', 'admin')
+    #   post project_types_url, params: project_type_create_params
+    #   assert_redirected_to(controller: 'project_types', action: 'index')
+    #   assert_difference after_delete do
+    #     delete "/project_types/#{ProjectType.last.id}", params: nil
+    #   end
+    #   assert_redirected_to(controller: 'project_types', action: 'index')
+    # end
 
     test 'should not delete when it has projects' do
       log_user('admin', 'admin')
@@ -108,55 +111,36 @@ module ProjectTypes
       assert_equal l(:error_can_not_delete_project_type, count: 1), flash[:error].to_s
     end
 
-    test 'should save and delete associates' do
+    test 'should not create when master project already exists' do
       log_user('admin', 'admin')
       assert_equal 3, ProjectType.count
-      assert_difference after_create_with_associates do
-        post project_types_url, params: project_type_create_params(associates)
+      assert_no_difference 'ProjectType.count' do
+        post project_types_url, params: { name: 'Subproject2' }
       end
-      assert_redirected_to(controller: 'project_types', action: 'index')
-      assert_difference after_delete_with_associates do
-        delete "/project_types/#{ProjectType.last.id}", params: nil
-      end
-      assert_redirected_to(controller: 'project_types', action: 'index')
+      assert_template :new
     end
-
+    
     private
 
-    def project_type_create_params(associates)
+    def project_type_create_params(attributes = {})
       { project_type:
         { name: 'Lore ipsum',
           description: 'for testing',
-          is_public: 0,
-          default_member_role_id: 3,
-          position: 4 }.merge(associates) }
-    end
-
-    def associates
-      { enabled_module_names: ['', 'issue_tracking'],
-        tracker_ids: ['', 1, 2],
-        issue_custom_field_ids: ['', 1, 2],
-        project_custom_field_ids: ['', 3] }
+          position: 4 }.merge(attributes) }
     end
 
     def after_create_with_associates
       { -> { ProjectType.count } => 1,
-        -> { ProjectType.last.enabled_modules.count } => 1,
-        -> { ProjectType.last.trackers.count } => 2,
-        -> { ProjectType.last.issue_custom_field_ids.count } => 2,
-        -> { ProjectType.last.project_custom_field_ids.count } => 1 }
+        -> { MasterProject.count } => 1 }
     end
 
     def after_delete_with_associates
       { -> { ProjectType.count } => -1,
-        -> { ProjectType.last.enabled_modules.count } => -1,
-        -> { ProjectType.last.trackers.count } => -2,
-        -> { ProjectType.last.issue_custom_field_ids.count } => -2,
-        -> { ProjectType.last.project_custom_field_ids.count } => -1 }
+        -> { MasterProject.count } => -1 }
     end
 
-    def empty_modules
-      { enabled_module_names: [''] }
+    def is_master_parent
+      { is_master_parent: true }
     end
 
     def after_create

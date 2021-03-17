@@ -37,4 +37,5 @@ de:
 
   # Fields
   field_project_type: Projekttyp
+  field_is_master_parent: Elternprojekt aller Masterprojekte 
   

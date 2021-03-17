@@ -28,7 +28,7 @@ class ProjectTypesController < ApplicationController
   before_action :require_admin
 
   def index
-    @project_types = ProjectType.sorted.to_a
+    @project_types = ProjectType.includes(:master).sorted.to_a
   end
 
   def new
@@ -41,8 +41,9 @@ class ProjectTypesController < ApplicationController
     @issue_custom_fields = IssueCustomField.sorted.to_a
     @project_custom_fields = ProjectCustomField.sorted.to_a
     @project_type = ProjectType.new
-    @project_type.safe_attributes = params[:project_type]
-    if @project_type.save
+    saved = save_with_project_type_associations
+
+    if saved
       flash[:notice] = l(:notice_successful_create)
       redirect_to project_types_path
     else
@@ -58,7 +59,7 @@ class ProjectTypesController < ApplicationController
 
   def update
     find_project_type(secure_id_from_params)
-    saved = save_with_project_type_relation_change
+    saved = save_with_project_type_associations
 
     if saved
       respond_to do |format|
@@ -103,7 +104,7 @@ class ProjectTypesController < ApplicationController
     @project_type.projects.count
   end
 
-  def save_with_project_type_relation_change
+  def save_with_project_type_associations
     @project_type.safe_attributes = params[:project_type]
     @project_type.save
     saved = true
