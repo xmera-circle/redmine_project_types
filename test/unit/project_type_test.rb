@@ -51,7 +51,7 @@ class ProjectTypeTest < ActiveSupport::TestCase
   end
 
   test 'should respond to master_parent' do
-    assert project_type(1).respond_to? :master_parent
+    assert ProjectType.respond_to? :master_parent
   end
 
   test 'should have safe_attributes' do
@@ -62,11 +62,20 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert_equal [], safe_attribute_names - project_type(1).safe_attribute_names
   end
 
-  test 'should belong to master project' do
+  test 'should has_one master project' do
     association = ProjectType.reflect_on_association(:master)
     assert_equal :master, association.name
-    assert_equal :belongs_to, association.macro
+    assert_equal :has_one, association.macro
     assert_equal master_association, association.options
+  end
+
+  test 'should know its master parent project' do
+    # Trigger update process in order to create the master parent
+    changed_name = 'Update name1'
+    type = project_type(1)
+    type.name = changed_name
+    type.save
+    assert_equal MasterProject, ProjectType.master_parent.class
   end
 
   test 'should create master for new project type' do
@@ -75,13 +84,12 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert_equal name, new_project_type.master.name
   end
 
-  test 'should update master for existing project type' do
+  test 'should update master of existing project type' do
     changed_name = 'Changed name1'
     type = project_type(1)
     type.name = changed_name
     type.save
     assert_equal changed_name, type.master.name
-    assert_equal type.master_project_id, type.master.id
   end
 
   test 'should have many projects' do
@@ -100,12 +108,10 @@ class ProjectTypeTest < ActiveSupport::TestCase
     %w[name
        description
        position
-       master_project_id]
+       is_master_parent]
   end
 
   def master_association
-    Hash({ class_name: 'MasterProject',
-           foreign_key: :master_project_id,
-           autosave: true})
+    Hash({ class_name: 'MasterProject'})
   end
 end

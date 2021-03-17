@@ -19,14 +19,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class AddMasterProjectIdToProjectTypes < ActiveRecord::Migration[4.2]
+class AddIsMasterParentToProjectTypes < ActiveRecord::Migration[4.2]
   def self.up
-    add_column :project_types, :master_project_id, :integer, null: true unless column_exists?(:project_types, :master_project_id)
-    add_index :project_types, :master_project_id unless index_exists?(:project_types, :master_project_id)
+    add_column :project_types, :is_master_parent, :boolean, default: false, null: false unless column_exists?(:project_types, :is_master_parent)
+    add_index :project_types, :is_master_parent unless index_exists?(:project_types, :is_master_parent)
   end
 
   def self.down
-    remove_index :project_types, :master_project_id if index_exists?(:project_types, :master_project_id)
-    remove_column :project_types, :master_project_id if column_exists?(:project_types, :master_project_id)
+    remove_index :project_types, :is_master_parent if index_exists?(:project_types, :is_master_parent)
+    remove_column :project_types, :is_master_parent if column_exists?(:project_types, :is_master_parent)
   end
 end

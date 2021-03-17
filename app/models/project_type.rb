@@ -25,29 +25,31 @@ class ProjectType < ActiveRecord::Base
 
   has_many :projects
 
-  belongs_to :master, 
-              class_name: 'MasterProject', 
-              foreign_key: :master_project_id, autosave: true
+  has_one :master, 
+          class_name: 'MasterProject'
 
   delegate :is_public?, to: :master, allow_nil: true
-  delegate :parent, to: :master, prefix: :master
  
   validates_presence_of :name
   validates_uniqueness_of :name
 
-  after_commit do |project_type|
-    project_type.send :update_master
-  end
+  after_commit :update_master, on: %i[create update]
 
   acts_as_positioned
 
   scope :sorted, -> { order(:position) }
 
+  def self.master_parent
+    self.includes(:master).where(is_master_parent: true).take&.master
+  end
+
+  delegate :master_parent, to: :class
+ 
   safe_attributes(
     :name,
     :description,
     :position,
-    :master_project_id
+    :is_master_parent
   )
 
   private
@@ -58,9 +60,12 @@ class ProjectType < ActiveRecord::Base
     if self.master
       self.master.update_attributes(master_attributes)
     else
-      self.master = create_master_project
-      save
+      create_master_project
     end
+  end
+
+  def name_unchanged?
+    !saved_change_to_name? 
   end
 
   def create_master_project
@@ -70,15 +75,16 @@ class ProjectType < ActiveRecord::Base
   def master_attributes
     { name: self.name,
       identifier: master_identifier,
-      parent_id: MasterProject.master_parent.id,
+      parent_id: master_parent_id,
       project_type_id: self.id }
-  end
-
-  def name_unchanged?
-    !saved_change_to_name? 
   end
 
   def master_identifier
     name.parameterize
   end
+
+  def master_parent_id
+    master_parent&.id
+  end
+
 end

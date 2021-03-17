@@ -3,6 +3,7 @@ project_type_001:
   name: name1
   description: description1
   position: 1
+  is_master_parent: true
 
 project_type_002:
   id: 2

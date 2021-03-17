@@ -22,36 +22,36 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
 class MasterProjectTest < ActiveSupport::TestCase
-  extend ProjectTypes::LoadFixtures
+  # extend ProjectTypes::LoadFixtures
 
-  fixtures :projects,
-          :members, :member_roles, :roles, :users,
-          :trackers, :projects_trackers, :issue_statuses,
-          :project_types
+  # fixtures :projects,
+  #         :members, :member_roles, :roles, :users,
+  #         :trackers, :projects_trackers, :issue_statuses,
+  #         :project_types
 
-  test 'should respond to of' do
-    assert MasterProject.respond_to? :of
-  end
+  # test 'should respond to of' do
+  #   assert MasterProject.respond_to? :of
+  # end
 
 
-  test 'should respond to master_project?' do
-    assert master.respond_to? :master_project?, true
-  end
+  # test 'should respond to master_project?' do
+  #   assert master.respond_to? :master_project?, true
+  # end
 
-  test 'should be a master project' do
-    assert master.send :master_project?
-  end
+  # test 'should be a master project' do
+  #   assert master.send :master_project?
+  # end
 
-  test 'should create master parent' do
-    assert master
-    assert_equal 'Masterobjekte', master.name
-  end
+  # test 'should create master parent' do
+  #   assert master
+  #   assert_equal 'Masterobjekte', master.name
+  # end
 
-  private
+  # private
 
-  def master
-    MasterProject.master_parent
-  end
+  # def master
+  #   MasterProject.master_parent
+  # end
 
 end
 

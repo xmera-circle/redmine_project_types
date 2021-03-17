@@ -20,20 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class MasterProject < Project
-
-  class << self
-    def of(project_type)
-      name = project_type.name
-      find_or_create_by(name: name, 
-                        identifier: name.parameterize,
-                        parent_id: master_parent.id)
-    end
-
-    def master_parent
-      find_or_create_by(name: 'Masterobjekte',
-                        identifier: name.parameterize)
-    end
-  end
+  class << self; end
 
   private
   

@@ -58,9 +58,10 @@ module ProjectTypes
     end
 
     def any?
-      return false unless table_found?
+      false
+      #return false unless table_found?
 
-      ProjectType.any?
+      # ProjectType.any?
     end
 
     private
