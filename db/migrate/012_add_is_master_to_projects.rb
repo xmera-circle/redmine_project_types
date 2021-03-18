@@ -1,5 +1,5 @@
-<%
 # frozen_string_literal: true
+
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
@@ -17,18 +17,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
-%>
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-<% unless @project.master_project? %>
-	<%= error_messages_for 'projects' %>
-	<%= tag.p do %>
-		<%= label(:project, :project_type_id) do %>
-			<%= l(:label_project_type) %>
-				<% if false %>
-					<span class="required"> *</span>
-				<% end %>
-		<% end %>
-		<%= f.collection_select(:project_type_id, ::ProjectType.without_master_parent.sorted.collect, :id, :name, {include_blank: "--- #{l(:actionview_instancetag_blank_option)} ---"}) %> 
-	<% end %>
-<% end %>
+class AddIsMasterToProjects < ActiveRecord::Migration[4.2]
+  def self.up
+    add_column :projects, :is_master, :boolean, default: false, null: false unless column_exists?(:projects, :is_master)
+    add_index :projects, :is_master unless index_exists?(:projects, :is_master)
+  end
+
+  def self.down
+    remove_index :projects, :is_master if index_exists?(:projects, :is_master)
+    remove_column :projects, :is_master if column_exists?(:projects, :is_master)
+  end
+end

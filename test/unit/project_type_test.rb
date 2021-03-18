@@ -60,6 +60,10 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert ProjectType.respond_to? :master_parent
   end
 
+  test 'should respond to is_master_parent?' do
+    assert project_type(1).respond_to? :is_master_parent?
+  end
+
   test 'should have safe_attributes' do
     # The difference is a more stable criteria since a longer list on the right
     # does not compromise the minimum requirement on the left.

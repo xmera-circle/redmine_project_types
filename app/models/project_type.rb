@@ -41,6 +41,7 @@ class ProjectType < ActiveRecord::Base
   acts_as_positioned
 
   scope :sorted, -> { order(:position) }
+  scope :without_master_parent, -> { where(is_master_parent: false) }
 
   def self.master_parent
     self.includes(:master).where(is_master_parent: true).take&.master
@@ -55,10 +56,14 @@ class ProjectType < ActiveRecord::Base
     :is_master_parent
   )
 
+  def is_master_parent?
+    self.is_master_parent
+  end
+
   private
 
   def update_master
-    return if self.master && name_unchanged? 
+    return if self.master && name_unchanged?
 
     if self.master
       self.master.update_attributes(master_attributes)
@@ -69,6 +74,10 @@ class ProjectType < ActiveRecord::Base
 
   def name_unchanged?
     !saved_change_to_name? 
+  end
+
+  def master_parent_unchanged?
+    !saved_change_to_is_master_parent?
   end
 
   def create_master_project
@@ -85,7 +94,8 @@ class ProjectType < ActiveRecord::Base
     { name: self.name,
       identifier: master_identifier,
       parent_id: master_parent_id,
-      project_type_id: self.id }
+      project_type_id: self.id,
+      is_master: true }
   end
 
   def master_identifier

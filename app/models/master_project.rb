@@ -23,11 +23,6 @@ class MasterProject < Project
   belongs_to :project_type,
               inverse_of: :master
 
-  class << self; end
+  scope :list, -> { where(is_master: true) }
 
-  private
-  
-  def master_project?
-    true
-  end
 end

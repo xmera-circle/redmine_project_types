@@ -26,7 +26,7 @@ Deface::Override.new(
   insert_top: 'div.box.tabular',
   text: '<%= call_hook(:view_projects_form_top, :project => @project, :f => f) %>',
   original: '5d0124c1829499ebafc294594acf1f585faf0938',
-  disabled: ProjectTypes.missing?,
+#  disabled: ProjectTypes.missing?,
   namespaced: true
 )
 

@@ -30,11 +30,16 @@ class MasterProjectTest < ActiveSupport::TestCase
           :project_types
 
   test 'should respond to master_project?' do
-    assert master.respond_to? :master_project?, true
+    assert master.respond_to? :master_project?
   end
 
   test 'should be a master project' do
-    assert master.send :master_project?
+    assert master.master_project?
+  end
+
+  test 'should find all master projects' do
+    master
+    assert_equal 1, MasterProject.list.count
   end
 
   private
@@ -42,7 +47,8 @@ class MasterProjectTest < ActiveSupport::TestCase
   def master
     MasterProject.create(name: 'Name1', 
                         identifier: 'name1',
-                        project_type_id: 1)
+                        project_type_id: 1,
+                        is_master: true)
   end
 end
 

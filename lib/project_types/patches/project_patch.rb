@@ -28,7 +28,6 @@ module ProjectTypes
         base.prepend(InstanceMethods)
         base.class_eval do
           include Redmine::I18n
-        #  include ProjectTypes::Switch::Modules
           belongs_to :project_type,
                       inverse_of: :projects
           safe_attributes :project_type_id
@@ -61,6 +60,26 @@ module ProjectTypes
       end
 
       module InstanceMethods
+
+        ##
+        # It is assumed to identify a master project if 
+        # it fulfills the following criteria:
+        # 
+        #   * identifier is derived of the projects name
+        #   * projects name is identical to its project type name
+        #
+        def master_project?
+          self.is_master
+        end
+
+        private
+
+        def presence_of_project_type_id 
+          return if master_project?
+
+          errors.add :project_type, :error_project_type_missing unless project_type_id.present?
+        end
+
         # def enable_switch(name)
         #   self.class.enable_switch(name)
         # end
@@ -120,8 +139,6 @@ module ProjectTypes
         #   delete_custom_fields_after_project_type_reassignment
         # end
 
-        private
-
         ##
         # When a project type of the underlying project changes the assigned
         # project custom fields will be checked. If they store values a validation
@@ -151,17 +168,6 @@ module ProjectTypes
         # def values_present?
         #   custom_field_values.any?(&:value_present?)
         # end
-
-        def presence_of_project_type_id
-          return if master_project?
-
-          errors.add :project_type, :error_project_type_missing unless project_type_id.present?
-        end
-
-        def master_project?
-          false
-        end
-
 
         ##
         # This method is analogous to
