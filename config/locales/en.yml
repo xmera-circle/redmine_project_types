@@ -34,7 +34,8 @@ en:
           attributes:
             project_type:
               error_project_type_missing: needs to be selected.
-
+  # Warnings
+  warning_master_is_missing: There is no master project.
   # Fields
   field_project_type: Project Type
   field_is_master_parent: Parent project of all master projects

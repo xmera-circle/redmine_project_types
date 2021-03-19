@@ -34,15 +34,21 @@ module ProjectTypes
              :enabled_modules, :enumerations, :boards, :messages,
              :attachments, :custom_fields, :time_entries,
              :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions,
-             :project_types,
-             :enabled_project_type_modules
+             :project_types
 
     def setup
       log_user('admin', 'admin')
     end
 
     test 'should create project with project type' do
-      skip
+      project_type = ProjectType.create(name: 'Change Project')
+      master = MasterProject.list.last
+      version_name = 'Kick Off'
+      master.versions << Version.create(name: version_name)
+
+      assert_equal 1, MasterProject.list.count
+      assert_equal 7, Project.count
+
       assert_difference 'Project.count' do
         post projects_path, params: {
           project: {
@@ -51,13 +57,32 @@ module ProjectTypes
             homepage: 'http://weblog',
             identifier: 'blog',
             is_public: true,
-            project_type_id: 1
+            project_type_id: project_type.id
           }
         }
       end
       assert_redirected_to settings_project_path(id: 'blog')
-      assert_equal 1, Project.last.project_type_id
-      assert_not Project.last.is_public?
+      
+      new_project = Project.last
+      assert_equal project_type.id, new_project.project_type_id
+      assert new_project.versions.map(&:name).include? version_name
+    end
+
+    test 'should create project without project type' do
+      assert_difference 'Project.count' do
+        post projects_path, params: {
+          project: {
+            name: 'Default Project',
+            description: 'Default project without project type',
+            homepage: 'http://default-project',
+            identifier: 'default-project',
+            is_public: false,
+            project_type_id: nil
+          }
+        }
+      end
+      assert_redirected_to settings_project_path(id: 'default-project')
+      assert_not Project.last.project_type_id
     end
 
     ##

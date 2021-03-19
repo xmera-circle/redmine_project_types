@@ -35,6 +35,8 @@ de:
             project_type:
               error_project_type_missing: muss ausgewählt werden.
 
+  # Warnings
+  warning_master_is_missing: Es gibt kein Masterprojekt.
   # Fields
   field_project_type: Projekttyp
   field_is_master_parent: Elternprojekt aller Masterprojekte 

@@ -32,6 +32,7 @@ require 'project_types/patches/issue_custom_field_patch'
 require 'project_types/patches/project_custom_field_patch'
 require 'project_types/patches/project_patch'
 require 'project_types/patches/project_query_patch'
+require 'project_types/patches/projects_controller_patch'
 require 'project_types/patches/tracker_patch'
 
 # Association
