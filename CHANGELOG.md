@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## unreleased
 
+### Added
+
+* master projects as copy template for new projects
+
+### Deleted
+
+* configuration of project types w.r.t. trackers, custom_fields, enabled modules
 
 ## 3.0.3 - 2021-03-01
 
