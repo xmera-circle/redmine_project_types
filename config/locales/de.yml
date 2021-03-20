@@ -1,43 +1,34 @@
 # German strings go here for Rails i18n
 de:
   # Permissions
-  permission_view_project_types: Projekttypen ansehen
-  permission_manage_project_types: Projekttypen verwalten
+  permission_add_project_type: Projekttyp erstellen
   
   # Projektmodule
-  project_module_project_types: Projekttypen
+  project_module_project_types: Projekttyp
   
   # Labels
+  label_no_selection: Keine Auswahl
+  label_project_type: Projekttyp
   label_project_type_plural: Projekttypen
   label_project_type_new: Neuer Projekttyp
   label_project_type_name: Bezeichnung
   label_project_type_value: Wert
   label_project_type_description: Beschreibung
-  label_project_type_default_is_public: Neue Projekte mit diesem Projekttypen sind standardmäßig öffentlich
-  label_project_type_default_member_role: Rolle, die einem Nicht-Administrator zugeordnet wird, der ein Projekt mit diesem Projekttyp erstellt
-  label_project_type: Projekttyp
-  label_master_project: Masterprojekt
-  label_project_custom_fields: Projektdaten
   
   # Texts
   text_public_project_type_visibility_non_member: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind für alle angemeldeten Benutzer zugänglich!'
   text_public_project_type_visibility_anonymous: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind ohne Anmeldung frei zugänglich!'
-  
+  text_project_type_administration: Zur %{url} von Projekttypen.
+
   # Error Messages
   error_can_not_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, weil es %{count} verbundene Projekte gibt.
   error_can_not_change_project_type: Der Projekttyp kann nicht geändert werden, weil sonst Werte der benutzerdefinierten Felder verloren gehen.
   error_project_custom_field_has_projects_assigned: Das benutzerdefinierte Projektfeld kann nicht geändert werden, weil es %{count} verbundene Projekte gibt.
-  activerecord:
-    errors:
-      models:
-        project:
-          attributes:
-            project_type:
-              error_project_type_missing: muss ausgewählt werden.
 
   # Warnings
-  warning_master_is_missing: Es gibt kein Masterprojekt.
+  warning_project_type_is_missing: Es gibt keinen Projekttyp.
+
   # Fields
   field_project_type: Projekttyp
-  field_is_master_parent: Elternprojekt aller Masterprojekte 
+  field_is_master: Ist Projekttyp?
   

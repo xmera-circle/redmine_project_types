@@ -29,15 +29,14 @@ module ProjectTypes
 
       module InstanceMethods
         ##
-        # Replicate the corresponding master project if and only if there is
-        # a project type given.
+        # Replicate the project master if and only if the master is given.
         #
         # @override This method is overwritten from ProjectsController#create.
         #   It is almost identical to ProjectsController#copy unless it is 
         #   separated into single methods.
         #
         def create
-          return super unless project_type_id.present?
+          return super unless project_type_id.positive?
 
           prepare_source_project
           prepare_target_project
@@ -45,7 +44,7 @@ module ProjectTypes
           if @source_project
             replicate(@source_project, @project)
           else
-            flash[:warning] = l(:warning_master_is_missing)
+            flash[:warning] = l(:warning_project_type_is_missing)
             redirect_to settings_project_path(@project)
           end
         rescue ActiveRecord::RecordNotFound
@@ -56,12 +55,11 @@ module ProjectTypes
         private
 
         def project_type_id
-          params[:project][:project_type_id]
+          params[:project][:project_type_id].to_i
         end
 
         def prepare_source_project
-          project_type = ProjectType.find(project_type_id.to_i)
-          @source_project = project_type.master
+          @source_project = ProjectType.projects.find(project_type_id)
         end
 
         def prepare_target_project

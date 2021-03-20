@@ -29,12 +29,12 @@ class MasterProjectTest < ActiveSupport::TestCase
           :trackers, :projects_trackers, :issue_statuses,
           :project_types
 
-  test 'should respond to master_project?' do
-    assert master.respond_to? :master_project?
+  test 'should respond to project_type?' do
+    assert master.respond_to? :project_type?
   end
 
   test 'should be a master project' do
-    assert master.master_project?
+    assert master.project_type?
   end
 
   test 'should find all master projects' do

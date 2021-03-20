@@ -23,95 +23,50 @@ class ProjectTypesController < ApplicationController
   layout 'admin'
   self.main_menu = false
 
-  helper :custom_fields
+  helper :admin
 
   before_action :require_admin
+  before_action :find_project, except: %[index]
+  require_sudo_mode :destroy
 
   def index
-    @project_types = ProjectType.includes(:master).sorted.to_a
+    @status = params[:status] || 1
+
+    scope = ProjectType.projects.status(@status).sorted
+    scope = scope.like(params[:name]) if params[:name].present?
+
+    @project_count = scope.count
+    @project_pages = Paginator.new @project_count, per_page_option, params['page']
+    @projects = scope.limit(@project_pages.per_page).offset(@project_pages.offset).to_a
+
+    render :action => "projects", :layout => false if request.xhr?
   end
 
-  def new
-    @issue_custom_fields = IssueCustomField.sorted.to_a
-    @project_custom_fields = ProjectCustomField.sorted.to_a
-    @project_type = ProjectType.new
-  end
-
-  def create
-    @issue_custom_fields = IssueCustomField.sorted.to_a
-    @project_custom_fields = ProjectCustomField.sorted.to_a
-    @project_type = ProjectType.new
-    saved = save_with_project_type_associations
-
-    if saved
-      flash[:notice] = l(:notice_successful_create)
-      redirect_to project_types_path
-    else
-      render :new
+  def archive
+    unless @project.archive
+      flash[:error] = l(:error_can_not_archive_project)
     end
+    redirect_to_referer_or project_types_path(:status => params[:status])
   end
 
-  def edit
-    @issue_custom_fields = IssueCustomField.sorted.to_a
-    @project_custom_fields = ProjectCustomField.sorted.to_a
-    find_project_type(secure_id_from_params)
+  def unarchive
+    unless @project.active?
+      @project.unarchive
+    end
+    redirect_to_referer_or project_types_path(:status => params[:status])
   end
 
-  def update
-    find_project_type(secure_id_from_params)
-    saved = save_with_project_type_associations
-
-    if saved
+    def destroy
+    @project_to_destroy = @project
+    if api_request? || params[:confirm]
+      @project_to_destroy.destroy
       respond_to do |format|
-        format.html do
-          flash[:notice] = l(:notice_successful_update)
-          redirect_to project_types_path
-        end
-        format.js { head 200 }
-      end
-    else
-      respond_to do |format|
-        format.html do
-          edit
-          render action: 'edit'
-        end
-        format.js { head 422 }
+        format.html { redirect_to project_types_path }
+        format.api  { render_api_ok }
       end
     end
+    # hide project in layout
+    @project = nil
   end
 
-  def destroy
-    find_project_type(secure_id_from_params)
-    if @project_type.projects.empty?
-      @project_type.destroy
-    else
-      flash[:error] = l(:error_can_not_delete_project_type, count: count)
-    end
-    redirect_to project_types_path
-  end
-
-  private
-
-  def find_project_type(id)
-    @project_type ||= ProjectType.find(id.to_i)
-  end
-
-  def secure_id_from_params
-    params[:id].to_i
-  end
-
-  def count
-    @project_type.projects.count
-  end
-
-  def save_with_project_type_associations
-    @project_type.safe_attributes = params[:project_type]
-    @project_type.save
-    saved = true
-  rescue StandardError => e
-    logger.error e.message
-    saved = false
-  ensure 
-    return saved && @project_type.save
-  end
 end

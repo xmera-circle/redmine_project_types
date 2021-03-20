@@ -22,4 +22,11 @@
 # Plugin's routes
 # See: http://guides.rubyonrails.org/routing.html
 
-resources :project_types
+scope '/admin' do
+  resources :project_types do
+    member do
+      post 'archive'
+      post 'unarchive'
+    end
+  end
+end

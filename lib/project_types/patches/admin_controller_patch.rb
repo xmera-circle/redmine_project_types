@@ -21,31 +21,26 @@
 
 module ProjectTypes
   module Patches
-    # Patches project.rb from Redmine Core
-    module ProjectPatch
+    # Patches projects_controller.rb from Redmine Core
+    module AdminControllerPatch
       def self.prepended(base)
-        base.extend(ClassMethods)
         base.prepend(InstanceMethods)
-        base.class_eval do          
-          belongs_to :project_type, -> { where(is_master: true) },
-                      foreign_key: :project_type_id,
-                      inverse_of: :relatives
-
-          scope :default, -> { where(is_master: false) }
-
-          safe_attributes :project_type_id, :is_master
-        end
       end
 
-      module ClassMethods; end
-
       module InstanceMethods
-        def project_type?
-          self.is_master
-        end
+        include Redmine::Pagination
+        
+        def projects
+          @status = params[:status] || 1
 
-        def not_project_type?
-          !project_type?
+          scope = Project.default.status(@status).sorted
+          scope = scope.like(params[:name]) if params[:name].present?
+
+          @project_count = scope.count
+          @project_pages = Paginator.new @project_count, per_page_option, params['page']
+          @projects = scope.limit(@project_pages.per_page).offset(@project_pages.offset).to_a
+
+          render :action => "projects", :layout => false if request.xhr?
         end
       end
     end
@@ -54,7 +49,7 @@ end
 
 # Apply patch
 Rails.configuration.to_prepare do
-  unless Project.included_modules.include?(ProjectTypes::Patches::ProjectPatch)
-    Project.prepend ProjectTypes::Patches::ProjectPatch
+  unless AdminController.included_modules.include?(ProjectTypes::Patches::AdminControllerPatch)
+    AdminController.prepend ProjectTypes::Patches::AdminControllerPatch
   end
 end

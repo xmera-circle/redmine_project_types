@@ -46,16 +46,27 @@ module ProjectTypes
       end
 
       module InstanceMethods
+        def initialize(attributes=nil, *args)
+          super attributes
+          self.filters.merge!({ 'is_master' => {operator: "=", values: ["0"]} })
+        end
+
         def initialize_available_filters
           super
           add_available_filter(
             'project_type_id',
             :type => :list_subprojects, :values => lambda { project_type_values }, :label => :label_project_type
           )
+          add_available_filter(
+            'is_master',
+            type: :list,
+            values: [[l(:general_text_yes), "1"], [l(:general_text_no), "0"]],
+            label: :label_project_type
+          )
         end
 
         def project_type_values
-          ProjectType.pluck(:name, :id).map {|name, id| [name, id.to_s] }
+          ProjectType.projects.pluck(:name, :id).map {|name, id| [name, id.to_s] }
         end
       end
     end

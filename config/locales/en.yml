@@ -1,41 +1,33 @@
 # English strings go here for Rails i18n
 en:
   # Permissions
-  permission_view_project_types: View Project Types
-  permission_manage_project_types: Manage Project Types
+  permission_add_project_type: Create project type
   
   # Project module
   project_module_project_types: Project Types
   
   # Labels
+  label_no_selection: No Selection
+  label_project_type: Project Type
   label_project_type_plural: Project Types
-  label_project_type_new: New Type
+  label_project_type_new: New Project Type
   label_project_type_name: Name
   label_project_type_value: Value
   label_project_type_description: Description
-  label_project_type_default_is_public: New projects of this project type are public by default
-  label_project_type_default_member_role: Role given to a non-admin user who creates a project of this project type
-  label_project_type: Project Type
-  label_master_project: Master Project
-  label_project_custom_fields: Project Data
 
   # Texts
   text_public_project_type_visibility_non_member: With this selected project type the project will become publicly available. All contents are readable for all logged users!
   text_public_project_type_visibility_anonymous: With this selected project type the project will become publicly available. All contents are readable without login!
+  text_project_type_administration: To %{url} of project types.
 
   # Error messages
   error_can_not_delete_project_type: Cannot delete project type due to %{count} related projects.
   error_can_not_change_project_type: The project type cannot be changed because custom field values would get lost.
   error_project_custom_field_has_projects_assigned: The project custom fiel cannot be changed, due to %{count} related projects.
-  activerecord:
-    errors:
-      models:
-        project:
-          attributes:
-            project_type:
-              error_project_type_missing: needs to be selected.
+
   # Warnings
-  warning_master_is_missing: There is no master project.
+  warning_project_type_is_missing: There is no project type.
+  
   # Fields
   field_project_type: Project Type
-  field_is_master_parent: Parent project of all master projects
+  field_is_master: Is project type?

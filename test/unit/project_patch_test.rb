@@ -43,12 +43,12 @@ module ProjectTypes
       assert project(id: 1).respond_to? :master
     end
 
-    test 'should respond to master_project?' do
-      assert project(id: 1).respond_to? :master_project?
+    test 'should respond to project_type?' do
+      assert project(id: 1).respond_to? :project_type?
     end
 
     test 'should not be a master project' do
-      assert_not project(id: 1).master_project?
+      assert_not project(id: 1).project_type?
     end
 
     test 'should have safe project_type_id attribute' do

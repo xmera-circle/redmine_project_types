@@ -21,48 +21,52 @@
 %>
 
 <div class="contextual">
-	<%= link_to l(:label_project_type_new), new_project_type_path, :class => 'icon icon-add' %>
+<%= link_to l(:label_project_type_new), new_project_path(is_type: 1), :class => 'icon icon-add' %>
 </div>
 
+<%= title l(:label_project_type_plural) %>
 
-<h2><%= l(:label_project_type_plural) %></h2>
-
-<% if @project_types.empty? %>
-<p class="nodata"><%= l(:label_no_data) %></p>
-<% else %>
-	<table class="list project_types">
-	  <thead><tr>
-	  <th class="name"><%=l(:label_project_type_name)%></th>
-		<th class="name"><%=l(:field_description)%></th>
-		<th class="center"><%=l(:field_is_master_parent) %></th>
-		<th class="center"><%=l(:field_is_public) %></th>
-	  <%= call_hook(:view_project_types_table_header) %>
-		<th class="name"><%=l(:label_master_project)%></th>
-	  <th></th>
-		<th></th>
-	  </tr></thead>
-	  <tbody>
-	<% for type in @project_types %>
-	  <tr>
-	  <td class="name"><%= link_to type.name, edit_project_type_path(type) %></td>
-		<td class="name"><%= type.description %></td>
-		<td class="center"><%= checked_image type.is_master_parent? %></td>
-		<td class="center"><%= checked_image type.is_public? %></td>
-		<%= call_hook(:view_project_types_table_data, :project => @project_types, :type => type) %>
-		<td class="name"><%= link_to_master type %></td>
-	  <td></td>
-	  <td class="buttons">
-	    <%= reorder_handle(type) %>
-	    <%= delete_link project_type_path(type) %>
-	  </td>
-	  </tr>
-	<% end %>
-  	</tbody>
-	</table>
+<%= form_tag({}, :method => :get) do %>
+<fieldset><legend><%= l(:label_filter_plural) %></legend>
+<label for='status'><%= l(:field_status) %>:</label>
+<%= select_tag 'status', project_status_options_for_select(@status), :class => "small", :onchange => "this.form.submit(); return false;"  %>
+<label for='name'><%= l(:label_project_type) %>:</label>
+<%= text_field_tag 'name', params[:name], :size => 30 %>
+<%= submit_tag l(:button_apply), :class => "small", :name => nil %>
+<%= link_to l(:button_clear), project_types_path, :class => 'icon icon-reload' %>
+</fieldset>
 <% end %>
+&nbsp;
 
-<% html_title(l(:label_project_type_plural)) -%>
-
-<%= javascript_tag do %>
-  $(function() { $("table.project_types tbody").positionedItems(); });
+<% if @projects.any? %>
+<div class="autoscroll">
+<table class="list">
+  <thead><tr>
+  <th class= 'name'><%=l(:label_project_type)%></th>
+  <th><%=l(:field_is_public)%></th>
+  <%= call_hook(:view_project_type_table_header) %>
+  <th><%=l(:field_created_on)%></th>
+  <th></th>
+  </tr></thead>
+  <tbody>
+<% project_tree(@projects, :init_level => true) do |project, level| %>
+  <tr class="<%= project.css_classes %> <%= level > 0 ? "idnt idnt-#{level}" : nil %>">
+  <td class="name"><span><%= link_to_project_settings(project, {}, :title => project.short_description) %></span></td>
+  <td><%= checked_image project.is_public? %></td>
+  <%= call_hook(:view_project_type_table_data, :project => project) %>
+  <td><%= format_date(project.created_on) %></td>
+  <td class="buttons">
+    <%= link_to(l(:button_archive), archive_project_type_path(project, :status => params[:status]), :data => {:confirm => l(:text_are_you_sure)}, :method => :post, :class => 'icon icon-lock') unless project.archived? %>
+    <%= link_to(l(:button_unarchive), unarchive_project_type_path(project, :status => params[:status]), :method => :post, :class => 'icon icon-unlock') if project.archived? %>
+    <%= link_to(l(:button_copy), copy_project_path(project), :class => 'icon icon-copy') %>
+    <%= link_to(l(:button_delete), project_type_path(project), :method => :delete, :class => 'icon icon-del') %>
+  </td>
+  </tr>
+<% end %>
+  </tbody>
+</table>
+</div>
+<span class="pagination"><%= pagination_links_full @project_pages, @project_count %></span>
+<% else %>
+<p class="nodata"><%= l(:label_no_data) %></p>
 <% end %>

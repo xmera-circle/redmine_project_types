@@ -37,6 +37,10 @@ Redmine::Plugin.register :redmine_project_types do
        first: true
 end
 
+Redmine::AccessControl.map do |map|
+  map.permission :add_project_type, {:projects => [:new, :create, :edit, :update]}, :require => :loggedin
+end
+
 # Adds the project types app/overrides directory to Rails' search paths for deface overrides
 Rails.application.paths['app/overrides'] ||= []
 project_types_overwrite_dir = "#{Redmine::Plugin.directory}/redmine_project_types/app/overrides"
