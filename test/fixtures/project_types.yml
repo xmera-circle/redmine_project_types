@@ -2,17 +2,14 @@ project_type_001:
   id: 1
   name: name1
   description: description1
-  position: 1
-  is_master_parent: true
+  is_master: true
 
 project_type_002:
   id: 2
   name: name2
   description: description2
-  position: 2
   
 project_type_003:
   id: 3
   name: name3
   description: description3
-  position: 3

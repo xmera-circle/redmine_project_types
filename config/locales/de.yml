@@ -19,6 +19,8 @@ de:
   text_public_project_type_visibility_non_member: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind für alle angemeldeten Benutzer zugänglich!'
   text_public_project_type_visibility_anonymous: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind ohne Anmeldung frei zugänglich!'
   text_project_type_administration: Zur %{url} von Projekttypen.
+  text_project_type_destroy_confirmation: Sind Sie sicher, dass Sie den Projekttyp und seine Inhalte löschen wollen?
+  text_relatives_destroy_warning: "Es gibt verbundene Projekte: %{value}."
 
   # Error Messages
   error_can_not_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, weil es %{count} verbundene Projekte gibt.

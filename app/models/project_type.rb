@@ -20,11 +20,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class ProjectType < Project
-
   has_many :relatives,
            class_name: 'Project',
-           inverse_of: :master
+           inverse_of: :project_type
 
-  scope :projects, -> { where(is_master: true) }
-           
+  scope :projects, -> { where(is_master: true) }        
 end

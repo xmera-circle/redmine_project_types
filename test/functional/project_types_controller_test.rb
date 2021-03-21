@@ -44,7 +44,7 @@ module ProjectTypes
     test 'index by anonymous should redirect to login form' do
       User.anonymous
       get project_types_url
-      assert_redirected_to '/login?back_url=http%3A%2F%2Fwww.example.com%2Fproject_types'
+      assert_redirected_to '/login?back_url=http%3A%2F%2Fwww.example.com%2Fadmin%2Fproject_types'
     end
 
     test 'index by user should respond with 403' do
@@ -60,87 +60,67 @@ module ProjectTypes
       assert_template 'index'
     end
 
-    test 'should get new' do
+    test 'should delete when it has no projects' do
       log_user('admin', 'admin')
-      get new_project_type_url
-      assert_response :success
-      assert_template 'new'
-    end
-
-    test 'should get edit' do
-      log_user('admin', 'admin')
-      get edit_project_type_url(id: 1)
-      assert_response :success
-      assert_template 'edit'
-    end
-
-    test 'should redirect after create' do
-      log_user('admin', 'admin')
-      assert_difference after_create do
-        post project_types_url, params: project_type_create_params
+      post projects_url, params: project_type_create_params
+      assert_redirected_to settings_project_path(ProjectType.projects.last.identifier)
+      assert_equal 1, ProjectType.projects.count
+      assert_difference 'ProjectType.projects.count', -1 do
+        delete "/admin/project_types/#{ProjectType.projects.last.identifier}", params: { confirm: 1 }
       end
       assert_redirected_to(controller: 'project_types', action: 'index')
     end
 
-    test 'should update' do
-      log_user('admin', 'admin')
-      type_to_change = ProjectType.first
-      patch project_type_url(type_to_change), params: project_type_update_params
-      type_to_change.reload
-      assert_equal 'changed', type_to_change.name
-    end
-
-    # test 'should delete when it has no projects' do
-    #   log_user('admin', 'admin')
-    #   post project_types_url, params: project_type_create_params
-    #   assert_redirected_to(controller: 'project_types', action: 'index')
-    #   assert_difference after_delete do
-    #     delete "/project_types/#{ProjectType.last.id}", params: nil
-    #   end
-    #   assert_redirected_to(controller: 'project_types', action: 'index')
-    # end
-
     test 'should not delete when it has projects' do
       log_user('admin', 'admin')
+
+      project_type = Project.find(2)
+      project_type.is_master = true
+      project_type.save
+
       project = Project.find(1)
-      project.project_type_id = 1
+      project.project_type_id = 2
       project.save
-      assert_no_difference 'ProjectType.count' do
-        delete project_type_path(id: 1)
+
+      assert_no_difference 'ProjectType.projects.count' do
+        delete "/admin/project_types/#{ProjectType.projects.last.identifier}", params: nil
       end
-      assert_equal l(:error_can_not_delete_project_type, count: 1), flash[:error].to_s
+      assert_match l(:text_project_type_destroy_confirmation), response.body
     end
 
-    test 'should not create when master project already exists' do
+    test 'should redirect to project types after archive and unarchive' do
       log_user('admin', 'admin')
-      assert_equal 3, ProjectType.count
-      assert_no_difference 'ProjectType.count' do
-        post project_types_url, params: { name: 'Subproject2' }
-      end
-      assert_template :new
+      project_type = find_project_type(id: 2)
+      post archive_project_type_path(project_type.identifier)
+      assert_redirected_to project_types_path
+      post unarchive_project_type_path(project_type.identifier)
+      assert_redirected_to project_types_path
     end
     
     private
 
+
+    def find_project_type(id:)
+      project_type = Project.find(id)
+      project_type.is_master = true
+      project_type.save
+      project_type
+    end
+
     def project_type_create_params(attributes = {})
-      { project_type:
+      { project:
         { name: 'Lore ipsum',
           description: 'for testing',
-          position: 4 }.merge(attributes) }
+          identifier: 'lore-ipsum',
+          is_master: true}.merge(attributes) }
     end
 
     def after_create_with_associates
-      { -> { ProjectType.count } => 1,
-        -> { MasterProject.count } => 1 }
+      { -> { ProjectType.count } => 1 }
     end
 
     def after_delete_with_associates
-      { -> { ProjectType.count } => -1,
-        -> { MasterProject.count } => -1 }
-    end
-
-    def is_master_parent
-      { is_master_parent: true }
+      { -> { ProjectType.count } => -1 }
     end
 
     def after_create
@@ -151,8 +131,5 @@ module ProjectTypes
       { project_type: { name: 'changed' } }
     end
 
-    def after_delete
-      { -> { ProjectType.count } => -1 }
-    end
   end
 end

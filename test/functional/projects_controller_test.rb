@@ -41,12 +41,14 @@ module ProjectTypes
     end
 
     test 'should create project with project type' do
-      project_type = ProjectType.create(name: 'Change Project')
-      master = MasterProject.list.last
-      version_name = 'Kick Off'
-      master.versions << Version.create(name: version_name)
+      project_type = ProjectType.create(name: 'Change Project',
+                                        identifier: 'change-project',
+                                        is_master: true)
 
-      assert_equal 1, MasterProject.list.count
+      version_name = 'Kick Off'
+      project_type.versions << Version.create(name: version_name)
+
+      assert_equal 1, ProjectType.projects.count
       assert_equal 7, Project.count
 
       assert_difference 'Project.count' do

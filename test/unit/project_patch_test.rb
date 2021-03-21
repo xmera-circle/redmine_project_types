@@ -39,26 +39,23 @@ module ProjectTypes
       assert_equal project_type_options, association&.options
     end
 
-    test 'should respond to master' do
-      assert project(id: 1).respond_to? :master
-    end
-
     test 'should respond to project_type?' do
       assert project(id: 1).respond_to? :project_type?
-    end
-
-    test 'should not be a master project' do
-      assert_not project(id: 1).project_type?
     end
 
     test 'should have safe project_type_id attribute' do
       assert project(id: 1).safe_attribute? 'project_type_id'
     end
 
+    test 'should have safe is_master attribute' do
+      assert project(id: 1).safe_attribute? 'is_master'
+    end
+
     private
 
     def project_type_options
-      Hash({ inverse_of: :projects })
+      Hash({ inverse_of: :relatives,
+             foreign_key: :project_type_id })
     end
 
     def project(id:, type_id: nil)

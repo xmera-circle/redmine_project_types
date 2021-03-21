@@ -26,7 +26,8 @@ class ProjectTypesController < ApplicationController
   helper :admin
 
   before_action :require_admin
-  before_action :find_project, except: %[index]
+  before_action :find_project, except: %i[index destroy]
+  before_action :find_project_type, only: %i[destroy]
   require_sudo_mode :destroy
 
   def index
@@ -39,7 +40,7 @@ class ProjectTypesController < ApplicationController
     @project_pages = Paginator.new @project_count, per_page_option, params['page']
     @projects = scope.limit(@project_pages.per_page).offset(@project_pages.offset).to_a
 
-    render :action => "projects", :layout => false if request.xhr?
+    render :action => "index", :layout => false if request.xhr?
   end
 
   def archive
@@ -56,8 +57,8 @@ class ProjectTypesController < ApplicationController
     redirect_to_referer_or project_types_path(:status => params[:status])
   end
 
-    def destroy
-    @project_to_destroy = @project
+    def destroy 
+    @project_to_destroy = @project_type
     if api_request? || params[:confirm]
       @project_to_destroy.destroy
       respond_to do |format|
@@ -67,6 +68,15 @@ class ProjectTypesController < ApplicationController
     end
     # hide project in layout
     @project = nil
+  end
+
+  private 
+
+  # Find project of id params[:id]
+  def find_project_type(identifier=params[:id])
+    @project_type = ProjectType.projects.find_by(identifier: identifier)
+  rescue ActiveRecord::RecordNotFound
+    render_404
   end
 
 end

@@ -19,6 +19,8 @@ en:
   text_public_project_type_visibility_non_member: With this selected project type the project will become publicly available. All contents are readable for all logged users!
   text_public_project_type_visibility_anonymous: With this selected project type the project will become publicly available. All contents are readable without login!
   text_project_type_administration: To %{url} of project types.
+  text_project_type_destroy_confirmation: Are you sure you want to delete this project type and related data?
+  text_relatives_destroy_warning: "There are associated projects: %{value}."
 
   # Error messages
   error_can_not_delete_project_type: Cannot delete project type due to %{count} related projects.

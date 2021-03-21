@@ -29,15 +29,13 @@ module ProjectTypes
     include ProjectTypes::CreateProjectType
     include Redmine::I18n
 
-    fixtures :users, :project_types
+    fixtures :users
 
-    test 'project type form fields' do
+    test 'project type index page' do
       log_user('admin', 'admin')
-      get new_project_type_path
+      get project_types_path
       assert_response :success
-      assert_select '#project_type_name'
-      assert_select '#project_type_description'
-      assert_select '#project_type_is_master_parent'
+      assert_match l(:label_project_type_plural), response.body
     end
    
   end
