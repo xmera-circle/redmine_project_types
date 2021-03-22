@@ -63,8 +63,8 @@ module ProjectTypes
         end
 
         def prepare_target_project
-          @project = Project.new
-          @project.safe_attributes = params[:project]
+          @project = Project.copy_from(@source_project)
+          @project.safe_attributes = target_project_params
         end
 
         def replicate(source, target)
@@ -78,6 +78,12 @@ module ProjectTypes
           # TODO: inform about that
           redirect_to settings_project_path(target)
           end
+        end
+
+        private
+        def target_project_params
+          params[:project].delete('enabled_module_names')
+          params[:project]
         end
       end
     end
