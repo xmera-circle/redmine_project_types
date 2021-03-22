@@ -5,13 +5,25 @@ module ProjectTypes
   # Provide user login test
   #
   module CreateProjectType
-    def project_type_create_params(associates)
-      { project_type:
-        { name: 'Lore ipsum',
-          description: 'for testing',
-          is_public: 0,
-          default_member_role_id: 3,
-          position: 4 }.merge(associates) }
+    def find_project_type(id:)
+      project_type = Project.find(id)
+      project_type.is_master = true
+      project_type.save
+      project_type
+    end
+
+    def project_type_params(name:)
+      { project: project_type_attributes(name: name) }
+    end
+
+    def create_project_type(name:)
+      ProjectType.create(project_type_attributes(name: name))
+    end
+
+    def project_type_attributes(name:)
+      { name: name,
+        identifier: name.parameterize,
+        is_master: true }
     end
   end
 end

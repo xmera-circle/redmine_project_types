@@ -30,16 +30,7 @@ module ProjectTypes
 
     fixtures :projects,
              :members, :member_roles, :roles, :users,
-             :trackers, :projects_trackers, :issue_statuses,
-             :project_types
-
-    def teardown
-      project_type = ProjectType.find_by_name('Lore ipsum')
-      if project_type
-        project_type.master&.delete
-        project_type.delete
-      end
-    end
+             :trackers, :projects_trackers, :issue_statuses
     
     test 'index by anonymous should redirect to login form' do
       User.anonymous
@@ -62,7 +53,7 @@ module ProjectTypes
 
     test 'should delete when it has no projects' do
       log_user('admin', 'admin')
-      post projects_url, params: project_type_create_params
+      post projects_url, params: project_type_params(name: 'ProjectType1')
       assert_redirected_to settings_project_path(ProjectType.projects.last.identifier)
       assert_equal 1, ProjectType.projects.count
       assert_difference 'ProjectType.projects.count', -1 do
@@ -96,40 +87,5 @@ module ProjectTypes
       post unarchive_project_type_path(project_type.identifier)
       assert_redirected_to project_types_path
     end
-    
-    private
-
-
-    def find_project_type(id:)
-      project_type = Project.find(id)
-      project_type.is_master = true
-      project_type.save
-      project_type
-    end
-
-    def project_type_create_params(attributes = {})
-      { project:
-        { name: 'Lore ipsum',
-          description: 'for testing',
-          identifier: 'lore-ipsum',
-          is_master: true}.merge(attributes) }
-    end
-
-    def after_create_with_associates
-      { -> { ProjectType.count } => 1 }
-    end
-
-    def after_delete_with_associates
-      { -> { ProjectType.count } => -1 }
-    end
-
-    def after_create
-      { -> { ProjectType.count } => 1 }
-    end
-
-    def project_type_update_params
-      { project_type: { name: 'changed' } }
-    end
-
   end
 end

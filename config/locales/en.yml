@@ -14,6 +14,7 @@ en:
   label_project_type_name: Name
   label_project_type_value: Value
   label_project_type_description: Description
+  label_associated_project_plural: Associated Projects
 
   # Texts
   text_public_project_type_visibility_non_member: With this selected project type the project will become publicly available. All contents are readable for all logged users!

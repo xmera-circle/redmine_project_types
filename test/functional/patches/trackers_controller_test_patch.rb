@@ -19,6 +19,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 class TrackersControllerTest
+  ##
+  # See TrackersControllerTest#should_find_editable_trackers 
+  # which is the substitute for this test.
+  #
   define_method('test_edit') do
     Tracker.find(1).project_ids = [1, 3]
 

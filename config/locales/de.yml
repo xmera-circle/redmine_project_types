@@ -14,6 +14,7 @@ de:
   label_project_type_name: Bezeichnung
   label_project_type_value: Wert
   label_project_type_description: Beschreibung
+  label_associated_project_plural: Zugehörige Projekte
   
   # Texts
   text_public_project_type_visibility_non_member: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind für alle angemeldeten Benutzer zugänglich!'

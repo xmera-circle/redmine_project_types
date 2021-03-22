@@ -20,3 +20,23 @@ label.required:after {
     content: " *";
     color: red;
 }
+/* Project Types Box */
+.controller-trackers .icon-expended.icon, .controller-trackers .icon-collapsed.icon,
+.controller-trackers ul.projects.root {
+	padding-left: 40px;
+}
+.controller-trackers fieldset{
+	border-top: none;
+}
+.controller-trackers .box .project-type-item {
+	line-height: 28px;
+}
+.controller-trackers form #project_types.box label > input[type="checkbox"] {
+	margin-top: 7px;
+}
+.controller-trackers form #project_types.box li.root label > input[type="checkbox"] {
+	margin-top: 3px;
+}
+.controller-trackers label a{
+	text-decoration: none;
+}

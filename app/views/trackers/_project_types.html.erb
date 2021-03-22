@@ -21,18 +21,14 @@
 %>
 
 <div class="splitcontentright">
-<% if ProjectType.any? %>
-  <fieldset class="box" id="tracker_project_ids">
-    <legend><%= toggle_checkboxes_link("#tracker_project_ids input[type=checkbox]") %><%= l(:label_project_type_plural) %></legend>
-  <% project_type_ids = @tracker.project_type_ids.to_a %>
-  <%= tag.ul class: 'projects root' do %>
-    <% ProjectType.all.each do |project_type| %>
-    <%= tag.li class: 'root' do %>
-     <%= content_tag('label', check_box_tag('tracker[project_type_ids][]', project_type.id, project_type_ids.include?(project_type.id), :id => nil) + ' ' + h(project_type.name)) %>
-     <% end %>
-   <% end %>
+  <% project_type_ids = @tracker.project_ids.to_a %>
+  <%=tag.fieldset class: 'box', id: 'project_types' do %>
+    <%=tag.legend do %>
+      <%= toggle_checkboxes_link("#project_types input[type=checkbox]") %><%= l(:label_project_type_plural) %>
+    <% end %>
+    <% ProjectType.projects.each do |project_type| %>
+      <%= render partial: 'project_type_with_relatives', locals: { project_type: project_type, project_type_ids: project_type_ids } %>
+    <% end %>
+    <%= hidden_field_tag('tracker[project_ids][]', '', :id => nil) %>
   <% end %>
-<%= hidden_field_tag('tracker[project_type_ids][]', '', :id => nil) %>
-</fieldset>
-<% end %>
 </div>

@@ -27,39 +27,34 @@ module ProjectTypes
   class TrackersControllerTest < ActionDispatch::IntegrationTest
     extend ProjectTypes::LoadFixtures
     include ProjectTypes::AuthenticateUser
+    include ProjectTypes::CreateProjectType
 
     fixtures :projects, :versions, :users, :email_addresses, :roles, :members,
              :member_roles, :issues, :journals, :journal_details,
              :trackers, :projects_trackers, :issue_statuses,
              :enabled_modules, :enumerations, :boards, :messages,
              :attachments, :custom_fields, :custom_values, :time_entries,
-             :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions,
-             :project_types,
-             :enabled_project_type_modules
+             :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions
 
     def setup
       log_user('admin', 'admin')
     end
 
-    test 'should assign tracker to project type and sync projects_tracker table' do
-      skip
+    test 'should find editable trackers' do
+      project_type2 = create_project_type(name: 'ProjectType2').relative_ids = [1]
+      project_type3 = create_project_type(name: 'ProjectType3').relative_ids = [2]
+      project_type4 = create_project_type(name: 'ProjectType4').relative_ids = [3]
+
       tracker = Tracker.find(1)
-      tracker.project_type_ids = [1, 3]
-      ProjectType.find(1).project_ids = [1]
-      ProjectType.find(2).project_ids = [2]
-      ProjectType.find(3).project_ids = [3]
-      put tracker_path(
-        id: 1,
-        tracker: { name: 'Renamed tracker',
-                   project_type_ids: ['', '1', '2'] }
-      )
-      assert_redirected_to action: :index
-      assert ProjectType.find(1).trackers.include? tracker
-      assert ProjectType.find(2).trackers.include? tracker
-      assert ProjectType.find(3).trackers.empty?
-      assert Project.find(1).trackers.include? tracker
-      assert Project.find(2).trackers.include? tracker
-      assert Project.find(3).trackers.empty?
+      tracker.project_ids = [1, 3]
+
+      get edit_tracker_path(id: 1)
+      assert_response :success
+
+      assert_select 'input[name=?][value="1"][checked=checked]', 'tracker[project_ids][]'
+      assert_select 'input[name=?][value="2"]:not([checked])', 'tracker[project_ids][]'
+
+      assert_select 'input[name=?][value=""][type=hidden]', 'tracker[project_ids][]'
     end
   end
 end
