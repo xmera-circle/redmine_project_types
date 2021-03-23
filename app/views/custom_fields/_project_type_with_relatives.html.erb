@@ -22,7 +22,7 @@
       
 <div id=<%= project_type.name %> class='project-type-item'>
   <%= tag.label do %>
-  <%= check_box_tag('tracker[project_ids][]', project_type.id, project_type_ids.include?(project_type.id)) + ' ' + h(project_type.name) %>
+  <%= check_box_tag('custom_field[project_ids][]', project_type.id, project_type_ids.include?(project_type.id)) + ' ' + h(project_type.name) %>
   <%= toggle_checkboxes_text_link(' (+/-)', "##{project_type.name} input[type=checkbox]") if project_type.relatives.any? %>
   <% end %>
   <% if project_type.relatives.any? %>
@@ -34,7 +34,7 @@
         <%= tag.ul class: 'projects root' do %>
           <% project_type.relatives.each do |relative| %>
             <%= tag.li class: 'root' do %>
-              <%= content_tag('label', check_box_tag('tracker[project_ids][]', relative.id, project_type_ids.include?(relative.id), :id => nil) + ' ' + h(relative.name)) %>
+              <%= content_tag('label', check_box_tag('custom_field[project_ids][]', relative.id, project_type_ids.include?(relative.id), :id => nil) + ' ' + h(relative.name)) %>
             <% end %>
           <% end %>
         <% end %>

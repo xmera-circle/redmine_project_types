@@ -26,15 +26,37 @@ module ProjectTypes
   class ProjectTypeFormTest < Redmine::IntegrationTest
     extend ProjectTypes::LoadFixtures
     include ProjectTypes::AuthenticateUser
-    include ProjectTypes::CreateProjectType
+    include ProjectTypes::ProjectTypeCreator
     include Redmine::I18n
 
-    fixtures :users
+    fixtures :projects, :issue_statuses, :issues,
+             :enumerations, :issue_categories,
+             :projects_trackers, :trackers,
+             :roles, :member_roles, :members, :users,
+             :custom_fields, :custom_values,
+             :custom_fields_projects, :custom_fields_trackers
 
-    test 'project type index page' do
+
+    test 'should identify project type index page' do
       log_user('admin', 'admin')
       get project_types_path
       assert_response :success
+      assert_match l(:label_project_type_plural), response.body
+    end
+
+    test 'should display project type box in trackers' do
+      log_user('admin', 'admin')
+      get edit_tracker_path(id: 1)
+      assert_response :success
+      assert_select '#tracker_project_ids'
+      assert_match l(:label_project_type_plural), response.body
+    end
+
+    test 'should display project type box in custom fields' do
+      log_user('admin', 'admin')
+      get edit_custom_field_path(id: 1)
+      assert_response :success
+      assert_select '#custom_field_project_ids'
       assert_match l(:label_project_type_plural), response.body
     end
    

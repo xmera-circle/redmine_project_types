@@ -27,14 +27,14 @@ module ProjectTypes
   class ProjectsControllerTest < ActionDispatch::IntegrationTest
     extend ProjectTypes::LoadFixtures
     include ProjectTypes::AuthenticateUser
+    include ProjectTypes::ProjectTypeCreator
 
     fixtures :projects, :versions, :users, :email_addresses, :roles, :members,
              :member_roles, :issues, :journals, :journal_details,
              :trackers, :projects_trackers, :issue_statuses,
              :enabled_modules, :enumerations, :boards, :messages,
              :attachments, :custom_fields, :time_entries,
-             :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions,
-             :project_types
+             :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions
 
     def setup
       log_user('admin', 'admin')
@@ -47,6 +47,7 @@ module ProjectTypes
 
       version_name = 'Kick Off'
       project_type.versions << Version.create(name: version_name)
+      project_type.tracker_ids = [1,2]
 
       assert_equal 1, ProjectType.projects.count
       assert_equal 7, Project.count
@@ -68,6 +69,7 @@ module ProjectTypes
       new_project = Project.last
       assert_equal project_type.id, new_project.project_type_id
       assert new_project.versions.map(&:name).include? version_name
+      assert_equal [], new_project.tracker_ids - [1,2]
     end
 
     test 'should create project without project type' do
@@ -147,7 +149,7 @@ module ProjectTypes
     end
 
     def project_type(id:)
-      ProjectType.find(id.to_i)
+      find_project_type(id: id)
     end
 
     def project_custom_field(id:)

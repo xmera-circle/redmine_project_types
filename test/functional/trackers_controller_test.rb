@@ -27,7 +27,7 @@ module ProjectTypes
   class TrackersControllerTest < ActionDispatch::IntegrationTest
     extend ProjectTypes::LoadFixtures
     include ProjectTypes::AuthenticateUser
-    include ProjectTypes::CreateProjectType
+    include ProjectTypes::ProjectTypeCreator
 
     fixtures :projects, :versions, :users, :email_addresses, :roles, :members,
              :member_roles, :issues, :journals, :journal_details,

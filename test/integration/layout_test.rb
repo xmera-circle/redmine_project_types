@@ -26,7 +26,7 @@ module ProjectTypes
   class LayoutTest < Redmine::IntegrationTest
     # extend ProjectTypes::LoadFixtures
     # include ProjectTypes::AuthenticateUser
-    # include ProjectTypes::CreateProjectType
+    # include ProjectTypes::ProjectTypeCreator
     # include Redmine::I18n
 
     # fixtures :projects, :issue_statuses, :issues,
@@ -35,7 +35,7 @@ module ProjectTypes
     #          :roles, :member_roles, :members, :users,
     #          :custom_fields, :custom_values,
     #          :custom_fields_projects, :custom_fields_trackers,
-    #          :project_types, :enabled_project_type_modules
+    #          , :enabled_project_type_modules
 
     # def test_existence_of_project_type_field_in_any_project
     #   log_user('jsmith', 'jsmith')

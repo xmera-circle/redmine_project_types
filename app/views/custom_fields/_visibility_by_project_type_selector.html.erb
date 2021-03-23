@@ -20,23 +20,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
 %>
 
-<% if ProjectTypes.any? %>
   <fieldset class="box">
     <legend>
-      <%= toggle_checkboxes_link("#custom_field_project_type_ids input[type=checkbox]:enabled") %>
+      <%= toggle_checkboxes_link("#custom_field_project_ids input[type=checkbox]:enabled") %>
       <%= l(:label_project_type_plural) %>
     </legend>
    
-    <div id="custom_field_project_type_ids">
-      <% project_type_ids = @custom_field.project_type_ids.to_a %>
+    <div id="custom_field_project_ids">
+      <% project_type_ids = @custom_field.project_ids.to_a %>
       <%= tag.ul class: 'projects root' do %>
-        <% ProjectType.all.each do |project_type| %>
-          <%= tag.li class: 'root' do %>
-            <%= content_tag('label', check_box_tag('custom_field[project_type_ids][]', project_type.id, project_type_ids.include?(project_type.id), :id => nil) + ' ' + h(project_type.name)) %>
-          <% end %>
+        <% ProjectType.projects.each do |project_type| %>
+           <%= render partial: 'project_type_with_relatives', locals: { project_type: project_type, project_type_ids: project_type_ids } %>
         <% end %>
       <% end %>
-      <%= hidden_field_tag('custom_field[project_type_ids][]', '', :id => nil) %>
+      <%= hidden_field_tag('custom_field[project_ids][]', '', :id => nil) %>
     </div>
   </fieldset>
-<% end %>

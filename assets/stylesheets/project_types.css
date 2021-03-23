@@ -22,21 +22,30 @@ label.required:after {
 }
 /* Project Types Box */
 .controller-trackers .icon-expended.icon, .controller-trackers .icon-collapsed.icon,
-.controller-trackers ul.projects.root {
+.controller-trackers ul.projects.root,
+.controller-custom_fields .icon-expended.icon, .controller-custom_fields .icon-collapsed.icon,
+.controller-custom_fields ul.projects.root {
 	padding-left: 40px;
 }
-.controller-trackers fieldset{
+.controller-trackers fieldset,
+.controller-custom_fields fieldset{
 	border-top: none;
 }
-.controller-trackers .box .project-type-item {
+.controller-trackers .box .project-type-item,
+.controller-trackers form .box label,
+.controller-custom_fields .box .project-type-item,
+.controller-custom_fields form .box label {
 	line-height: 28px;
 }
-.controller-trackers form #project_types.box label > input[type="checkbox"] {
+.controller-trackers form #project_types.box label > input[type="checkbox"],
+.controller-custom_fields form .box label > input[type="checkbox"]  {
 	margin-top: 7px;
 }
-.controller-trackers form #project_types.box li.root label > input[type="checkbox"] {
+.controller-trackers form #project_types.box li.root label > input[type="checkbox"],
+.controller-custom_fields form #project_types.box li.root label > input[type="checkbox"]  {
 	margin-top: 3px;
 }
-.controller-trackers label a{
+.controller-trackers label a,
+.controller-custom_fields label a {
 	text-decoration: none;
 }

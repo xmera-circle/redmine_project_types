@@ -24,7 +24,7 @@ Deface::Override.new(
   virtual_path: 'trackers/_form',
   name: 'remove-project-list',
   replace: 'div.splitcontentright',
-  partial: 'trackers/project_types',
+  partial: 'trackers/project_type_selection',
 #  disabled: ProjectTypes.missing?,
   original: '570b247e7ac59c8c751282f89dd9011b7fe6f945',
   namespaced: true

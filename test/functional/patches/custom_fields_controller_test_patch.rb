@@ -18,6 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 class CustomFieldsControllerTest
+  ##
+  # See CustomFieldsControllerTest#should_create_new_issue_custom_fields
+  # which is the substitute for this test.
+  #
   define_method('test_new_issue_custom_field') do
     get :new, params: {
       type: 'IssueCustomField'
@@ -34,9 +38,8 @@ class CustomFieldsControllerTest
       assert_select 'input[type=radio][name=?]', 'custom_field[visible]', 2
       assert_select 'input[type=checkbox][name=?]', 'custom_field[role_ids][]', 3
       # Projects
-
       assert_select 'input[type=checkbox][name=?]', 'custom_field[project_ids][]', 0
-      assert_select 'input[type=hidden][name=?]', 'custom_field[project_ids][]', 0
+      assert_select 'input[type=hidden][name=?]', 'custom_field[project_ids][]', 1
       assert_select 'input[type=hidden][name=type][value=IssueCustomField]'
     end
   end

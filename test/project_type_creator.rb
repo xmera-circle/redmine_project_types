@@ -4,7 +4,7 @@ module ProjectTypes
   ##
   # Provide user login test
   #
-  module CreateProjectType
+  module ProjectTypeCreator
     def find_project_type(id:)
       project_type = Project.find(id)
       project_type.is_master = true

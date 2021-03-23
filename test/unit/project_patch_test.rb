@@ -30,8 +30,7 @@ module ProjectTypes
              :members,
              :member_roles,
              :roles,
-             :users,
-             :project_types
+             :users
 
     test 'should belong_to project_type' do
       assert association = Project.reflect_on_association(:project_type)
@@ -58,11 +57,8 @@ module ProjectTypes
              foreign_key: :project_type_id })
     end
 
-    def project(id:, type_id: nil)
-      project = Project.find(id.to_i)
-      project.project_type_id = type_id
-      project.save
-      project
+    def project(id:)
+      Project.find(id.to_i)
     end
   end
 end

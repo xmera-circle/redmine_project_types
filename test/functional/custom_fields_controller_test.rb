@@ -24,6 +24,7 @@ module ProjectTypes
   class CustomFieldsControllerTest < ActionDispatch::IntegrationTest
     extend ProjectTypes::LoadFixtures
     include ProjectTypes::AuthenticateUser
+    include ProjectTypes::ProjectTypeCreator
 
     fixtures :projects, :versions, :users, :email_addresses, :roles, :members,
              :member_roles, :issues, :journals, :journal_details,
@@ -31,33 +32,23 @@ module ProjectTypes
              :enabled_modules, :enumerations, :boards, :messages,
              :attachments, :custom_fields, :custom_values, :time_entries,
              :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions,
-             :custom_fields_trackers, :custom_fields_projects,
-             :project_types, :enabled_project_type_modules
+             :custom_fields_trackers, :custom_fields_projects
 
     def setup
       log_user('admin', 'admin')
     end
 
-    test 'should assign IssueCustomField to project type and sync custom_fields_projects table' do
-      skip
-      custom_field = IssueCustomField.first
-      custom_field.project_type_ids = [1, 3]
-      ProjectType.find(1).project_ids = [1]
-      ProjectType.find(2).project_ids = [2]
-      ProjectType.find(3).project_ids = [3]
-      put custom_field_path(
-        id: custom_field.id,
-        custom_field: { name: 'Renamed issue custom field',
-                        project_type_ids: ['', '1', '2'] }
-      )
-      assert_redirected_to action: :edit
-      custom_field = IssueCustomField.first
-      assert ProjectType.find(1).issue_custom_fields.to_a.include? custom_field
-      assert ProjectType.find(2).issue_custom_fields.to_a.include? custom_field
-      assert ProjectType.find(3).issue_custom_fields.empty?
-      assert Project.find(1).issue_custom_fields.to_a.include? custom_field
-      assert Project.find(2).issue_custom_fields.to_a.include? custom_field
-      assert Project.find(3).issue_custom_fields.empty?
+    test 'should create new issue custom field' do
+      project_type2 = create_project_type(name: 'ProjectType2').relative_ids = [1]  
+      project_type3 = create_project_type(name: 'ProjectType3').relative_ids = [2]
+      project_type4 = create_project_type(name: 'ProjectType4').relative_ids = [3]
+
+      get new_custom_field_path, params: { type: 'IssueCustomField' }
+      assert_response :success
+
+      assert_select 'input[type=checkbox][name=?]', 'custom_field[project_ids][]', 6
+      assert_select 'input[type=hidden][name=?]', 'custom_field[project_ids][]'
+      assert_select 'input[type=hidden][name=type][value=IssueCustomField]'
     end
   end
 end

@@ -25,7 +25,7 @@ module ProjectTypes
   class ProjectTypesControllerTest < ActionDispatch::IntegrationTest
     extend ProjectTypes::LoadFixtures
     include ProjectTypes::AuthenticateUser
-    include ProjectTypes::CreateProjectType
+    include ProjectTypes::ProjectTypeCreator
     include Redmine::I18n
 
     fixtures :projects,

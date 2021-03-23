@@ -30,7 +30,7 @@ Deface::Override.new(
   remove: "erb[silent]:contains('IssueCustomField')",
   closing_selector: "erb[silent]:contains('end')",
   original: 'f7d6b30d173528f6f51a99565b04b9560ab75706',
-  disabled: ProjectTypes.missing?,
+#  disabled: ProjectTypes.missing?,
   namespaced: true
 )
 Deface::Override.new(
@@ -39,6 +39,6 @@ Deface::Override.new(
   remove: "erb[silent]:contains('if tab[:name]')",
   closing_selector: "erb[silent]:contains('end')",
   original: '3f3eee8b0b83eda2fade16a1a5a70027476470c7',
-  disabled: ProjectTypes.missing?,
+#  disabled: ProjectTypes.missing?,
   namespaced: true
 )

@@ -32,6 +32,6 @@ class TrackersControllerTest
     assert_select 'input[name=?][value="1"][checked=checked]', 'tracker[project_ids][]', 0
     assert_select 'input[name=?][value="2"]:not([checked])', 'tracker[project_ids][]', 0
 
-    assert_select 'input[name=?][value=""][type=hidden]', 'tracker[project_ids][]', 0
+    assert_select 'input[name=?][value=""][type=hidden]', 'tracker[project_ids][]', 1
   end
 end
