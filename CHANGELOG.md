@@ -5,16 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 4.0.0 - unreleased
 
-## unreleased
+### Changed
+
+* project types to be a subclass of projects
+* project types index page to be similar to projects index page in admin area
 
 ### Added
 
-* master projects as copy template for new projects
+* project type master projects as copy template for new projects
+* project type master filter in projects list in application area
+* project custom field checkboxes in project settings page of default projects
+  and project type masters
 
 ### Deleted
 
 * configuration of project types w.r.t. trackers, custom_fields, enabled modules
+* tables accompanied with project type, trackers, and enabled modules
 
 ## 3.0.3 - 2021-03-01
 
@@ -133,8 +141,7 @@ there are projects and project types but no assignment between them.
 * Gemfile with gem deface
 * test fixtures
 
-0.2.5 *2019-02-18*
-------------------
+## 0.2.5 - 2019-02-18
 
     Enabled Modules
     Custom Field Synchronization
@@ -150,21 +157,19 @@ there are projects and project types but no assignment between them.
 * [MODIFIED]: The same as above for default module but for trackers.
 * [ADDED]: Adds synchronization of custom fields in default trackers.
 
-
-0.2.4 *2019-02-09*
-------------------
+## 0.2.4 - 2019-02-09
 
     Plugin Settings
 
 * [DELETED]: Deletes all plugin settings related code, files, dirs.
 
-0.2.3 *2019-01-28*
-------------------
+## 0.2.3 - 2019-01-28
+
 	Labels
-    Projects Modules
-    Project Type Assignment
-    Projects Modules, Trackers, Custom Fields
-    Internationalisation
+  Projects Modules
+  Project Type Assignment
+  Projects Modules, Trackers, Custom Fields
+  Internationalisation
 
 * [MODIFIED]: Modifies some labels.
 * [MODIFIED]: Changes readonly attribute for project modules into disabled.
@@ -172,14 +177,13 @@ there are projects and project types but no assignment between them.
 * [MODIFIED]: Fixes/refactors synchronisation in project modules, trackers, and custom fields.
 * [MODIEFIED]: Adjusts all translations to project instead of object.
 
-0.2.2 *2019-01-15*
-------------------
+## 0.2.2 - 2019-01-15
 
 	Redmine Main Menu
-    Requirements
-    Mitrations
-    Copyright Year
-    Projects Modules, Trackers, Custom Fields
+  Requirements
+  Mitrations
+  Copyright Year
+  Projects Modules, Trackers, Custom Fields
 	
 * [MODIFIED]: Disables Redmine main menu when in admin area of project types.
 * [MODIFIED]: Reworked some requirements of loading other files.
@@ -188,8 +192,7 @@ there are projects and project types but no assignment between them.
 * [MODIFIED]: Sets settings of module and tracker in project settings to read only and synchronizes the respective ids for the project based on project type.
 * [MODIFIED]: Sets project mapping in custom field settings to read only and synchronizes the fields for the project based on the assigned trackers.
 
-0.2.1 *2018-12-01*
-------------------
+## 0.2.1 - 2018-12-01
 
 	Redmine 3.4.6 Support
 	Redmine DMSF 1.6.1 Support
@@ -200,35 +203,34 @@ there are projects and project types but no assignment between them.
 * [FIXED]: Fixes intersection with Redmine DMSF version 1.6.1. See #157.
 * [MODIFIED]: Changes patching method from alias_method_chain to prepend.
 
-0.2.0 *2018-01-30*
-------------------
+## 0.2.0 - 2018-01-30
 
-    Code Refactoring
-    Licence Text
-    Markdown Files
-    Project View Modification with Deface
-    Redmine 3.4.4 Support
+  Code Refactoring
+  Licence Text
+  Markdown Files
+  Project View Modification with Deface
+  Redmine 3.4.4 Support
     
 * [MODIFIED]: adjusts folders and files to meet a better structure for patching redmine core
 * [ADDED]: adds the licence text to all relevant files
 * [MODIFIED]: adjusts the CHANGELOG and README to .md-files
 * [ADDED]: uses deface to place a call hook into the project view
 
-0.1.4 *2017-12-03*
+## 0.1.4 - 2017-12-03
 ------------------
 
     Label Renaming
     
 * [MODIFIED]: labels from Objekt-Typ adjusted to Objekttyp
 
-0.1.3 *2017-11-26*
+## 0.1.3 - 2017-11-26
 ------------------
 
     Requirements
     
 * [MODIFIED]: requires redmine 3.3.2 or higher
 
-0.1.2 *2017-11-23*
+## 0.1.2 - 2017-11-23
 ------------------
 
     Plugin Display 
@@ -238,14 +240,14 @@ there are projects and project types but no assignment between them.
 * [MODIFIED]: deactivates the main menu with self.main_menu = false in the corresponding controller
 * [MODIFIED]: main_menu deactivation is commented out for running the plugin in redmine version 3.3.2
  
-0.1.1 *2017-05-01*
+## 0.1.1 - 2017-05-01
 ------------------
 
     Label Renaming
     
 * [MODIFIED]: renames all project related labels to object
 
-0.1.0 *2017-04-28*
+## 0.1.0 - 2017-04-28
 ------------------
 
     Initial Version

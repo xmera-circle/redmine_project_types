@@ -29,6 +29,7 @@ en:
   error_can_not_delete_project_type: Cannot delete project type due to %{count} related projects.
   error_can_not_change_project_type: The project type cannot be changed because custom field values would get lost.
   error_project_custom_field_has_projects_assigned: The project custom fiel cannot be changed, due to %{count} related projects.
+  error_project_type_master_can_not_have_project_type: A project cannot be a project type master and having assigned a project type at the same time.
 
   # Warnings
   warning_project_type_is_missing: There is no project type.

@@ -30,6 +30,7 @@ de:
   error_can_not_change_project_type: Der Projekttyp kann nicht geändert werden, weil sonst Werte der benutzerdefinierten Felder verloren gehen.
   error_project_custom_field_has_projects_assigned: Das benutzerdefinierte Projektfeld kann nicht geändert werden, weil es %{count} verbundene Projekte gibt.
   error_project_type_master_can_not_have_project_type: Ein Projekt kann nicht Projekttyp Master sein und gleichzeitig einem Projekttypen zugeordnet sein.
+  
   # Warnings
   warning_project_type_is_missing: Es gibt keinen Projekttyp.
 
