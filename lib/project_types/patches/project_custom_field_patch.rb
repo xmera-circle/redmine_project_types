@@ -26,22 +26,43 @@ module ProjectTypes
         base.extend(ClassMethods)
         base.include(InstanceMethods)
         base.class_eval do
-          include ProjectTypes::Switch::ProjectCustomFields
-          after_initialize do
-            enable_switch(:project_custom_fields) if ProjectTypes.any?
-          end
+          has_and_belongs_to_many :projects,
+                                  join_table: "#{table_name_prefix}custom_fields_projects#{table_name_suffix}",
+                                  foreign_key: 'custom_field_id',
+                                  autosave: true
+
+          safe_attributes 'project_ids'
         end
       end
 
-      module ClassMethods
-        def enable_switch(name)
-          send name
-        end
-      end
+      module ClassMethods; end
 
       module InstanceMethods
-        def enable_switch(name)
-          self.class.enable_switch(name)
+
+        ##
+        # Validate only those project custom fields which belong to the 
+        # project. Values of fields don't belonging to the underlying project (type)
+        # are ignored. Values of projects having no project type are validated
+        # as in a default Redmine instance.
+        #
+        # @override CustomField#validate_custom_value
+        #
+        # Returns the error messages for the given value
+        # or an empty array if value is a valid value for the custom field
+        def validate_custom_value(custom_value)
+          return [] if new_project?(custom_value) || not_project_custom_field?(custom_value)
+
+          super
+        end
+
+        private
+
+        def not_project_custom_field?(custom_value)
+          !custom_value.customized.project_custom_field_ids.include?(custom_value.custom_field.id)
+        end
+
+        def new_project?(custom_value)
+          custom_value.customized.id.nil?
         end
       end
     end

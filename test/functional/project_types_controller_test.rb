@@ -66,7 +66,7 @@ module ProjectTypes
       log_user('admin', 'admin')
 
       project_type = Project.find(2)
-      project_type.is_master = true
+      project_type.is_project_type = true
       project_type.save
 
       project = Project.find(1)

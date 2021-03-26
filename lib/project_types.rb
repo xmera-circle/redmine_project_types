@@ -28,48 +28,7 @@ require 'project_types/hooks/view_projects_form_top_hook_listener'
 
 # Plugin patches
 require 'project_types/patches/admin_controller_patch'
-require 'project_types/patches/custom_fields_controller_patch'
-require 'project_types/patches/issue_custom_field_patch'
 require 'project_types/patches/project_custom_field_patch'
 require 'project_types/patches/project_patch'
 require 'project_types/patches/project_query_patch'
 require 'project_types/patches/projects_controller_patch'
-require 'project_types/patches/tracker_patch'
-
-# Association
-require 'project_types/associations/modules'
-require 'project_types/associations/trackers'
-
-# Switch
-require 'project_types/switch/modules'
-require 'project_types/switch/trackers'
-require 'project_types/switch/issue_custom_fields'
-require 'project_types/switch/project_custom_fields'
-
-# Synchronization
-require 'project_types/synchronisation/modules'
-require 'project_types/synchronisation/trackers'
-require 'project_types/synchronisation/issue_custom_fields'
-
-module ProjectTypes
-  class << self
-    def missing?
-      return false if Rails.env.test?
-
-      !any?
-    end
-
-    def any?
-      false
-      #return false unless table_found?
-
-      # ProjectType.any?
-    end
-
-    private
-
-    def table_found?(table_name = :project_types)
-      ActiveRecord::Base.connection.table_exists?(table_name)
-    end
-  end
-end

@@ -7,7 +7,7 @@ module ProjectTypes
   module ProjectTypeCreator
     def find_project_type(id:)
       project_type = Project.find(id)
-      project_type.is_master = true
+      project_type.is_project_type = true
       project_type.save
       project_type
     end
@@ -23,7 +23,7 @@ module ProjectTypes
     def project_type_attributes(name:)
       { name: name,
         identifier: name.parameterize,
-        is_master: true }
+        is_project_type: true }
     end
   end
 end

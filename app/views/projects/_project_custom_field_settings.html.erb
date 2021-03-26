@@ -1,0 +1,22 @@
+<% if @project.project_type_master? ||  params[:project_type_master].to_i == 1 || (@project.no_project_type_id? && !@project.new_record?) %>
+  <fieldset class="box tabular" id="project_custom_fields">
+  <legend>
+    <%= toggle_checkboxes_link('#project_custom_fields input[type=checkbox]:enabled') %>
+    <%=l(:label_custom_field_plural)%>
+  </legend>
+  <% if User.current.admin? %>
+    <div class="contextual">
+      <%= link_to l(:label_administration), custom_fields_path(tab: 'ProjectCustomField'), :class => "icon icon-settings" %>
+    </div>
+  <% end %>
+  <% ProjectCustomField.all.each do |custom_field| %>
+    <label class="floating">
+      <%= check_box_tag 'project[project_custom_field_ids][]', custom_field.id, (@project.project_custom_fields.include? custom_field),
+          :disabled => (custom_field.is_for_all? ? "disabled" : nil),
+          :id => nil %>
+      <%= custom_field_name_tag(custom_field) %>
+    </label>
+  <% end %>
+  <%= hidden_field_tag 'project[project_custom_field_ids][]', '' %>
+  </fieldset>
+<% end %>

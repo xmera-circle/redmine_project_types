@@ -25,7 +25,6 @@ Deface::Override.new(
   name: 'remove-project-list',
   replace: 'div.splitcontentright',
   partial: 'trackers/project_type_selection',
-#  disabled: ProjectTypes.missing?,
   original: '570b247e7ac59c8c751282f89dd9011b7fe6f945',
   namespaced: true
 )
@@ -34,7 +33,6 @@ Deface::Override.new(
   name: 'remove-custom-field-list',
   remove: "erb[silent]:contains('if @issue_custom_fields.present?')",
   closing_selector: "erb[silent]:contains('end')",
-#  disabled: ProjectTypes.missing?,
   original: 'f78ee40e91e9a5c255510544e02182d9c3da046d',
   namespaced: true
 )

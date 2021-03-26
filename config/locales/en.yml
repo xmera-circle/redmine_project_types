@@ -1,7 +1,7 @@
 # English strings go here for Rails i18n
 en:
   # Permissions
-  permission_add_project_type: Create project type
+  permission_add_project_type_master: Create project type master
   
   # Project module
   project_module_project_types: Project Types
@@ -9,12 +9,14 @@ en:
   # Labels
   label_no_selection: No Selection
   label_project_type: Project Type
-  label_project_type_plural: Project Types
+  label_project_type_plural: Project Types 
   label_project_type_new: New Project Type
+  label_project_type_master: Projekttyp Master
   label_project_type_name: Name
   label_project_type_value: Value
   label_project_type_description: Description
   label_associated_project_plural: Associated Projects
+  label_project_custom_field_plural: Project Data
 
   # Texts
   text_public_project_type_visibility_non_member: With this selected project type the project will become publicly available. All contents are readable for all logged users!
@@ -33,4 +35,4 @@ en:
   
   # Fields
   field_project_type: Project Type
-  field_is_master: Is project type?
+  field_is_project_type: Project Type Master

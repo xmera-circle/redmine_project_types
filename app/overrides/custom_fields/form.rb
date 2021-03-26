@@ -31,6 +31,5 @@ Deface::Override.new(
   closing_selector: "erb[silent]:contains('end')",
   partial: 'custom_fields/issue_related_fields',
   original: 'f53df0d8c1849ed72ee3f418def77fe73cd43c5b',
-#  disabled: ProjectTypes.missing?,
   namespaced: true
 )

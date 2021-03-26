@@ -1,7 +1,7 @@
 # German strings go here for Rails i18n
 de:
   # Permissions
-  permission_add_project_type: Projekttyp erstellen
+  permission_add_project_type_master: Projekttyp Master erstellen
   
   # Projektmodule
   project_module_project_types: Projekttyp
@@ -11,10 +11,12 @@ de:
   label_project_type: Projekttyp
   label_project_type_plural: Projekttypen
   label_project_type_new: Neuer Projekttyp
+  label_project_type_master: Projekttyp Master
   label_project_type_name: Bezeichnung
   label_project_type_value: Wert
   label_project_type_description: Beschreibung
   label_associated_project_plural: Zugehörige Projekte
+  label_project_custom_field_plural: Projektdaten
   
   # Texts
   text_public_project_type_visibility_non_member: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind für alle angemeldeten Benutzer zugänglich!'
@@ -27,11 +29,11 @@ de:
   error_can_not_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, weil es %{count} verbundene Projekte gibt.
   error_can_not_change_project_type: Der Projekttyp kann nicht geändert werden, weil sonst Werte der benutzerdefinierten Felder verloren gehen.
   error_project_custom_field_has_projects_assigned: Das benutzerdefinierte Projektfeld kann nicht geändert werden, weil es %{count} verbundene Projekte gibt.
-
+  error_project_type_master_can_not_have_project_type: Ein Projekt kann nicht Projekttyp Master sein und gleichzeitig einem Projekttypen zugeordnet sein.
   # Warnings
   warning_project_type_is_missing: Es gibt keinen Projekttyp.
 
   # Fields
   field_project_type: Projekttyp
-  field_is_master: Ist Projekttyp?
+  field_is_project_type: Projekttyp Master
   

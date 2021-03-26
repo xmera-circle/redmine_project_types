@@ -43,7 +43,7 @@ module ProjectTypes
     test 'should create project with project type' do
       project_type = ProjectType.create(name: 'Change Project',
                                         identifier: 'change-project',
-                                        is_master: true)
+                                        is_project_type: true)
 
       version_name = 'Kick Off'
       project_type.versions << Version.create(name: version_name)
@@ -60,7 +60,8 @@ module ProjectTypes
             homepage: 'http://weblog',
             identifier: 'blog',
             is_public: true,
-            project_type_id: project_type.id
+            project_type_id: project_type.id,
+            is_project_type: false
           }
         }
       end
@@ -81,7 +82,8 @@ module ProjectTypes
             homepage: 'http://default-project',
             identifier: 'default-project',
             is_public: false,
-            project_type_id: nil
+            project_type_id: nil,
+            is_project_type: false
           }
         }
       end
@@ -89,50 +91,29 @@ module ProjectTypes
       assert_not Project.last.project_type_id
     end
 
-    ##
-    # When changing the project type all other dependend fields will remain.
-    # That is, they will be submitted and flow through all validations.
-    # Especially, when there is a required custom field, the change will
-    # cause validation errors.
-    #
-    # If this test passes, then the ProjectPatch#revise_project_type_dependencies
-    # is working properly.
-    #
-    #
-    test 'should ignore project custom fields not belonging to changed project type' do
-      skip
-      project1 = project(id: 1, type: 1)
-      cf_id_project1, cf_id_project2 = prepare_project_type_custom_fields
+    test 'should create project with required custom field' do
+      project_type = project_type(id: 3)
+      cf2_id, cf3_id = prepare_project_type_custom_fields
 
-      # Change project type to 2 where the custom field is required
-      patch project_path(project1),
-            params: { project: { id: '1',
-                                 project_type_id: '2',
-                                 # This needs to be the cf of previous project_type (1)
-                                 custom_field_values: { "#{cf_id_project1}": '' } } }
-      assert :success
-      assert_equal 2, project1.reload.project_type_id
+      assert ProjectCustomField.find(cf3_id).is_required
+      assert project_type.project_custom_field_ids.include? cf3_id
 
-      # Change project type to 1 where the custom field is not required
-      patch project_path(project1),
-            params: { project: { id: '1',
-                                 project_type_id: '1',
-                                 # This needs to be the cf of previous project_type (2)
-                                 custom_field_values: { "#{cf_id_project2}": '' } } }
-      assert :success
-      assert_equal 1, project1.reload.project_type_id
-    end
-
-    test 'should save project with changing custom fields' do
-      skip
-      project2 = project(id: 2, type: 2)
-      _, cf_id_project2 = prepare_project_type_custom_fields
-      patch project_path(project2),
-            params: { project: { id: '1',
-                                 project_type_id: '2',
-                                 custom_field_values: { "#{cf_id_project2}": 'has changed' } } }
-      assert :success
-      assert_equal ['has changed'], project2.reload.custom_field_values.map(&:to_s)
+      assert_difference 'Project.count' do
+        post projects_path, params: { 
+          project: { 
+            name: 'Project1',
+            identifier: 'project1',
+            project_type_id: '3',
+            is_project_type: false
+          } 
+        }
+      end
+      project = Project.last.reload
+      assert_redirected_to settings_project_path(id: project.identifier)
+        
+      assert_equal 'Project1', project.name
+      assert_equal nil, project.custom_field_value(cf3_id)
+      assert_equal [cf3_id], project.project_custom_field_ids
     end
 
     private
@@ -157,15 +138,13 @@ module ProjectTypes
     end
 
     def prepare_project_type_custom_fields
-      # custom_field3 = project_custom_field(id: 3)
-      # custom_field3.update_attribute :is_required, true
-      custom_field1 = ProjectCustomField.generate! field_format: 'list', possible_values: %w[Foo Bar], multiple: true
-      custom_field2 = ProjectCustomField.generate! field_format: 'string', is_required: true
-      project_type1 = project_type(id: 1)
+      custom_field2 = ProjectCustomField.generate! field_format: 'list', possible_values: %w[Foo Bar], multiple: true
+      custom_field3 = ProjectCustomField.generate! field_format: 'string', is_required: true
       project_type2 = project_type(id: 2)
-      project_type1.update_attribute :project_custom_field_ids, [custom_field1.id]
+      project_type3 = project_type(id: 3)
       project_type2.update_attribute :project_custom_field_ids, [custom_field2.id]
-      [custom_field1.id, custom_field2.id]
+      project_type3.update_attribute :project_custom_field_ids, [custom_field3.id]
+      [custom_field2.id, custom_field3.id]
     end
   end
 end

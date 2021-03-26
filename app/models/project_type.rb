@@ -24,5 +24,5 @@ class ProjectType < Project
            class_name: 'Project',
            inverse_of: :project_type
 
-  scope :projects, -> { where(is_master: true) }        
+  scope :projects, -> { where(is_project_type: true) }        
 end

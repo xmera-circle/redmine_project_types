@@ -22,7 +22,7 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
 module ProjectTypes
-  class ProjectPatchTest < ActiveSupport::TestCase
+  class ProjectCustomFieldPatchTest < ActiveSupport::TestCase
     include Redmine::I18n
     extend ProjectTypes::LoadFixtures
 
@@ -30,35 +30,29 @@ module ProjectTypes
              :members,
              :member_roles,
              :roles,
-             :users
+             :users,
+             :custom_fields
 
-    test 'should belong_to project_type' do
-      assert association = Project.reflect_on_association(:project_type)
-      assert_equal :project_type, association&.name
-      assert_equal project_type_options, association&.options
+    test 'should have and belong to many projects' do
+      assert association = ProjectCustomField.reflect_on_association(:projects)
+      assert_equal :projects, association&.name
+      assert_equal project_custom_field_options, association&.options
     end
 
-    test 'should respond to project_type_master?' do
-      assert project(id: 1).respond_to? :project_type_master?
-    end
-
-    test 'should have safe project_type_id attribute' do
-      assert project(id: 1).safe_attribute? 'project_type_id'
-    end
-
-    test 'should have safe is_project_type attribute' do
-      assert project(id: 1).safe_attribute? 'is_project_type'
+    test 'should have safe project_ids attribute' do
+      assert project_custom_field.safe_attribute? 'project_ids'
     end
 
     private
 
-    def project_type_options
-      Hash({ inverse_of: :relatives,
-             foreign_key: :project_type_id })
+    def project_custom_field_options
+      Hash({ join_table: 'custom_fields_projects',
+             foreign_key: 'custom_field_id',
+             autosave: true })
     end
 
-    def project(id:)
-      Project.find(id.to_i)
+    def project_custom_field
+      CustomField.find(3)
     end
   end
 end

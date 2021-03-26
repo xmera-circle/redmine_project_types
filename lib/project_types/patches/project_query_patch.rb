@@ -46,11 +46,18 @@ module ProjectTypes
       end
 
       module InstanceMethods
+
+        ##
+        # @override ProjectQuery#initialize
+        #
         def initialize(attributes=nil, *args)
           super attributes
-          self.filters.merge!({ 'is_master' => {operator: "=", values: ["0"]} })
+          self.filters.merge!({ 'is_project_type' => {operator: "=", values: ["0"]} })
         end
 
+        ##
+        # @override ProjectQuery#initialize_available_filters
+        #
         def initialize_available_filters
           super
           add_available_filter(
@@ -58,10 +65,10 @@ module ProjectTypes
             :type => :list_subprojects, :values => lambda { project_type_values }, :label => :label_project_type
           )
           add_available_filter(
-            'is_master',
+            'is_project_type',
             type: :list,
             values: [[l(:general_text_yes), "1"], [l(:general_text_no), "0"]],
-            label: :label_project_type
+            label: :label_project_type_master
           )
         end
 

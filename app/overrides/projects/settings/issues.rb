@@ -25,7 +25,7 @@ Deface::Override.new(
   name: 'remove-trackers-from-project-settings',
   remove: '#project_trackers',
   original: 'a68a0c8d0bdb2791b8dfbaab3902352f28454484',
-  disabled: ProjectTypes.missing?,
+  disabled: true,
   namespaced: true
 )
 
@@ -34,6 +34,6 @@ Deface::Override.new(
   name: 'remove-custom-fields-from-project-settings',
   remove: '#project_issue_custom_fields',
   original: 'e3aa79ae538fa5a9bf6328294dfee94c7258326b',
-  disabled: ProjectTypes.missing?,
+  disabled: true,
   namespaced: true
 )

@@ -26,7 +26,6 @@ Deface::Override.new(
   insert_top: 'div.box.tabular',
   text: '<%= call_hook(:view_projects_form_top, :project => @project, :f => f) %>',
   original: '5d0124c1829499ebafc294594acf1f585faf0938',
-#  disabled: ProjectTypes.missing?,
   namespaced: true
 )
 
@@ -35,7 +34,7 @@ Deface::Override.new(
   name: 'remove-is-public-checkbox',
   remove: "erb[loud]:contains('f.check_box :is_public')",
   original: 'd1eb7f4396a41fc6033ffaf8c3c5626c9bb8d887',
-  disabled: ProjectTypes.missing?,
+  disabled: true,
   namespaced: true
 )
 
@@ -47,6 +46,25 @@ Deface::Override.new(
   <%= Setting.login_required? ? l(:text_public_project_type_visibility_non_member) : l(:text_public_project_type_visibility_anonymous) %>
   </div><% end %>",
   original: '5d02bcb05023a2d2af23178635bf027c36197068',
-  disabled: ProjectTypes.missing?,
+  disabled: true,
+  namespaced: true
+)
+
+Deface::Override.new(
+  virtual_path: 'projects/_form',
+  name: 'replace-project-custom-fields',
+  replace: "erb[silent]:contains('@project.visible_custom_field_values.each do |value|')",
+  closing_selector: "erb[silent]:contains('end')",
+  partial: 'projects/project_custom_fields',
+  original: '',
+  namespaced: true
+)
+
+Deface::Override.new(
+  virtual_path: 'projects/_form',
+  name: 'add-project-custom-field-settings',
+  insert_before: "erb[silent]:contains('@project.safe_attribute?(')",
+  partial: 'projects/project_custom_field_settings',
+  original: '',
   namespaced: true
 )

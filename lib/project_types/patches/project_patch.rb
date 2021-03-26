@@ -24,28 +24,85 @@ module ProjectTypes
     # Patches project.rb from Redmine Core
     module ProjectPatch
       def self.prepended(base)
-        base.extend(ClassMethods)
+        base.singleton_class.prepend(ClassMethods)
         base.prepend(InstanceMethods)
         base.class_eval do          
-          belongs_to :project_type, -> { where(is_master: true) },
+          belongs_to :project_type, -> { where(is_project_type: true) },
                       foreign_key: :project_type_id,
                       inverse_of: :relatives
 
-          scope :default, -> { where(is_master: false) }
+          has_and_belongs_to_many :project_custom_fields,
+                        lambda {order(:position)},
+                        :class_name => 'ProjectCustomField',
+                        :join_table => "#{table_name_prefix}custom_fields_projects#{table_name_suffix}",
+                        :association_foreign_key => 'custom_field_id'
 
-          safe_attributes :project_type_id, :is_master
+          scope :without_types, -> { where(is_project_type: false) }
+
+          safe_attributes :project_type_id, :is_project_type, :project_custom_field_ids
+
+          validate :validate_project_type_master_role
         end
       end
 
-      module ClassMethods; end
+      module ClassMethods
+        ##
+        # Extends with project custom fields.
+        #
+        # @override Project#copy_from
+        #
+        def copy_from(project)
+          copy = super(project)
+          project = project.is_a?(Project) ? project : Project.find(project)
+          copy.project_custom_fields = project.project_custom_fields
+          copy
+        end
+      end
 
       module InstanceMethods
-        def project_type?
-          self.is_master
+        ##
+        # Sorts out fields not belonging to a project or project type.
+        #
+        # @override Project#visible_custom_field_values
+        #
+        def visible_custom_field_values(user = nil)
+          return super if new_record? && project_custom_fields.empty?
+   
+          user ||= User.current
+          ids = project_custom_fields.map(&:id)
+          custom_field_values.select do |value|
+            next unless ids.include? value.custom_field.id
+
+            value.custom_field.visible_by?(project, user)
+          end
         end
 
-        def not_project_type?
-          !project_type?
+        def project_type_master?
+          self.is_project_type
+        end
+
+        def not_project_type_master?
+          !project_type_master?
+        end
+
+        def no_project_type_id?
+          !project_type_id
+        end
+
+        ##
+        # A default project has no project type and is not a project type master.
+        # It is just a project as it is in pure Redmine.
+        #
+        def default_project?
+          no_project_type_id? && not_project_type_master?
+        end
+
+        private
+
+        def validate_project_type_master_role
+          return unless project_type_id && is_project_type
+
+          errors.add :project, l(:error_project_type_master_can_not_have_project_type)
         end
       end
     end

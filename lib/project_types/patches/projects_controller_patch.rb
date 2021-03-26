@@ -25,15 +25,15 @@ module ProjectTypes
     module ProjectsControllerPatch
       def self.prepended(base)
         base.prepend(InstanceMethods)
+        base.after_action :sanitize_project_custom_field_values, only: %i[copy]
       end
 
       module InstanceMethods
         ##
-        # Replicate the project master if and only if the master is given.
+        # Replicate the project type if and only if a type was selected.
         #
-        # @override This method is overwritten from ProjectsController#create.
-        #   It is almost identical to ProjectsController#copy unless it is 
-        #   separated into single methods.
+        # @override ProjectsController#create.
+        #   
         #
         def create
           return super unless project_type_id.positive?
@@ -67,6 +67,9 @@ module ProjectTypes
           @project.safe_attributes = target_project_params
         end
 
+        ##
+        # Similar to ProjectsController#copy.
+        #
         def replicate(source, target)
           if target.copy(source)
             flash[:notice] = l(:notice_successful_create)
@@ -80,11 +83,39 @@ module ProjectTypes
           end
         end
 
-        private
         def target_project_params
           params[:project].delete('enabled_module_names')
+          params[:project].delete('custom_field_values')
           params[:project]
         end
+
+        ##
+        # Find and delete copied custom values of the newly created project 
+        # belonging to project custom fields which were not selected.
+        #
+        def sanitize_project_custom_field_values
+          return if @project.nil? || @project.new_record?
+
+          values_to_delete = find_values_to_delete
+          CustomValue.delete(values_to_delete.map(&:id)) if values_to_delete.any?
+        end
+
+        def find_values_to_delete
+          all_custom_values.select { |value| value_to_delete?(value.custom_field_id) }
+        end
+
+        def all_custom_values
+          CustomValue.where({ customized: @project.id, customized_type: 'Project' })
+        end
+
+        def value_to_delete?(candidate_id)
+          !valid_ids.include?(candidate_id)
+        end
+
+        def valid_ids
+          @project.project_custom_field_ids
+        end
+
       end
     end
   end
