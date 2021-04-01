@@ -21,7 +21,8 @@
 
 module ProjectTypes
   ##
-  # Provide user login test
+  # Create project types since fixtures does not work due to missing
+  # project_type table
   #
   module ProjectTypeCreator
     def find_project_type(id:)

@@ -25,6 +25,11 @@ en:
   text_project_type_destroy_confirmation: Are you sure you want to delete this project type and related data?
   text_relatives_destroy_warning: "There are associated projects: %{value}."
 
+  text_number_of_assigned_projects_to_project_type: 
+    zero: 0 assigned projects to this project type
+    one:  1 assigned project to this project type
+    other: "%{count} assigned projects to this project type"
+
   # Error messages
   error_can_not_delete_project_type: Cannot delete project type due to %{count} related projects.
   error_can_not_change_project_type: The project type cannot be changed because custom field values would get lost.

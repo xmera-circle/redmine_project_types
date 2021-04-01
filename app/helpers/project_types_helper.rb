@@ -29,4 +29,18 @@ module ProjectTypesHelper
                      "toggleCheckboxesBySelector('#{selector}')",
                      :title => "#{l(:button_check_all)} / #{l(:button_uncheck_all)}"
   end
+
+  def number_of_assigned_projects(project)
+    return unless project.project_type_master?
+
+    "#{l(:text_number_of_assigned_projects_to_project_type, count: assigned_projects(project)&.count || 0)}"
+  end
+
+  def assigned_projects(project)
+    project.respond_to?(:relatives) ? project.relatives : find_project_type(project).relatives
+  end
+
+  def find_project_type(project)
+    ProjectType.find_by(id: project.id)
+  end
 end

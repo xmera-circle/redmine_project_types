@@ -33,7 +33,7 @@ class ProjectTypesController < ApplicationController
   def index
     @status = params[:status] || 1
 
-    scope = ProjectType.projects.status(@status).sorted
+    scope = ProjectType.masters.status(@status).sorted
     scope = scope.like(params[:name]) if params[:name].present?
 
     @project_count = scope.count
@@ -57,7 +57,7 @@ class ProjectTypesController < ApplicationController
     redirect_to_referer_or project_types_path(:status => params[:status])
   end
 
-    def destroy 
+  def destroy 
     @project_to_destroy = @project_type
     if api_request? || params[:confirm]
       @project_to_destroy.destroy
@@ -74,7 +74,7 @@ class ProjectTypesController < ApplicationController
 
   # Find project of id params[:id]
   def find_project_type(identifier=params[:id])
-    @project_type = ProjectType.projects.find_by(identifier: identifier)
+    @project_type = ProjectType.masters.find_by(identifier: identifier)
   rescue ActiveRecord::RecordNotFound
     render_404
   end

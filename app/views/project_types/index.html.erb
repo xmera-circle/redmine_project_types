@@ -44,7 +44,7 @@
   <thead><tr>
   <th class= 'name'><%=l(:label_project_type)%></th>
   <th><%=l(:field_is_public)%></th>
-  <%= call_hook(:view_project_type_table_header) %>
+  <%= call_hook(:view_project_types_table_header) %>
   <th><%=l(:field_created_on)%></th>
   <th></th>
   </tr></thead>
@@ -53,7 +53,7 @@
   <tr class="<%= project.css_classes %> <%= level > 0 ? "idnt idnt-#{level}" : nil %>">
   <td class="name"><span><%= link_to_project_settings(project, {}, :title => project.short_description) %></span></td>
   <td><%= checked_image project.is_public? %></td>
-  <%= call_hook(:view_project_type_table_data, :project => project) %>
+  <%= call_hook(:view_project_types_table_data, :project => project) %>
   <td><%= format_date(project.created_on) %></td>
   <td class="buttons">
     <%= link_to(l(:button_archive), archive_project_type_path(project, :status => params[:status]), :data => {:confirm => l(:text_are_you_sure)}, :method => :post, :class => 'icon icon-lock') unless project.archived? %>

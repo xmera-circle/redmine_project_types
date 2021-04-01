@@ -54,10 +54,10 @@ module ProjectTypes
     test 'should delete when it has no projects' do
       log_user('admin', 'admin')
       post projects_url, params: project_type_params(name: 'ProjectType1')
-      assert_redirected_to settings_project_path(ProjectType.projects.last.identifier)
-      assert_equal 1, ProjectType.projects.count
-      assert_difference 'ProjectType.projects.count', -1 do
-        delete "/admin/project_types/#{ProjectType.projects.last.identifier}", params: { confirm: 1 }
+      assert_redirected_to settings_project_path(ProjectType.masters.last.identifier)
+      assert_equal 1, ProjectType.masters.count
+      assert_difference 'ProjectType.masters.count', -1 do
+        delete "/admin/project_types/#{ProjectType.masters.last.identifier}", params: { confirm: 1 }
       end
       assert_redirected_to(controller: 'project_types', action: 'index')
     end
@@ -73,8 +73,8 @@ module ProjectTypes
       project.project_type_id = 2
       project.save
 
-      assert_no_difference 'ProjectType.projects.count' do
-        delete "/admin/project_types/#{ProjectType.projects.last.identifier}", params: nil
+      assert_no_difference 'ProjectType.masters.count' do
+        delete "/admin/project_types/#{ProjectType.masters.last.identifier}", params: nil
       end
       assert_match l(:text_project_type_destroy_confirmation), response.body
     end

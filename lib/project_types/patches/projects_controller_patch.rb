@@ -29,6 +29,35 @@ module ProjectTypes
       end
 
       module InstanceMethods
+        # def update
+        #   begin
+        #     @project.safe_attributes = params[:project]
+        #     @project.save
+        #     saved = true
+        #   rescue ActiveRecord::RecordInvalid => e 
+        #     Rails.logger.error e.record.full_messages
+        #     saved = false
+        #   end
+
+        #   if saved
+        #     respond_to do |format|
+        #       format.html {
+        #         flash[:notice] = l(:notice_successful_update)
+        #         redirect_to settings_project_path(@project, params[:tab])
+        #       }
+        #       format.api  { render_api_ok }
+        #     end
+        #   else
+        #     respond_to do |format|
+        #       format.html {
+        #         settings
+        #         render :action => 'settings'
+        #       }
+        #       format.api  { render_validation_errors(@project) }
+        #     end
+        #   end
+        # end
+
         ##
         # Replicate the project type if and only if a type was selected.
         #
@@ -59,7 +88,7 @@ module ProjectTypes
         end
 
         def prepare_source_project
-          @source_project = ProjectType.projects.find(project_type_id)
+          @source_project = ProjectType.masters.find(project_type_id)
         end
 
         def prepare_target_project

@@ -38,10 +38,10 @@ module ProjectTypes
         #
         #
         def project_type_column
-          QueryAssociationColumn.new(:project_type,
-                                     :name,
-                                      sortable:  "#{Project.table_name}.project_type_id",
-                                      caption: :label_project_type)
+          QueryColumn.new(:project_type,
+                          sortable:  "#{Project.table_name}.project_type_id",
+                          groupable: true,
+                          caption: :field_project_type)
         end
       end
 
@@ -73,7 +73,7 @@ module ProjectTypes
         end
 
         def project_type_values
-          ProjectType.projects.pluck(:name, :id).map {|name, id| [name, id.to_s] }
+          ProjectType.masters.pluck(:name, :id).map {|name, id| [name, id.to_s] }
         end
       end
     end

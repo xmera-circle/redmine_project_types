@@ -49,7 +49,7 @@ module ProjectTypes
       project_type.versions << Version.create(name: version_name)
       project_type.tracker_ids = [1,2]
 
-      assert_equal 1, ProjectType.projects.count
+      assert_equal 1, ProjectType.masters.count
       assert_equal 7, Project.count
 
       assert_difference 'Project.count' do

@@ -24,6 +24,11 @@ de:
   text_project_type_administration: Zur %{url} von Projekttypen.
   text_project_type_destroy_confirmation: Sind Sie sicher, dass Sie den Projekttyp und seine Inhalte löschen wollen?
   text_relatives_destroy_warning: "Es gibt verbundene Projekte: %{value}."
+  
+  text_number_of_assigned_projects_to_project_type: 
+    zero: 0 zugeordnete Projekte zu diesem Projekttyp
+    one:  1 zugeordnetes Projekt zu diesem Projekttyp
+    other: "%{count} zugeordnete Projekte zu diesem Projekttyp"
 
   # Error Messages
   error_can_not_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, weil es %{count} verbundene Projekte gibt.

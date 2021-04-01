@@ -56,7 +56,7 @@ Deface::Override.new(
   replace: "erb[silent]:contains('@project.visible_custom_field_values.each do |value|')",
   closing_selector: "erb[silent]:contains('end')",
   partial: 'projects/project_custom_fields',
-  original: '',
+  original: '001961a490241e393156ca91d798b4c15dab1815',
   namespaced: true
 )
 
@@ -65,6 +65,6 @@ Deface::Override.new(
   name: 'add-project-custom-field-settings',
   insert_before: "erb[silent]:contains('@project.safe_attribute?(')",
   partial: 'projects/project_custom_field_settings',
-  original: '',
+  original: '924f18a5fc0dce656322716232bab93bd5680fcc',
   namespaced: true
 )
