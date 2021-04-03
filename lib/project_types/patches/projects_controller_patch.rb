@@ -29,40 +29,11 @@ module ProjectTypes
       end
 
       module InstanceMethods
-        # def update
-        #   begin
-        #     @project.safe_attributes = params[:project]
-        #     @project.save
-        #     saved = true
-        #   rescue ActiveRecord::RecordInvalid => e 
-        #     Rails.logger.error e.record.full_messages
-        #     saved = false
-        #   end
-
-        #   if saved
-        #     respond_to do |format|
-        #       format.html {
-        #         flash[:notice] = l(:notice_successful_update)
-        #         redirect_to settings_project_path(@project, params[:tab])
-        #       }
-        #       format.api  { render_api_ok }
-        #     end
-        #   else
-        #     respond_to do |format|
-        #       format.html {
-        #         settings
-        #         render :action => 'settings'
-        #       }
-        #       format.api  { render_validation_errors(@project) }
-        #     end
-        #   end
-        # end
-
         ##
         # Replicate the project type if and only if a type was selected.
         #
         # @override ProjectsController#create.
-        #   
+        #
         #
         def create
           return super unless project_type_id.positive?
@@ -104,11 +75,11 @@ module ProjectTypes
             flash[:notice] = l(:notice_successful_create)
             redirect_to settings_project_path(target)
           elsif !target.new_record?
-          # Project was created
-          # But some objects were not copied due to validation failures
-          # (eg. issues from disabled trackers)
-          # TODO: inform about that
-          redirect_to settings_project_path(target)
+            # Project was created
+            # But some objects were not copied due to validation failures
+            # (eg. issues from disabled trackers)
+            # TODO: inform about that
+            redirect_to settings_project_path(target)
           end
         end
 
@@ -119,7 +90,7 @@ module ProjectTypes
         end
 
         ##
-        # Find and delete copied custom values of the newly created project 
+        # Find and delete copied custom values of the newly created project
         # belonging to project custom fields which were not selected.
         #
         def sanitize_project_custom_field_values
@@ -144,7 +115,6 @@ module ProjectTypes
         def valid_ids
           @project.project_custom_field_ids
         end
-
       end
     end
   end

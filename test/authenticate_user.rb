@@ -25,14 +25,14 @@ module ProjectTypes
   #
   module AuthenticateUser
     def log_user(login, password)
-      get_login_page
+      login_page
       log_user_in(login, password)
       assert_equal login, User.find(user_session_id).login
     end
 
     module_function
 
-    def get_login_page
+    def login_page
       User.anonymous
       get '/login'
       assert_nil user_session_id

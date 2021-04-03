@@ -26,16 +26,16 @@ module ProjectTypes
       def self.prepended(base)
         base.singleton_class.prepend(ClassMethods)
         base.prepend(InstanceMethods)
-        base.class_eval do         
+        base.class_eval do
           belongs_to :project_type, -> { where(is_project_type: true) },
-                      foreign_key: :project_type_id,
-                      inverse_of: :relatives
+                     foreign_key: :project_type_id,
+                     inverse_of: :relatives
 
           has_and_belongs_to_many :project_custom_fields,
-                        lambda {order(:position)},
-                        :class_name => 'ProjectCustomField',
-                        :join_table => "#{table_name_prefix}custom_fields_projects#{table_name_suffix}",
-                        :association_foreign_key => 'custom_field_id'
+                                  -> { order(:position) },
+                                  class_name: 'ProjectCustomField',
+                                  join_table: "#{table_name_prefix}custom_fields_projects#{table_name_suffix}",
+                                  association_foreign_key: 'custom_field_id'
 
           scope :projects, -> { where(is_project_type: false) }
 
@@ -67,7 +67,7 @@ module ProjectTypes
         #
         def visible_custom_field_values(user = nil)
           return super if new_record? && project_custom_fields.empty?
-   
+
           user ||= User.current
           ids = project_custom_fields.map(&:id)
           custom_field_values.select do |value|
@@ -78,7 +78,7 @@ module ProjectTypes
         end
 
         def project_type_master?
-          self.is_project_type
+          is_project_type
         end
 
         def not_project_type_master?

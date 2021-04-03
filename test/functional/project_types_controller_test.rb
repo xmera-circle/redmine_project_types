@@ -31,7 +31,7 @@ module ProjectTypes
     fixtures :projects,
              :members, :member_roles, :roles, :users,
              :trackers, :projects_trackers, :issue_statuses
-    
+
     test 'index by anonymous should redirect to login form' do
       User.anonymous
       get project_types_url

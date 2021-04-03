@@ -19,10 +19,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class ProjectType < Project
+class ProjectType < Project #:nodoc:
   has_many :relatives, -> { where(status: STATUS_ACTIVE) },
            class_name: 'Project',
            inverse_of: :project_type
 
-  scope :masters, -> { where(is_project_type: true) }        
+  scope :masters, -> { where(is_project_type: true) }
 end

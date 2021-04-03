@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * project type master filter in projects list in application area
 * project custom field checkboxes in project settings page of default projects
   and project type masters
+* rubcop configuration file
 
 ### Deleted
 

@@ -29,7 +29,7 @@ module ProjectTypes
 
       module InstanceMethods
         include Redmine::Pagination
-        
+
         def projects
           @status = params[:status] || 1
 
@@ -40,7 +40,7 @@ module ProjectTypes
           @project_pages = Paginator.new @project_count, per_page_option, params['page']
           @projects = scope.limit(@project_pages.per_page).offset(@project_pages.offset).to_a
 
-          render :action => "projects", :layout => false if request.xhr?
+          render action: 'projects', layout: false if request.xhr?
         end
       end
     end

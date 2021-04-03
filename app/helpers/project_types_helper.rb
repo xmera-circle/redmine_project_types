@@ -17,23 +17,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  
-  
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+##
+# Provides some helper methods usefull for Project instances which are
+# marked as :is_project_type.
+#
 module ProjectTypesHelper
   ##
   # Similar to ApplicationHelper#toogle_checkboxes_link but uses a text instead
   # of the check icon.
   #
-  def toggle_checkboxes_text_link(text,selector)
+  def toggle_checkboxes_text_link(text, selector)
     link_to_function text,
                      "toggleCheckboxesBySelector('#{selector}')",
-                     :title => "#{l(:button_check_all)} / #{l(:button_uncheck_all)}"
+                     title: "#{l(:button_check_all)} / #{l(:button_uncheck_all)}"
   end
 
   def number_of_assigned_projects(project)
     return unless project.project_type_master?
 
-    "#{l(:text_number_of_assigned_projects_to_project_type, count: assigned_projects(project)&.count || 0)}"
+    l(:text_number_of_assigned_projects_to_project_type, count: assigned_projects(project)&.count || 0).to_s
   end
 
   def assigned_projects(project)

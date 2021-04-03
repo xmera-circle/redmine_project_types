@@ -41,9 +41,9 @@ module ProjectTypes
     end
 
     test 'should find editable trackers' do
-      project_type2 = create_project_type(name: 'ProjectType2').relative_ids = [1]
-      project_type3 = create_project_type(name: 'ProjectType3').relative_ids = [2]
-      project_type4 = create_project_type(name: 'ProjectType4').relative_ids = [3]
+      create_project_type(name: 'ProjectType2').relative_ids = [1]
+      create_project_type(name: 'ProjectType3').relative_ids = [2]
+      create_project_type(name: 'ProjectType4').relative_ids = [3]
 
       tracker = Tracker.find(1)
       tracker.project_ids = [1, 3]

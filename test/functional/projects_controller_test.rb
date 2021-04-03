@@ -47,7 +47,7 @@ module ProjectTypes
 
       version_name = 'Kick Off'
       project_type.versions << Version.create(name: version_name)
-      project_type.tracker_ids = [1,2]
+      project_type.tracker_ids = [1, 2]
 
       assert_equal 1, ProjectType.masters.count
       assert_equal 7, Project.count
@@ -66,11 +66,11 @@ module ProjectTypes
         }
       end
       assert_redirected_to settings_project_path(id: 'blog')
-      
+
       new_project = Project.last
       assert_equal project_type.id, new_project.project_type_id
       assert new_project.versions.map(&:name).include? version_name
-      assert_equal [], new_project.tracker_ids - [1,2]
+      assert_equal [], new_project.tracker_ids - [1, 2]
     end
 
     test 'should create project without project type' do
@@ -93,24 +93,24 @@ module ProjectTypes
 
     test 'should create project with required custom field' do
       project_type = project_type(id: 3)
-      cf2_id, cf3_id = prepare_project_type_custom_fields
+      _, cf3_id = prepare_project_type_custom_fields
 
       assert ProjectCustomField.find(cf3_id).is_required
       assert project_type.project_custom_field_ids.include? cf3_id
 
       assert_difference 'Project.count' do
-        post projects_path, params: { 
-          project: { 
+        post projects_path, params: {
+          project: {
             name: 'Project1',
             identifier: 'project1',
             project_type_id: '3',
             is_project_type: false
-          } 
+          }
         }
       end
       project = Project.last.reload
       assert_redirected_to settings_project_path(id: project.identifier)
-        
+
       assert_equal 'Project1', project.name
       assert_equal nil, project.custom_field_value(cf3_id)
       assert_equal [cf3_id], project.project_custom_field_ids

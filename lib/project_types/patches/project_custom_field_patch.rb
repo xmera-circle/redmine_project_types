@@ -38,9 +38,8 @@ module ProjectTypes
       module ClassMethods; end
 
       module InstanceMethods
-
         ##
-        # Validate only those project custom fields which belong to the 
+        # Validate only those project custom fields which belong to the
         # project. Values of fields don't belonging to the underlying project (type)
         # are ignored. Values of projects having no project type are validated
         # as in a default Redmine instance.

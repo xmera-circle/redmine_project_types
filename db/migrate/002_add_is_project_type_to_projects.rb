@@ -21,7 +21,8 @@
 
 class AddIsProjectTypeToProjects < ActiveRecord::Migration[4.2]
   def self.up
-    add_column :projects, :is_project_type, :boolean, default: false, null: false unless column_exists?(:projects, :is_project_type)
+    add_column :projects, :is_project_type, :boolean, default: false, null: false unless column_exists?(:projects,
+                                                                                                        :is_project_type)
     add_index :projects, :is_project_type unless index_exists?(:projects, :is_project_type)
   end
 

@@ -27,32 +27,31 @@ module ProjectTypes
         base.extend(ClassMethods)
         base.prepend(InstanceMethods)
         base.class_eval do
-          self.available_columns.append(project_type_column)
+          available_columns.append(project_type_column)
         end
       end
 
       module ClassMethods
         ##
-        # Adds the project_type attribute to be available as column in the 
+        # Adds the project_type attribute to be available as column in the
         # project query.
         #
         #
         def project_type_column
           QueryColumn.new(:project_type,
-                          sortable:  "#{Project.table_name}.project_type_id",
+                          sortable: "#{Project.table_name}.project_type_id",
                           groupable: true,
                           caption: :field_project_type)
         end
       end
 
       module InstanceMethods
-
         ##
         # @override ProjectQuery#initialize
         #
-        def initialize(attributes=nil, *args)
+        def initialize(attributes = nil, *_args)
           super attributes
-          self.filters.merge!({ 'is_project_type' => {operator: "=", values: ["0"]} })
+          filters.merge!({ 'is_project_type' => { operator: '=', values: ['0'] } })
         end
 
         ##
@@ -62,18 +61,18 @@ module ProjectTypes
           super
           add_available_filter(
             'project_type_id',
-            :type => :list_subprojects, :values => lambda { project_type_values }, :label => :label_project_type
+            type: :list_subprojects, values: -> { project_type_values }, label: :label_project_type
           )
           add_available_filter(
             'is_project_type',
             type: :list,
-            values: [[l(:general_text_yes), "1"], [l(:general_text_no), "0"]],
+            values: [[l(:general_text_yes), '1'], [l(:general_text_no), '0']],
             label: :label_project_type_master
           )
         end
 
         def project_type_values
-          ProjectType.masters.pluck(:name, :id).map {|name, id| [name, id.to_s] }
+          ProjectType.masters.pluck(:name, :id).map { |name, id| [name, id.to_s] }
         end
       end
     end

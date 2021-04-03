@@ -20,7 +20,7 @@
 
 class TrackersControllerTest
   ##
-  # See TrackersControllerTest#should_find_editable_trackers 
+  # See TrackersControllerTest#should_find_editable_trackers
   # which is the substitute for this test.
   #
   define_method('test_edit') do

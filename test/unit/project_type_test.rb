@@ -36,7 +36,7 @@ class ProjectTypeTest < ActiveSupport::TestCase
   private
 
   def relatives_options
-    Hash({ class_name: 'Project', 
+    Hash({ class_name: 'Project',
            inverse_of: :project_type })
   end
 end

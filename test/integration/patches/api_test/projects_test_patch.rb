@@ -18,16 +18,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class Redmine::ApiTest::ProjectsTest
-  original_test = instance_method("test_GET_/projects/:id.xml_should_return_the_project")
+module Redmine
+  module ApiTest
+    class ProjectsTest
+      original_test = instance_method('test_GET_/projects/:id.xml_should_return_the_project')
 
-  define_method("test_GET_/projects/:id.xml_should_return_the_project") do
+      define_method('test_GET_/projects/:id.xml_should_return_the_project') do
+        project = Project.find(1)
+        project.inherit_members = 1
+        project.project_custom_field_ids = [3]
+        project.save!
 
-    project = Project.find(1)
-    project.inherit_members = 1
-    project.project_custom_field_ids = [3]
-    project.save!
-
-    original_test.bind(self).()
+        original_test.bind(self).call
+      end
+    end
   end
 end

@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class ProjectTypesController < ApplicationController
+class ProjectTypesController < ApplicationController #:nodoc:
   layout 'admin'
   self.main_menu = false
 
@@ -40,24 +40,20 @@ class ProjectTypesController < ApplicationController
     @project_pages = Paginator.new @project_count, per_page_option, params['page']
     @projects = scope.limit(@project_pages.per_page).offset(@project_pages.offset).to_a
 
-    render :action => "index", :layout => false if request.xhr?
+    render action: 'index', layout: false if request.xhr?
   end
 
   def archive
-    unless @project.archive
-      flash[:error] = l(:error_can_not_archive_project)
-    end
-    redirect_to_referer_or project_types_path(:status => params[:status])
+    flash[:error] = l(:error_can_not_archive_project) unless @project.archive
+    redirect_to_referer_or project_types_path(status: params[:status])
   end
 
   def unarchive
-    unless @project.active?
-      @project.unarchive
-    end
-    redirect_to_referer_or project_types_path(:status => params[:status])
+    @project.unarchive unless @project.active?
+    redirect_to_referer_or project_types_path(status: params[:status])
   end
 
-  def destroy 
+  def destroy
     @project_to_destroy = @project_type
     if api_request? || params[:confirm]
       @project_to_destroy.destroy
@@ -70,13 +66,12 @@ class ProjectTypesController < ApplicationController
     @project = nil
   end
 
-  private 
+  private
 
   # Find project of id params[:id]
-  def find_project_type(identifier=params[:id])
+  def find_project_type(identifier = params[:id])
     @project_type = ProjectType.masters.find_by(identifier: identifier)
   rescue ActiveRecord::RecordNotFound
     render_404
   end
-
 end

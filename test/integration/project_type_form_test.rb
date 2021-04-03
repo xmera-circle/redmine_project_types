@@ -36,7 +36,6 @@ module ProjectTypes
              :custom_fields, :custom_values,
              :custom_fields_projects, :custom_fields_trackers
 
-
     test 'should identify project type index page' do
       log_user('admin', 'admin')
       get project_types_path
@@ -59,6 +58,5 @@ module ProjectTypes
       assert_select '#custom_field_project_ids'
       assert_match l(:label_project_type_plural), response.body
     end
-   
   end
 end
