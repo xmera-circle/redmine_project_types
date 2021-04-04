@@ -48,7 +48,6 @@ module ProjectTypes
       log_user('admin', 'admin')
       get project_types_url
       assert_response :success
-      assert_template 'index'
     end
 
     test 'should delete when it has no projects' do
