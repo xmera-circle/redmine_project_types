@@ -19,8 +19,6 @@ de:
   label_project_custom_field_plural: Projektdaten
   
   # Texts
-  text_public_project_type_visibility_non_member: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind für alle angemeldeten Benutzer zugänglich!'
-  text_public_project_type_visibility_anonymous: 'Mit diesem Projekttyp wird das Projekt öffentlich. Inhalte sind ohne Anmeldung frei zugänglich!'
   text_project_type_administration: Zur %{url} von Projekttypen.
   text_project_type_destroy_confirmation: Sind Sie sicher, dass Sie den Projekttyp und seine Inhalte löschen wollen?
   text_relatives_destroy_warning: "Es gibt verbundene Projekte: %{value}."
@@ -31,13 +29,10 @@ de:
     other: "%{count} zugeordnete Projekte zu diesem Projekttyp"
 
   # Error Messages
-  error_can_not_delete_project_type: Der Projekttyp konnte nicht gelöscht werden, weil es %{count} verbundene Projekte gibt.
-  error_can_not_change_project_type: Der Projekttyp kann nicht geändert werden, weil sonst Werte der benutzerdefinierten Felder verloren gehen.
-  error_project_custom_field_has_projects_assigned: Das benutzerdefinierte Projektfeld kann nicht geändert werden, weil es %{count} verbundene Projekte gibt.
   error_project_type_master_can_not_have_project_type: Ein Projekt kann nicht Projekttyp Master sein und gleichzeitig einem Projekttypen zugeordnet sein.
   
   # Warnings
-  warning_project_type_is_missing: Es gibt keinen Projekttyp.
+  warning_project_type_is_missing: Es gibt keinen Projekttypen.
 
   # Fields
   field_project_type: Projekttyp

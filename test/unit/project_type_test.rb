@@ -22,6 +22,12 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
 
 class ProjectTypeTest < ActiveSupport::TestCase
+  include ProjectTypes::ProjectTypeCreator
+
+  extend ProjectTypes::LoadFixtures
+
+  fixtures :projects
+
   test 'should respond to projects' do
     assert ProjectType.respond_to? :projects
   end
@@ -33,10 +39,28 @@ class ProjectTypeTest < ActiveSupport::TestCase
     assert_equal relatives_options, association&.options
   end
 
+  test 'should nullify projects project type when deleting a project type' do
+    project_type4 = create_project_type(name: 'to be deleted')
+    project1 = project(id: 1, type: project_type4.id)
+    assert_equal project_type4.id, project1.project_type_id
+    assert project_type4.destroy
+    assert_not ProjectType.find_by(id: project_type4.id)
+    project1.reload
+    assert_not project1.project_type_id
+  end
+
   private
 
   def relatives_options
     Hash({ class_name: 'Project',
+           dependent: :nullify,
            inverse_of: :project_type })
+  end
+
+  def project(id:, type: nil)
+    project = Project.find(id)
+    project.project_type_id = type
+    project.save
+    project
   end
 end

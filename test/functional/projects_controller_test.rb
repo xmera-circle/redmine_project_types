@@ -92,11 +92,11 @@ module ProjectTypes
     end
 
     test 'should create project with required custom field' do
-      project_type = project_type(id: 3)
+      project_type3 = project_type(id: 3)
       _, cf3_id = prepare_project_type_custom_fields
 
       assert ProjectCustomField.find(cf3_id).is_required
-      assert project_type.project_custom_field_ids.include? cf3_id
+      assert project_type3.project_custom_field_ids.include? cf3_id
 
       assert_difference 'Project.count' do
         post projects_path, params: {
@@ -108,12 +108,12 @@ module ProjectTypes
           }
         }
       end
-      project = Project.last.reload
-      assert_redirected_to settings_project_path(id: project.identifier)
+      project1 = Project.last.reload
+      assert_redirected_to settings_project_path(id: project1.identifier)
 
-      assert_equal 'Project1', project.name
-      assert_equal nil, project.custom_field_value(cf3_id)
-      assert_equal [cf3_id], project.project_custom_field_ids
+      assert_equal 'Project1', project1.name
+      assert_equal nil, project1.custom_field_value(cf3_id)
+      assert_equal [cf3_id], project1.project_custom_field_ids
     end
 
     private

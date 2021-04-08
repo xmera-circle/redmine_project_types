@@ -28,7 +28,7 @@
     <% end %>
     <%=tag.div id: 'tracker_project_ids' do %>
       <%= tag.ul class: 'projects root' do %>
-        <% ProjectType.masters.each do |project_type| %>
+        <% ProjectType.masters.includes(:relatives).each do |project_type| %>
           <%= render partial: 'project_type_with_relatives', locals: { project_type: project_type, project_type_ids: project_type_ids } %>
         <% end %>
       <% end %>

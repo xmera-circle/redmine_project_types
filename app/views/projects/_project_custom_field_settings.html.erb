@@ -9,9 +9,10 @@
       <%= link_to l(:label_administration), custom_fields_path(tab: 'ProjectCustomField'), :class => "icon icon-settings" %>
     </div>
   <% end %>
-  <% ProjectCustomField.all.each do |custom_field| %>
+
+  <% ProjectCustomField.all.includes(:projects).each do |custom_field| %>
     <label class="floating">
-      <%= check_box_tag 'project[project_custom_field_ids][]', custom_field.id, (@project.project_custom_fields.include? custom_field),
+      <%= check_box_tag 'project[project_custom_field_ids][]', custom_field.id, (custom_field.projects.include? @projects),
           :disabled => (custom_field.is_for_all? ? "disabled" : nil),
           :id => nil %>
       <%= custom_field_name_tag(custom_field) %>

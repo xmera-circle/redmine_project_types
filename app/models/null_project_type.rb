@@ -20,16 +20,27 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 ##
-# Defines the most important associations of a project type.
-# All other associations are defined on project level in order
-# to use the projects structure through out the application,
-# e.g. Controller, Views.
+# Substitutes Project instances where no project type is defined. This avoids
+# various nil queries.
 #
-class ProjectType < Project
-  has_many :relatives, -> { where(status: STATUS_ACTIVE) },
-           class_name: 'Project',
-           dependent: :nullify,
-           inverse_of: :project_type
+class NullProjectType
+  def name
+    '-'
+  end
 
-  scope :masters, -> { where(is_project_type: true) }
+  def id
+    nil
+  end
+
+  def to_s
+    name
+  end
+
+  def project_custom_fields
+    ProjectCustomField.none
+  end
+
+  def subordinate_ids
+    []
+  end
 end

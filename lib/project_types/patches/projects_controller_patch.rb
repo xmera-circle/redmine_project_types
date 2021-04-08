@@ -105,7 +105,9 @@ module ProjectTypes
         end
 
         def all_custom_values
-          CustomValue.where({ customized: @project.id, customized_type: 'Project' })
+          CustomValue
+            .where({ customized: @project.id, customized_type: 'Project' })
+            .includes(:customized)
         end
 
         def value_to_delete?(candidate_id)

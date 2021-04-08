@@ -29,7 +29,7 @@
     <div id="custom_field_project_ids">
       <% project_type_ids = @custom_field.project_ids.to_a %>
       <%= tag.ul class: 'projects root' do %>
-        <% ProjectType.masters.each do |project_type| %>
+        <% ProjectType.masters.includes(:relatives).each do |project_type| %>
           <%= render partial: 'project_type_with_relatives', locals: { project_type: project_type, project_type_ids: project_type_ids } %>
         <% end %>
       <% end %>

@@ -27,6 +27,8 @@ module ProjectTypes
         base.singleton_class.prepend(ClassMethods)
         base.prepend(InstanceMethods)
         base.class_eval do
+
+
           belongs_to :project_type, -> { where(is_project_type: true) },
                      foreign_key: :project_type_id,
                      inverse_of: :relatives
@@ -60,6 +62,13 @@ module ProjectTypes
       end
 
       module InstanceMethods
+        ##
+        # Replace missing project types with its null object.
+        #
+        def project_type
+          super || NullProjectType.new
+        end
+
         ##
         # Sorts out fields not belonging to a project or project type.
         #

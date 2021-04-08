@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
 %>
-<% project_name = @project.project_type_master? ? @project.name : @project.project_type&.name || '-' %>
+<% project_name = @project.project_type_master? ? @project.name : @project.project_type&.name %>
 <div class="custom-fields box">
   <h3 class="icon icon-custom-fields custom-fields"><%=l(:label_project_custom_field_plural)%></h3>
   <table class="list">
