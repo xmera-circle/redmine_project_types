@@ -31,5 +31,9 @@ class ProjectType < Project
            dependent: :nullify,
            inverse_of: :project_type
 
-  scope :masters, -> { where(is_project_type: true) }
+  scope :masters, -> { where(is_project_type: true).sorted }
+
+  def self.masters_for_select
+    masters.pluck(:name, :id)
+  end
 end

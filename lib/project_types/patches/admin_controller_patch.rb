@@ -33,7 +33,7 @@ module ProjectTypes
         def projects
           @status = params[:status] || 1
 
-          scope = Project.projects.status(@status).sorted
+          scope = Project.projects.status(@status)
           scope = scope.like(params[:name]) if params[:name].present?
 
           @project_count = scope.count

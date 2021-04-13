@@ -52,7 +52,43 @@ module ProjectTypes
           render_404
         end
 
+        ##
+        #
+        # @override ProjectsController#update
+        #
+        def update
+          project_assign_attributes
+
+          if project_valid?
+            respond_to do |format|
+              format.html {
+                flash[:notice] = l(:notice_successful_update)
+                redirect_to settings_project_path(@project, params[:tab])
+              }
+              format.api  { render_api_ok }
+            end
+          else
+            respond_to do |format|
+              format.html {
+                settings
+                render :action => 'settings'
+              }
+              format.api  { render_validation_errors(@project) }
+            end
+          end
+        end
+
         private
+
+        def project_assign_attributes
+          @project.safe_attributes = params[:project]
+        rescue ActiveRecord::RecordNotSaved => e
+          @project.errors.add :base, e unless @project.errors.any?
+        end
+
+        def project_valid?
+          @project.errors.none? && @project.save
+        end
 
         def project_type_id
           params[:project][:project_type_id].to_i
