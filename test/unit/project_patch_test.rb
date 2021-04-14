@@ -65,6 +65,13 @@ module ProjectTypes
       assert_equal name, NullProjectType.new.to_s
     end
 
+    test 'should add prefix to project type master identifier' do
+      project_type_master = Project.create(name: 'Project Type Master',
+                                           identifier: 'project-type-master',
+                                           is_project_type: true)
+      assert_equal 'ptm-project-type-master', project_type_master.identifier
+    end
+
     private
 
     def project_type_options

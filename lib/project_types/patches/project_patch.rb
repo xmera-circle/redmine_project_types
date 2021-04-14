@@ -27,6 +27,7 @@ module ProjectTypes
         base.singleton_class.prepend(ClassMethods)
         base.prepend(InstanceMethods)
         base.class_eval do
+          before_validation :add_prefix_to_project_type_master_identifier, on: :create
 
           belongs_to :project_type, -> { where(is_project_type: true) },
                      foreign_key: :project_type_id,
@@ -111,6 +112,12 @@ module ProjectTypes
           return unless project_type_id && is_project_type
 
           errors.add :project, l(:error_project_type_master_can_not_have_project_type)
+        end
+
+        def add_prefix_to_project_type_master_identifier
+          return unless project_type_master?
+
+          identifier.prepend(l(:label_prefix_project_type_master_identifier))
         end
       end
     end

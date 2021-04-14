@@ -17,6 +17,7 @@ de:
   label_project_type_description: Beschreibung
   label_associated_project_plural: Zugehörige Projekte
   label_project_custom_field_plural: Projektdaten
+  label_prefix_project_type_master_identifier: ptm-
   
   # Texts
   text_project_type_administration: Zur %{url} von Projekttypen.

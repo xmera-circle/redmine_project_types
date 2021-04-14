@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 4.0.1 - 2021-04-14
 
+### Added
+
+* prefix to project type master identifier
+
 ### Fixed
 
 * missing check marks for selected project custom fields
