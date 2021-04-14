@@ -1,7 +1,7 @@
 <% if @project.project_type_master? ||  params[:project_type_master].to_i == 1 || (@project.no_project_type_id? && !@project.new_record?) %>
-  <fieldset class="box tabular" id="project_custom_fields">
+  <fieldset class="box tabular" id="project_custom_field_settings">
   <legend>
-    <%= toggle_checkboxes_link('#project_custom_fields input[type=checkbox]:enabled') %>
+    <%= toggle_checkboxes_link('#project_custom_field_settings input[type=checkbox]:enabled') %>
     <%=l(:label_custom_field_plural)%>
   </legend>
   <% if User.current.admin? %>
@@ -12,7 +12,7 @@
 
   <% ProjectCustomField.all.includes(:projects).each do |custom_field| %>
     <label class="floating">
-      <%= check_box_tag 'project[project_custom_field_ids][]', custom_field.id, (custom_field.projects.include? @projects),
+      <%= check_box_tag 'project[project_custom_field_ids][]', custom_field.id, (custom_field.project_ids.include? @project.id),
           :disabled => (custom_field.is_for_all? ? "disabled" : nil),
           :id => nil %>
       <%= custom_field_name_tag(custom_field) %>

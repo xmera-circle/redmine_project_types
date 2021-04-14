@@ -24,25 +24,24 @@ require File.expand_path("#{File.dirname(__FILE__)}/../load_fixtures")
 
 module ProjectTypes
   class LayoutTest < Redmine::IntegrationTest
-    # extend ProjectTypes::LoadFixtures
-    # include ProjectTypes::AuthenticateUser
-    # include ProjectTypes::ProjectTypeCreator
-    # include Redmine::I18n
+    extend ProjectTypes::LoadFixtures
+    include ProjectTypes::AuthenticateUser
+    include ProjectTypes::ProjectTypeCreator
+    include Redmine::I18n
 
-    # fixtures :projects, :issue_statuses, :issues,
-    #          :enumerations, :issue_categories,
-    #          :projects_trackers, :trackers,
-    #          :roles, :member_roles, :members, :users,
-    #          :custom_fields, :custom_values,
-    #          :custom_fields_projects, :custom_fields_trackers,
-    #          , :enabled_project_type_modules
+    fixtures :projects, :issue_statuses, :issues,
+             :enumerations, :issue_categories,
+             :projects_trackers, :trackers,
+             :roles, :member_roles, :members, :users,
+             :custom_fields, :custom_values,
+             :custom_fields_projects, :custom_fields_trackers
 
-    # def test_existence_of_project_type_field_in_any_project
-    #   log_user('jsmith', 'jsmith')
-    #   get settings_project_path(project(id: 2, type: 1))
-    #   assert_response :success
-    #   assert_select '#project_project_type_id', 1
-    # end
+    def test_existence_of_project_type_field_in_any_project
+      log_user('jsmith', 'jsmith')
+      get settings_project_path(project(id: 2, type: 1))
+      assert_response :success
+      assert_select '#project_project_type_id', 1
+    end
 
     # def test_existence_of_warning_for_public_projects
     #   log_user('admin', 'admin')
@@ -130,13 +129,17 @@ module ProjectTypes
     #   assert_select '#custom_field_project_type_ids', 1
     # end
 
-    # def test_disabled_project_custom_fields_in_project_settings
-    #   log_user('jsmith', 'jsmith')
-    #   project1 = project(id: 1, type: 1)
-    #   get settings_project_path(id: project1.id)
-    #   assert_response :success
-    #   assert_select '#project_custom_field_values', 0
-    # end
+    def test_checked_project_custom_fields_in_project_type_settings
+      log_user('jsmith', 'jsmith')
+      project_type1 = project_type(id: 1)
+      project_custom_field = ProjectCustomField.find_by(id: 3)
+      project_custom_field.projects << project_type1
+
+      get settings_project_path(id: project_type1.id)
+      assert_response :success
+      assert_select '#project_custom_field_settings', 1
+      assert_select 'input[name=?][type=checkbox][checked=checked][value="3"]', 'project[project_custom_field_ids][]'
+    end
 
     # def test_visibility_project_custom_fields_in_project_settings
     #   f1 = ProjectCustomField.generate!(field_format: 'list',
@@ -156,21 +159,21 @@ module ProjectTypes
     #   assert_select '#project_custom_field_values_3', 1
     # end
 
-    # private
+    private
 
-    # def project(id:, type: nil)
-    #   project = Project.find(id.to_i)
-    #   project.project_type_id = type
-    #   project.save
-    #   project
-    # end
+    def project(id:, type: nil)
+      project = Project.find(id.to_i)
+      project.project_type_id = type
+      project.save
+      project
+    end
 
-    # def project_type(id:)
-    #   ProjectType.find(id.to_i)
-    # end
+    def project_type(id:)
+      find_project_type(id: id)
+    end
 
-    # def associates
-    #   { project_custom_field_ids: ['', 3] }
-    # end
+    def associates
+      { project_custom_field_ids: ['', 3] }
+    end
   end
 end
