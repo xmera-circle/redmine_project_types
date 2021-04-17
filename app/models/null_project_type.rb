@@ -40,6 +40,10 @@ class NullProjectType
     ProjectCustomField.none
   end
 
+  def project_custom_field_ids
+    []
+  end
+
   def subordinate_ids
     []
   end

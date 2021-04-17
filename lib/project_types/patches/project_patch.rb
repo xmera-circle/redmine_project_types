@@ -75,10 +75,10 @@ module ProjectTypes
         # @override Project#visible_custom_field_values
         #
         def visible_custom_field_values(user = nil)
-          return super if new_record? && project_custom_fields.empty?
+          ids = project_custom_field_ids
+          return super if new_record? && ids.empty?
 
           user ||= User.current
-          ids = project_custom_fields.map(&:id)
           custom_field_values.select do |value|
             next unless ids.include? value.custom_field.id
 

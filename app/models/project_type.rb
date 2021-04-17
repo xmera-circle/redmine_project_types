@@ -34,6 +34,6 @@ class ProjectType < Project
   scope :masters, -> { where(is_project_type: true).sorted }
 
   def self.masters_for_select
-    masters.pluck(:name, :id)
+    masters.active.select(:name, :id)
   end
 end

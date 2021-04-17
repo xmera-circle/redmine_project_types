@@ -35,7 +35,13 @@ module ProjectTypes
         end
       end
 
-      module ClassMethods; end
+      module ClassMethods
+        def fields_for_select
+          Rails.cache.fetch 'pcf_selection' do
+            ProjectCustomField.sorted.select(:id, :name, :description)
+          end
+        end
+      end
 
       module InstanceMethods
         ##

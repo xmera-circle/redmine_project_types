@@ -27,15 +27,13 @@
 		<%= label(:project, :project_type_id) do %>
 			<%= l(:label_project_type) %>
 		<% end %>
-		<%= f.collection_select(:project_type_id, ::ProjectType.masters.sort.collect, :id, :name, {include_blank: l(:label_no_selection)}) %>
+		<%= f.collection_select(:project_type_id, @project_type_masters, :id, :name, {include_blank: l(:label_no_selection)}) %>
 	<% end %>
 <% end %>
 
 <% if User.current.allowed_to?(:add_project_type, nil, global: true) && (params[:project_type_master].to_i == 1 || !@project.project_type_id )%>
 	<%=tag.p do %>
 		<%= f.check_box :is_project_type, checked: params[:project_type_master].to_i == 1 || @project.project_type_master? %>
-		<%= tag.em class: 'info' do %>
-			 <%= number_of_assigned_projects(@project) %> - <%= t(:text_project_type_administration, url: link_to(l(:label_administration),{ :controller => 'project_types', :action => 'index'})).html_safe if User.current.admin? %>
-		<% end %>
+
 	<% end %>
 <% end %>

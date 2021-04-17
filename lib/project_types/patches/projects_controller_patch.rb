@@ -77,6 +77,16 @@ module ProjectTypes
             end
           end
         end
+        
+        ##
+        # @override ProjectsController#settings
+        #
+        def settings
+          @project_type_masters = ProjectType.masters_for_select
+          @project_custom_fields = ProjectCustomField.fields_for_select
+          @project_custom_field_ids = @project.project_custom_field_ids
+          super
+        end
 
         private
 

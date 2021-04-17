@@ -33,7 +33,8 @@ class ProjectTypesController < ApplicationController #:nodoc:
   def index
     @status = params[:status] || 1
 
-    scope = ProjectType.masters.includes(:subordinates).status(@status).sorted
+  #  scope = ProjectType.masters.includes(:subordinates).status(@status).sorted
+    scope = ProjectType.masters.status(@status).sorted
     scope = scope.like(params[:name]) if params[:name].present?
 
     @project_count = scope.count
