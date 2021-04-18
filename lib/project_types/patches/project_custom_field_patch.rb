@@ -37,9 +37,7 @@ module ProjectTypes
 
       module ClassMethods
         def fields_for_select
-          Rails.cache.fetch 'pcf_selection' do
-            ProjectCustomField.sorted.select(:id, :name, :description)
-          end
+          ProjectCustomField.sorted.select(:id, :name, :description)
         end
       end
 

@@ -34,6 +34,8 @@ class ProjectType < Project
   scope :masters, -> { where(is_project_type: true).sorted }
 
   def self.masters_for_select
-    masters.active.select(:name, :id)
+    return @masters if @masters.present?
+
+    @masters = masters.active.select(:name, :id)
   end
 end
