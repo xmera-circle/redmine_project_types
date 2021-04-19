@@ -1,4 +1,4 @@
-<% if @project_custom_field_ids.any? || @project.project_type&.project_custom_field_ids&.any? %>
+<% if @project_custom_field_ids.present? || @project.project_type&.project_custom_field_ids&.present? %>
   <div id='project_custom_fields'>
     <%= render partial: 'projects/fields' , locals: { project: @project } %>
   </div>

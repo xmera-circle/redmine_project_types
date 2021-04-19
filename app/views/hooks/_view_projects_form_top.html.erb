@@ -27,7 +27,7 @@
 		<%= label(:project, :project_type_id) do %>
 			<%= l(:label_project_type) %>
 		<% end %>
-		<%= f.collection_select(:project_type_id, @project_type_masters, :id, :name, {include_blank: l(:label_no_selection)}) %>
+		<%= f.collection_select(:project_type_id, ProjectType.masters_for_select, :id, :name, {include_blank: l(:label_no_selection)}) %>
 	<% end %>
 <% end %>
 
