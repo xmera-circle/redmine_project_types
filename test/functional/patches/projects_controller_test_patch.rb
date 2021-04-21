@@ -41,4 +41,29 @@ class ProjectsControllerTest
 
     assert_select 'li[class=?]', 'cf_3', text: /Development status/, count: 0
   end
+
+  define_method('test_update_custom_field_should_update_updated_on') do
+    @request.session[:user_id] = 2
+    project = Project.find(1)
+    project.update_attribute :updated_on, nil
+    project.project_custom_fields << ProjectCustomField.find(3)
+    assert_equal 'Stable', project.custom_value_for(3).value
+
+    travel_to Time.current do
+      post(
+        :update,
+        :params => {
+          :id => 1,
+          :project => {
+            :custom_field_values => {'3' => 'Alpha'}
+          }
+        }
+      )
+      assert_redirected_to '/projects/ecookbook/settings'
+      assert_equal 'Successful update.', flash[:notice]
+      project.reload
+      assert_equal 'Alpha', project.custom_value_for(3).value
+      assert_equal Time.current, project.updated_on
+    end
+  end
 end
