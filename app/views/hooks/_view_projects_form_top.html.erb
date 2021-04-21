@@ -34,6 +34,6 @@
 <% if User.current.allowed_to?(:add_project_type, nil, global: true) && (params[:project_type_master].to_i == 1 || !@project.project_type_id )%>
 	<%=tag.p do %>
 		<%= f.check_box :is_project_type, checked: params[:project_type_master].to_i == 1 || @project.project_type_master? %>
-
+		<%= call_hook(:view_project_types_form_top, :project => @project, :form => f) %>
 	<% end %>
 <% end %>
