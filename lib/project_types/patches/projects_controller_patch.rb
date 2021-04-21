@@ -30,6 +30,17 @@ module ProjectTypes
 
       module InstanceMethods
         ##
+        # Add ProjectCustomField data for providing custom settings.
+        #
+        # @override ProjectsController#new
+        #
+        def new
+          super
+          @project_custom_fields = ProjectCustomField.fields_for_select
+          @project_custom_field_ids = @project.project_custom_field_ids
+        end
+
+        ##
         # Replicate the project type if and only if a type was selected.
         #
         # @override ProjectsController#create.
