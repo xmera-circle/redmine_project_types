@@ -57,11 +57,9 @@ module ProjectTypes
     test 'should use NullProjectType attributes when project has no project type' do
       name = NullProjectType.new.name
       project_custom_fields = NullProjectType.new.project_custom_fields
-      subordinate_ids = NullProjectType.new.subordinate_ids
 
       assert_equal name, project(id: 1).project_type.name
       assert_equal project_custom_fields, project(id: 1).project_type.project_custom_fields
-      assert_equal subordinate_ids, project(id: 1).subordinate_ids
       assert_equal name, NullProjectType.new.to_s
     end
 
