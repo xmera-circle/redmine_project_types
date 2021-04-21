@@ -36,4 +36,8 @@ class ProjectType < Project
   def self.masters_for_select
     masters.active.select(:name, :id)
   end
+
+  def self.masters_for_table
+    ProjectType.masters.status(@status).sorted
+  end
 end
