@@ -44,4 +44,25 @@ class CustomFieldsControllerTest
       assert_select 'input[type=hidden][name=type][value=IssueCustomField]'
     end
   end
+
+  test_new_with_copy = instance_method('test_new_with_copy')
+  ##
+  # See TrackersControllerTest#test_new_with_copy
+  # which is the substitute for this test.
+  #
+  define_method('test_new_with_copy') do
+    # checked project ids
+    %w[1 3 5].each do |id|
+      project = Project.find(id)
+      project.is_project_type = true
+      project.save
+    end
+    # unchecked project ids
+    %w[6 4 2].each do |id|
+      project = Project.find(id)
+      project.project_type_id = 1
+      project.save
+    end
+    test_new_with_copy.bind(self).call
+  end
 end

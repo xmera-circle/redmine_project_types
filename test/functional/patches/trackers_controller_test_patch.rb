@@ -34,4 +34,35 @@ class TrackersControllerTest
 
     assert_select 'input[name=?][value=""][type=hidden]', 'tracker[project_ids][]', 1
   end
+
+  test_new_with_copy = instance_method('test_new_with_copy')
+  ##
+  # See TrackersControllerTest#test_new_with_copy
+  # which is the substitute for this test.
+  #
+  define_method('test_new_with_copy') do
+    # checked project ids
+    %w[1 3 5].each do |id|
+      project = Project.find(id)
+      project.is_project_type = true
+      project.save
+    end
+    # unchecked project ids
+    %w[6 4 2].each do |id|
+      project = Project.find(id)
+      project.project_type_id = 1
+      project.save
+    end
+    test_new_with_copy.bind(self).call
+  end
+
+  ##
+  # See TrackersControllerTest#test_new_should_set_archived_class_for_archived_projects
+  # which is the substitute for this test.
+  #
+  # @note The feature of setting archived class is not supported.
+  #
+  define_method('test_new_should_set_archived_class_for_archived_projects') do
+    assert true
+  end
 end
