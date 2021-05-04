@@ -20,17 +20,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 module ProjectTypes
-  module Patches
-    # Patches project.rb from Redmine Core
+  module Extensions
+    # Extends project.rb from Redmine Core
     module ProjectPatch
-      def self.prepended(base)
-        base.singleton_class.prepend(ClassMethods)
-        base.prepend(InstanceMethods)
+      def self.included(base)
+        base.include(InstanceMethods)
         base.class_eval do
           before_validation :add_prefix_to_project_type_master_identifier, on: :create
 
           belongs_to :project_type, -> { where(is_project_type: true) },
                      foreign_key: :project_type_id,
+                     optional: true,
                      inverse_of: :relatives
 
           has_and_belongs_to_many :project_custom_fields,
@@ -47,43 +47,12 @@ module ProjectTypes
         end
       end
 
-      module ClassMethods
-        ##
-        # Extends with project custom fields.
-        #
-        # @override Project#copy_from
-        #
-        def copy_from(project)
-          copy = super(project)
-          project = project.is_a?(Project) ? project : Project.find(project)
-          copy.project_custom_fields = project.project_custom_fields
-          copy
-        end
-      end
-
       module InstanceMethods
         ##
         # Replace missing project types with its null object.
         #
         def project_type
           super || NullProjectType.new
-        end
-
-        ##
-        # Sorts out fields not belonging to a project or project type.
-        #
-        # @override Project#visible_custom_field_values
-        #
-        def visible_custom_field_values(user = nil)
-          ids = project_custom_field_ids
-          return super if new_record? && ids.empty?
-
-          user ||= User.current
-          custom_field_values.select do |value|
-            next unless ids.include? value.custom_field.id
-
-            value.custom_field.visible_by?(project, user)
-          end
         end
 
         def project_type_master?
@@ -126,7 +95,7 @@ end
 
 # Apply patch
 Rails.configuration.to_prepare do
-  unless Project.included_modules.include?(ProjectTypes::Patches::ProjectPatch)
-    Project.prepend ProjectTypes::Patches::ProjectPatch
+  unless Project.included_modules.include?(ProjectTypes::Extensions::ProjectPatch)
+    Project.include ProjectTypes::Extensions::ProjectPatch
   end
 end

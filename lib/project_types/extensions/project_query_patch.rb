@@ -20,12 +20,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 module ProjectTypes
-  module Patches
+  module Extensions
     # Patches project_query.rb from Redmine Core
     module ProjectQueryPatch
-      def self.prepended(base)
+      def self.included(base)
         base.extend(ClassMethods)
-        base.prepend(InstanceMethods)
+        base.include(InstanceMethods)
         base.class_eval do
           available_columns.append(project_type_column)
         end
@@ -46,31 +46,6 @@ module ProjectTypes
       end
 
       module InstanceMethods
-        ##
-        # @override ProjectQuery#initialize
-        #
-        def initialize(attributes = nil, *_args)
-          super attributes
-          filters.merge!({ 'is_project_type' => { operator: '=', values: ['0'] } })
-        end
-
-        ##
-        # @override ProjectQuery#initialize_available_filters
-        #
-        def initialize_available_filters
-          super
-          add_available_filter(
-            'project_type_id',
-            type: :list_subprojects, values: -> { project_type_values }, label: :label_project_type
-          )
-          add_available_filter(
-            'is_project_type',
-            type: :list,
-            values: [[l(:general_text_yes), '1'], [l(:general_text_no), '0']],
-            label: :label_project_type_master
-          )
-        end
-
         def project_type_values
           ProjectType.masters.pluck(:name, :id).map { |name, id| [name, id.to_s] }
         end
@@ -81,7 +56,7 @@ end
 
 # Apply patch
 Rails.configuration.to_prepare do
-  unless ProjectQuery.included_modules.include?(ProjectTypes::Patches::ProjectQueryPatch)
-    ProjectQuery.prepend ProjectTypes::Patches::ProjectQueryPatch
+  unless ProjectQuery.included_modules.include?(ProjectTypes::Extensions::ProjectQueryPatch)
+    ProjectQuery.include ProjectTypes::Extensions::ProjectQueryPatch
   end
 end

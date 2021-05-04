@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 module ProjectTypes
-  module Patches
+  module Overrides
     # Patches projects_controller.rb from Redmine Core
     module AdminControllerPatch
       def self.prepended(base)
@@ -29,7 +29,11 @@ module ProjectTypes
 
       module InstanceMethods
         include Redmine::Pagination
-
+        ##
+        # Restricts the Project scope to list no project type masters.
+        #
+        # @overrides AdminController#projects.
+        #
         def projects
           @status = params[:status] || 1
 
@@ -49,7 +53,7 @@ end
 
 # Apply patch
 Rails.configuration.to_prepare do
-  unless AdminController.included_modules.include?(ProjectTypes::Patches::AdminControllerPatch)
-    AdminController.prepend ProjectTypes::Patches::AdminControllerPatch
+  unless AdminController.included_modules.include?(ProjectTypes::Overrides::AdminControllerPatch)
+    AdminController.prepend ProjectTypes::Overrides::AdminControllerPatch
   end
 end

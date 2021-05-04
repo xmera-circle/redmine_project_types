@@ -26,9 +26,10 @@
 # e.g. Controller, Views.
 #
 class ProjectType < Project
+  before_destroy :nullify_project_type_id
+
   has_many :relatives, -> { where(status: STATUS_ACTIVE) },
            class_name: 'Project',
-           dependent: :nullify,
            inverse_of: :project_type
 
   scope :masters, -> { where(is_project_type: true).sorted }
@@ -39,5 +40,13 @@ class ProjectType < Project
 
   def self.masters_for_table
     ProjectType.masters.status(@status).sorted
+  end
+
+  private
+
+  def nullify_project_type_id
+    return unless relatives.present?
+
+    relatives.each { |relative| relative.update_attribute(:project_type_id, nil) }
   end
 end

@@ -20,9 +20,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 module ProjectTypes
-  module Patches
+  module Extensions
     module ProjectCustomFieldPatch
-      def self.prepended(base)
+      def self.included(base)
         base.extend(ClassMethods)
         base.include(InstanceMethods)
         base.class_eval do
@@ -42,22 +42,6 @@ module ProjectTypes
       end
 
       module InstanceMethods
-        ##
-        # Validate only those project custom fields which belong to the
-        # project. Values of fields don't belonging to the underlying project (type)
-        # are ignored. Values of projects having no project type are validated
-        # as in a default Redmine instance.
-        #
-        # @override CustomField#validate_custom_value
-        #
-        # Returns the error messages for the given value
-        # or an empty array if value is a valid value for the custom field
-        def validate_custom_value(custom_value)
-          return [] if new_project?(custom_value) || not_project_custom_field?(custom_value)
-
-          super
-        end
-
         private
 
         def not_project_custom_field?(custom_value)
@@ -74,7 +58,7 @@ end
 
 # Apply patch
 Rails.configuration.to_prepare do
-  unless ProjectCustomField.included_modules.include?(ProjectTypes::Patches::ProjectCustomFieldPatch)
-    ProjectCustomField.prepend ProjectTypes::Patches::ProjectCustomFieldPatch
+  unless ProjectCustomField.included_modules.include?(ProjectTypes::Extensions::ProjectCustomFieldPatch)
+    ProjectCustomField.include ProjectTypes::Extensions::ProjectCustomFieldPatch
   end
 end

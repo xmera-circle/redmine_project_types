@@ -40,9 +40,11 @@ class ProjectTypeTest < ActiveSupport::TestCase
   end
 
   test 'should nullify projects project type when deleting a project type' do
-    project_type4 = create_project_type(name: 'to be deleted')
+    find_project_type(id: 4)
+    project_type4 = ProjectType.find(4)
     project1 = project(id: 1, type: project_type4.id)
     assert_equal project_type4.id, project1.project_type_id
+
     assert project_type4.destroy
     assert_not ProjectType.find_by(id: project_type4.id)
     project1.reload
@@ -53,7 +55,6 @@ class ProjectTypeTest < ActiveSupport::TestCase
 
   def relatives_options
     Hash({ class_name: 'Project',
-           dependent: :nullify,
            inverse_of: :project_type })
   end
 

@@ -73,8 +73,9 @@ module ProjectTypes
     private
 
     def project_type_options
-      Hash({ inverse_of: :relatives,
-             foreign_key: :project_type_id })
+      Hash({ foreign_key: :project_type_id,
+             optional: true,
+             inverse_of: :relatives })
     end
 
     def project(id:)

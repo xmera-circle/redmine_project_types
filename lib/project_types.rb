@@ -19,16 +19,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# Project Types Libraries
+# Extensions
+require 'project_types/extensions/project_custom_field_patch'
+require 'project_types/extensions/project_patch'
+require 'project_types/extensions/project_query_patch'
+require 'project_types/extensions/projects_controller_patch'
 
 # Plugin hook listener
 require 'project_types/hooks/view_custom_fields_form_hook_listener'
 require 'project_types/hooks/view_layouts_base_html_head_hook_listener'
 require 'project_types/hooks/view_projects_form_top_hook_listener'
 
-# Plugin patches
-require 'project_types/patches/admin_controller_patch'
-require 'project_types/patches/project_custom_field_patch'
-require 'project_types/patches/project_patch'
-require 'project_types/patches/project_query_patch'
-require 'project_types/patches/projects_controller_patch'
+# Overrides
+require 'project_types/overrides/admin_controller_patch'
+require 'project_types/overrides/project_custom_field_patch'
+require 'project_types/overrides/project_patch'
+require 'project_types/overrides/project_query_patch'
+require 'project_types/overrides/projects_controller_patch'
