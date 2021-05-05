@@ -47,7 +47,7 @@ module ProjectTypes
       log_user('admin', 'admin')
       get edit_tracker_path(id: 1)
       assert_response :success
-      assert_select '#tracker_project_ids'
+      assert_select '#project_types'
       assert_match l(:label_project_type_plural), response.body
     end
 

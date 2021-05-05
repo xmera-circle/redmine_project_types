@@ -19,7 +19,12 @@
 <% end %>
 </p>
 <p>
-  <label><%= check_box_tag 'confirm', 1 %> <%= l(:general_text_Yes) %></label>
+  <%= l :text_project_destroy_enter_identifier, identifier: @project_to_destroy.identifier %>
+</p>
+
+<p>
+  <label for="confirm"><%= l :field_identifier %></label>
+  <%= text_field_tag 'confirm' %>
 </p>
 </div>
 

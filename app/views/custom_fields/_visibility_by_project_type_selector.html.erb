@@ -26,8 +26,8 @@
       <%= l(:label_project_type_plural) %>
     </legend>
 
-    <% if ProjectType.masters.any? %>
     <div id="custom_field_project_ids">
+    <% if ProjectType.masters.any? %>
       <% project_type_ids = @custom_field.project_ids.to_a %>
       <%= tag.ul class: 'projects root' do %>
         <% ProjectType.masters.includes(:relatives).each do |project_type| %>

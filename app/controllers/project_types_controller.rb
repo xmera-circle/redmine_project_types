@@ -55,15 +55,17 @@ class ProjectTypesController < ApplicationController #:nodoc:
 
   def destroy
     @project_to_destroy = @project_type
-    if api_request? || params[:confirm]
+    if api_request? || params[:confirm] == @project_to_destroy.identifier
       @project_to_destroy.destroy
       respond_to do |format|
-        format.html { redirect_to project_types_path }
-        format.api  { render_api_ok }
+        format.html do
+          redirect_to(project_types_path)
+        end
+        format.api { render_api_ok }
       end
     end
     # hide project in layout
-    @project = nil
+    @project_type = nil
   end
 
   private
