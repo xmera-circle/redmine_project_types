@@ -26,13 +26,17 @@
     <%=tag.legend do %>
       <%= toggle_checkboxes_link("#project_types input[type=checkbox]") %><%= l(:label_project_type_plural) %>
     <% end %>
-    <%=tag.div id: 'tracker_project_ids' do %>
-      <%= tag.ul class: 'projects root' do %>
-        <% ProjectType.masters.includes(:relatives).each do |project_type| %>
-          <%= render partial: 'project_type_with_relatives', locals: { project_type: project_type, project_type_ids: project_type_ids } %>
+    <% if ProjectType.masters.any? %>
+      <%=tag.div id: 'tracker_project_ids' do %>
+        <%= tag.ul class: 'projects root' do %>
+          <% ProjectType.masters.includes(:relatives).each do |project_type| %>
+            <%= render partial: 'project_type_with_relatives', locals: { project_type: project_type, project_type_ids: project_type_ids } %>
+          <% end %>
         <% end %>
+        <%= hidden_field_tag('tracker[project_ids][]', '', :id => nil) %>
       <% end %>
-      <%= hidden_field_tag('tracker[project_ids][]', '', :id => nil) %>
+    <% else %>
+      <%= tag.div l(:label_no_data), class: 'nodata half-width' %>
     <% end %>
   <% end %>
 </div>

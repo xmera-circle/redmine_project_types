@@ -25,7 +25,7 @@
       <%= toggle_checkboxes_link("#custom_field_project_ids input[type=checkbox]:enabled") %>
       <%= l(:label_project_type_plural) %>
     </legend>
-   
+   <% if ProjectType.masters.any? %>
     <div id="custom_field_project_ids">
       <% project_type_ids = @custom_field.project_ids.to_a %>
       <%= tag.ul class: 'projects root' do %>
@@ -35,4 +35,7 @@
       <% end %>
       <%= hidden_field_tag('custom_field[project_ids][]', '', :id => nil) %>
     </div>
+    <% else %>
+      <%= tag.div l(:label_no_data), class: 'nodata half-width' %>
+    <% end %>
   </fieldset>
