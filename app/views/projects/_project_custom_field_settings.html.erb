@@ -10,12 +10,16 @@
     </div>
   <% end %>
 
-  <% @project_custom_fields.each do |custom_field| %>
-    <label class="floating">
-      <%= check_box_tag 'project[project_custom_field_ids][]', custom_field.id, (@project_custom_field_ids.include? custom_field.id),
-          :id => nil %>
-      <%= custom_field_name_tag(custom_field) %>
-    </label>
+  <% if @project_custom_fields.present? %>
+    <% @project_custom_fields.each do |custom_field| %>
+      <label class="floating">
+        <%= check_box_tag 'project[project_custom_field_ids][]', custom_field.id, (@project_custom_field_ids.include? custom_field.id),
+            :id => nil %>
+        <%= custom_field_name_tag(custom_field) %>
+      </label>
+    <% end %>
+  <% else %>
+    <%= tag.div l(:label_no_data), class: 'nodata small' %>
   <% end %>
 
   <%= hidden_field_tag 'project[project_custom_field_ids][]', '' %>

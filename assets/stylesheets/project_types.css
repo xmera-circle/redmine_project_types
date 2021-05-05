@@ -49,3 +49,8 @@ label.required:after {
 .controller-custom_fields label a {
 	text-decoration: none;
 }
+/* Nodata */
+.small {
+	margin: 0 auto;
+	width: 50%;
+}

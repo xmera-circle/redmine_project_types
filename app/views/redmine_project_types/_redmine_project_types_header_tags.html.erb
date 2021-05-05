@@ -17,10 +17,4 @@
 # along with Redmine Issue Cloning; if not, see <http://www.gnu.org/licenses/>.
 %>
 
-<% # 
-   # Adds CSS and Javascript for this plugin
-   #
-%>
-<% content_for :header_tags do %>
-    <%= stylesheet_link_tag 'project_types', :plugin => 'redmine_project_types' %>
-<% end %>
+<%= stylesheet_link_tag 'project_types', :plugin => 'redmine_project_types' %>
