@@ -86,7 +86,7 @@ module ProjectTypes
         def add_prefix_to_project_type_master_identifier
           return unless project_type_master?
 
-          identifier.prepend(l(:label_prefix_project_type_master_identifier))
+          identifier&.prepend(l(:label_prefix_project_type_master_identifier))
         end
       end
     end

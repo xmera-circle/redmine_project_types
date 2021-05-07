@@ -27,16 +27,16 @@
     </legend>
 
     <div id="custom_field_project_ids">
-    <% if ProjectType.masters.any? %>
       <% project_type_ids = @custom_field.project_ids.to_a %>
-      <%= tag.ul class: 'projects root' do %>
-        <% ProjectType.masters.includes(:relatives).each do |project_type| %>
-           <%= render partial: 'project_type_with_relatives', locals: { project_type: project_type, project_type_ids: project_type_ids } %>
-        <% end %>
-      <% end %>
       <%= hidden_field_tag('custom_field[project_ids][]', '', :id => nil) %>
+      <% if ProjectType.masters.any? %>
+        <%= tag.ul class: 'projects root' do %>
+          <% ProjectType.masters.includes(:relatives).each do |project_type| %>
+            <%= render partial: 'project_type_with_relatives', locals: { project_type: project_type, project_type_ids: project_type_ids } %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <%= tag.div l(:label_no_data), class: 'nodata half-width' %>
+      <% end %>
     </div>
-    <% else %>
-      <%= tag.div l(:label_no_data), class: 'nodata half-width' %>
-    <% end %>
   </fieldset>

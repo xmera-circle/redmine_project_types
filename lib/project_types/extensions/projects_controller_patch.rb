@@ -46,7 +46,7 @@ module ProjectTypes
         end
 
         def prepare_source_project
-          @source_project = ProjectType.masters.find(project_type_id)
+          @source_project = ProjectType.masters.find_by(id: project_type_id)
         end
 
         def prepare_target_project
@@ -56,6 +56,8 @@ module ProjectTypes
 
         ##
         # Similar to ProjectsController#copy.
+        #  Uses Project#copy what copies complex structures such that wikis,
+        #  issues, versions, etc.
         #
         def replicate(source, target)
           if target.copy(source)
