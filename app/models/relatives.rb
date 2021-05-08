@@ -19,24 +19,36 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-##
-# Provides some helper methods usefull for Project instances which are
-# marked as :is_project_type.
-#
-module ProjectTypesHelper
-  ##
-  # Similar to ApplicationHelper#toogle_checkboxes_link but uses a text instead
-  # of the check icon.
-  #
-  def toggle_checkboxes_text_link(text, selector)
-    link_to_function text,
-                     "toggleCheckboxesBySelector('#{selector}')",
-                     title: "#{l(:button_check_all)} / #{l(:button_uncheck_all)}"
+class Relatives
+  def initialize(project)
+    @project = project
   end
 
-  def number_of_assigned_projects(project)
-    return unless project.project_type_master?
+  ##
+  # Find all relatives depending on whether the project is a project type master.
+  #
+  # @note A project type master would not be found if it is a new record.
+  #   Consequently, it can't have relatives. Using relatives on a plain project
+  #   returns an empty array. See Project#relatives in ProjectPatch.
+  #
+  def all
+    project.new_record? ? project.relatives : project_type.relatives
+  end
 
-    l(:text_number_of_assigned_projects_to_project_type, count: Relatives.new(project).count).to_s
+  def count
+    all.count
+  end
+
+  private
+
+  attr_reader :project
+
+  ##
+  # Tries to find the project type
+  #
+  # @return [ProjectType, nil] Nil if there is no project type master.
+  #
+  def project_type
+    ProjectType.masters.find_by(id: project.id)
   end
 end

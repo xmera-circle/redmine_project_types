@@ -42,6 +42,14 @@ module ProjectTypes
       assert project(id: 1).respond_to? :project_type_master?
     end
 
+    test 'should respond to relatives' do
+      assert project(id: 1).respond_to? :relatives
+    end
+
+    test 'should have no relatives' do
+      assert project(id: 1).relatives.none?
+    end
+
     test 'should have safe project_type_id attribute' do
       assert project(id: 1).safe_attribute? 'project_type_id'
     end

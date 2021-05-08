@@ -116,6 +116,15 @@ module ProjectTypes
       assert_equal [cf3_id], project1.project_custom_field_ids
     end
 
+    test 'should get copy for project type master' do
+      orig = project_type(id: 4)
+      get copy_project_path(id: orig.id)
+      assert_response :success
+
+      assert_select 'textarea[name=?]', 'project[description]', text: orig.description
+      assert_select 'input[name=?][value=?]', 'project[enabled_module_names][]', 'issue_tracking', 1
+    end
+
     private
 
     def project_attributes

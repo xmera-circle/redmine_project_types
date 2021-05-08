@@ -49,6 +49,15 @@ module ProjectTypes
 
       module InstanceMethods
         ##
+        # Fallack for calling relatives association on Project instances
+        # where it is not defined to avoid a NoMethodError and allow to always
+        # count the relatives.
+        #
+        def relatives
+          []
+        end
+
+        ##
         # Replace missing project types with its null object.
         #
         def project_type

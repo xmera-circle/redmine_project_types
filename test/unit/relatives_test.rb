@@ -19,24 +19,38 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-##
-# Provides some helper methods usefull for Project instances which are
-# marked as :is_project_type.
-#
-module ProjectTypesHelper
-  ##
-  # Similar to ApplicationHelper#toogle_checkboxes_link but uses a text instead
-  # of the check icon.
-  #
-  def toggle_checkboxes_text_link(text, selector)
-    link_to_function text,
-                     "toggleCheckboxesBySelector('#{selector}')",
-                     title: "#{l(:button_check_all)} / #{l(:button_uncheck_all)}"
+require File.expand_path("#{File.dirname(__FILE__)}/../test_helper")
+
+class RelativesTest < ActiveSupport::TestCase
+  include ProjectTypes::ProjectTypeCreator
+  extend ProjectTypes::LoadFixtures
+
+  fixtures :projects
+
+  test 'should respond to all' do
+    assert Relatives.new(project(id: 1)).respond_to? :all
   end
 
-  def number_of_assigned_projects(project)
-    return unless project.project_type_master?
+  test 'should respond to count' do
+    assert Relatives.new(project(id: 1)).respond_to? :count
+  end
 
-    l(:text_number_of_assigned_projects_to_project_type, count: Relatives.new(project).count).to_s
+  test 'should return nil project type' do
+    assert_not Relatives.new(project(id: 1)).send :project_type
+  end
+
+  test 'should return project type' do
+    find_project_type(id: 4)
+    assert Relatives.new(project(id: 4)).send :project_type
+  end
+
+
+  private
+
+  def project(id:, type: nil)
+    project = Project.find(id)
+    project.project_type_id = type
+    project.save
+    project
   end
 end
