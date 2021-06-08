@@ -37,5 +37,10 @@
       <% else %>
         <%= tag.div l(:label_no_data), class: 'nodata half-width' %>
       <% end %>
+      <% project_ids = Project.projects_without_type.pluck(:id) %>
+      <% custom_field_project_ids = project_ids & project_type_ids %>
+      <% custom_field_project_ids.each do |project_id| %>
+        <%= hidden_field_tag('custom_field[project_ids][]', project_id, :id => nil)%>
+      <% end %>
     </div>
   </fieldset>

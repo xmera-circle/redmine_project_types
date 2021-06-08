@@ -40,6 +40,7 @@ module ProjectTypes
                                   association_foreign_key: 'custom_field_id'
 
           scope :projects, -> { where(is_project_type: false).sorted }
+          scope :projects_without_type, -> { projects.where(project_type_id: nil) }
 
           safe_attributes :project_type_id, :is_project_type, :project_custom_field_ids
 

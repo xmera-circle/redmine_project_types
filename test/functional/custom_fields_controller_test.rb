@@ -50,5 +50,28 @@ module ProjectTypes
       assert_select 'input[type=hidden][name=?]', 'custom_field[project_ids][]'
       assert_select 'input[type=hidden][name=type][value=IssueCustomField]'
     end
+
+    test 'should render hidden issue custom field project ids for plain project' do
+      project = Project.find(1)
+      assert project.project_type_id.nil?
+      CustomField.find(1).projects << project
+      assert project.issue_custom_fields.pluck(:id).include? 1
+
+      get edit_custom_field_path(id: 1), params: { type: 'IssueCustomField' }
+      assert_response :success
+      assert_select 'input[type=hidden][name=?][value=?]', 'custom_field[project_ids][]', '1'
+    end
+
+    test 'should render hidden project custom field project ids for plain project' do
+      project = Project.find(1)
+      assert project.project_type_id.nil?
+      CustomField.find(3).projects << project
+      assert project.project_custom_fields.pluck(:id).include? 3
+
+      get edit_custom_field_path(id: 3), params: { type: 'IssueCustomField' }
+      assert_response :success
+      assert_select 'input[type=hidden][name=?][value=?]', 'custom_field[project_ids][]', '1'
+    end
+
   end
 end
