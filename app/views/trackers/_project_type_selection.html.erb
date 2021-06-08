@@ -37,6 +37,11 @@
       <% else %>
         <%= tag.div l(:label_no_data), class: 'nodata half-width' %>
       <% end %>
+      <% project_ids = Project.projects_without_type.pluck(:id) %>
+      <% tracker_project_ids = project_ids & project_type_ids %>
+      <% tracker_project_ids.each do |project_id| %>
+        <%= hidden_field_tag('tracker[project_ids][]', project_id, :id => nil)%>
+      <% end %>
     <% end %>
   <% end %>
 </div>

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * hidden fields for custom fields which submit project ids of projects having
   the respective custom field enabled but have no project type assigned
+* hidden fields for trackers which submit project ids of projects having
+  the respective tracker enabled but have no project type assigned
 
 ## 4.0.4 - 2021-05-29
 

@@ -56,5 +56,17 @@ module ProjectTypes
 
       assert_select 'input[name=?][value=""][type=hidden]', 'tracker[project_ids][]'
     end
+
+    test 'should render hidden tracker project ids for plain project' do
+      project = Project.find(1)
+      assert project.project_type_id.nil?
+      tracker = Tracker.generate!
+      project.trackers << tracker
+      assert project.trackers.pluck(:id).include? tracker.id
+
+      get edit_tracker_path(id: tracker.id)
+      assert_response :success
+      assert_select 'input[type=hidden][name=?][value=?]', 'tracker[project_ids][]', '1'
+    end
   end
 end
