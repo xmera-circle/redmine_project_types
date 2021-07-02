@@ -25,7 +25,7 @@ Redmine::Plugin.register :redmine_project_types do
   name 'Redmine Project Types'
   author 'Liane Hampe, xmera'
   description 'This is a plugin for defining project types with individual project default settings.'
-  version '4.0.4'
+  version '4.0.5'
   url 'https://circle.xmera.de/projects/redmine-project-types'
   author_url 'https://circle.xmera.de/users/5'
 
@@ -40,13 +40,6 @@ end
 
 Redmine::AccessControl.map do |map|
   map.permission :manage_project_type_master, { projects: %i[new create edit update destroy] }, require: :loggedin
-end
-
-# Adds the project types app/overrides directory to Rails' search paths for deface overrides
-Rails.application.paths['app/overrides'] ||= []
-project_types_overwrite_dir = "#{Redmine::Plugin.directory}/redmine_project_types/app/overrides"
-unless Rails.application.paths['app/overrides'].include?(project_types_overwrite_dir)
-  Rails.application.paths['app/overrides'] << project_types_overwrite_dir
 end
 
 ActiveSupport::Reloader.to_prepare do

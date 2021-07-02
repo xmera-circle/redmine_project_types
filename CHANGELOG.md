@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## unreleased
+## 4.0.5 - 2021-07-02
 
 ### Added
 
@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the respective custom field enabled but have no project type assigned
 * hidden fields for trackers which submit project ids of projects having
   the respective tracker enabled but have no project type assigned
+
+### Chanaged
+
+* redmine_base_deface to version 1.6.2 due to compatability problems with 
+  Redmine 4.x and Rails 5.2
 
 ## 4.0.4 - 2021-05-29
 
