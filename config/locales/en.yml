@@ -1,7 +1,7 @@
 # English strings go here for Rails i18n
 en:
   # Permissions
-  permission_add_project_type_master: Create project type master
+  permission_manage_project_type_master: Manage project type masters
   
   # Project module
   project_module_project_types: Project Types

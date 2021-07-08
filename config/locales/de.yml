@@ -1,7 +1,7 @@
 # German strings go here for Rails i18n
 de:
   # Permissions
-  permission_add_project_type_master: Projekttyp Master erstellen
+  permission_manage_project_type_master: Projekttyp Master verwalten
   
   # Projektmodule
   project_module_project_types: Projekttyp
