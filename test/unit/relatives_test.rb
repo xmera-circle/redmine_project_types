@@ -44,7 +44,6 @@ class RelativesTest < ActiveSupport::TestCase
     assert Relatives.new(project(id: 4)).send :project_type
   end
 
-
   private
 
   def project(id:, type: nil)

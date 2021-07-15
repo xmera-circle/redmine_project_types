@@ -26,7 +26,7 @@ module Redmine
       self.customized_class_names = %w[Issue]
 
       def possible_values_options(_custom_field, _object = nil)
-        ProjectType.masters_for_select.map { |option| [option.name, option.id.to_s]}
+        ProjectType.masters_for_select.map { |option| [option.name, option.id.to_s] }
       end
     end
   end
