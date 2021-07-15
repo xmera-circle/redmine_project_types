@@ -42,6 +42,12 @@ class ProjectType < Project
     ProjectType.masters.status(@status).sorted
   end
 
+  def self.fields_for_order_statement(table=nil)
+    table ||= table_name
+    columns = ['name']
+    columns.uniq.map { |field| "#{table}.#{field}" }
+  end
+
   private
 
   def nullify_project_type_id

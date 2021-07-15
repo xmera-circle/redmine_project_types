@@ -19,21 +19,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# Extensions
-require 'project_types/extensions/project_custom_field_patch'
-require 'project_types/extensions/project_patch'
-require 'project_types/extensions/project_query_patch'
-require 'project_types/extensions/projects_controller_patch'
-require 'project_types/extensions/project_type_format'
+module Redmine
+  module FieldFormat
+    class ProjectTypeFormat < RecordList
+      add 'project_type_master'
+      self.customized_class_names = %w[Issue]
 
-# Plugin hook listener
-require 'project_types/hooks/view_custom_fields_form_hook_listener'
-require 'project_types/hooks/view_layouts_base_html_head_hook_listener'
-require 'project_types/hooks/view_projects_form_top_hook_listener'
-
-# Overrides
-require 'project_types/overrides/admin_controller_patch'
-require 'project_types/overrides/project_custom_field_patch'
-require 'project_types/overrides/project_patch'
-require 'project_types/overrides/project_query_patch'
-require 'project_types/overrides/projects_controller_patch'
+      def possible_values_options(_custom_field, _object = nil)
+        ProjectType.masters_for_select.map { |option| [option.name, option.id.to_s]}
+      end
+    end
+  end
+end
