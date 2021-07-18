@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 # Extensions
+require 'project_types/extensions/issue_custom_field_patch'
 require 'project_types/extensions/project_custom_field_patch'
 require 'project_types/extensions/project_patch'
 require 'project_types/extensions/project_query_patch'

@@ -19,25 +19,21 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-module Redmine
-  module FieldFormat
-    class ProjectTypeFormat < RecordList
-      add 'project_type_master'
-      self.form_partial = 'custom_fields/formats/project_type'
-      self.customized_class_names = %w[Issue]
-      field_attributes :additional_projects
-
-      def possible_values_options(_custom_field, _object = nil)
-        project_type_master_options | additional_projects_options
-      end
-
-      def project_type_master_options
-        ProjectType.masters_for_select.map { |option| [option.name, option.id.to_s] }
-      end
-
-      def additonal_projects_options
-        ProjectType.projects.where(project_type: additonal_projects)
+module ProjectTypes
+  module Extensions
+    module IssueCustomFieldPatch
+      def self.included(base)
+        base.class_eval do
+          safe_attributes 'additional_projects'
+        end
       end
     end
+  end
+end
+
+# Apply patch
+Rails.configuration.to_prepare do
+  unless IssueCustomField.included_modules.include?(ProjectTypes::Extensions::IssueCustomFieldPatch)
+    IssueCustomField.include ProjectTypes::Extensions::IssueCustomFieldPatch
   end
 end

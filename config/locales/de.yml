@@ -18,11 +18,13 @@ de:
   label_associated_project_plural: Zugehörige Projekte
   label_project_custom_field_plural: Projektdaten
   label_prefix_project_type_master_identifier: ptm-
+  label_additional_projects: Weitere Projekte
   
   # Texts
   text_project_type_administration: Zur %{url} von Projekttypen.
   text_project_type_destroy_confirmation: Sind Sie sicher, dass Sie den Projekttyp und seine Inhalte löschen wollen?
   text_relatives_destroy_warning: "Es gibt verbundene Projekte: %{value}."
+  text_additional_projects: Alle Projekte eines oder mehrerer Projekttyp Master als Auswahloption hinzufügen.
   
   text_number_of_assigned_projects_to_project_type: 
     zero: 0 zugeordnete Projekte zu diesem Projekttyp

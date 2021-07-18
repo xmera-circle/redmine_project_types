@@ -18,6 +18,7 @@ en:
   label_associated_project_plural: Associated Projects
   label_project_custom_field_plural: Project Data
   label_prefix_project_type_master_identifier: ptm-
+  label_additional_projects: Further projects
 
   # Texts
   text_project_type_administration: To %{url} of project types.
