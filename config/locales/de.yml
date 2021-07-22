@@ -18,6 +18,7 @@ de:
   label_associated_project_plural: Zugehörige Projekte
   label_project_custom_field_plural: Projektdaten
   label_prefix_project_type_master_identifier: ptm-
+  label_suffix_project_type_master_identifier: ' (ptm)'
   label_additional_projects: Weitere Projekte
   
   # Texts

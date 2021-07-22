@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * custom field format project_type_master
 
+### Changed
+
+* serveral project lists either to exclude project type masters or mark them 
+
 ## 4.0.6 - 2021-07-13
 
 ### Added
