@@ -39,4 +39,8 @@ module ProjectTypesHelper
 
     l(:text_number_of_assigned_projects_to_project_type, count: Relatives.new(project).count).to_s
   end
+
+  def project_type_master_by_params?
+    params[:project_type_master].to_i == 1
+  end
 end

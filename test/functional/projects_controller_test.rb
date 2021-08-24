@@ -37,10 +37,10 @@ module ProjectTypes
              :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions
 
     def setup
-      log_user('admin', 'admin')
+      #
     end
 
-    test 'should create project with project type' do
+    test 'should create project with project type by non admin user' do
       project_type = ProjectType.create(name: 'Change Project',
                                         identifier: 'change-project',
                                         is_project_type: true)
@@ -52,6 +52,7 @@ module ProjectTypes
       assert_equal 1, ProjectType.masters.count
       assert_equal 7, Project.count
 
+      log_user('jsmith', 'jsmith')
       assert_difference 'Project.count' do
         post projects_path, params: {
           project: {
@@ -61,7 +62,42 @@ module ProjectTypes
             identifier: 'blog',
             is_public: true,
             project_type_id: project_type.id,
-            is_project_type: false
+            # this attribute should be automatically set to false
+            is_project_type: true
+          }
+        }
+      end
+      assert_redirected_to settings_project_path(id: 'blog')
+
+      new_project = Project.last
+      assert_equal project_type.id, new_project.project_type_id
+      assert new_project.versions.map(&:name).include? version_name
+      assert_equal [], new_project.tracker_ids - [1, 2]
+    end
+
+    test 'should create project with project type by admin' do
+      project_type = ProjectType.create(name: 'Change Project',
+                                        identifier: 'change-project',
+                                        is_project_type: true)
+
+      version_name = 'Kick Off'
+      project_type.versions << Version.create(name: version_name)
+      project_type.tracker_ids = [1, 2]
+
+      assert_equal 1, ProjectType.masters.count
+      assert_equal 7, Project.count
+
+      log_user('admin', 'admin')
+
+      assert_difference 'Project.count' do
+        post projects_path, params: {
+          project: {
+            name: 'blog',
+            description: 'weblog',
+            homepage: 'http://weblog',
+            identifier: 'blog',
+            is_public: true,
+            project_type_id: project_type.id
           }
         }
       end
@@ -74,6 +110,8 @@ module ProjectTypes
     end
 
     test 'should create project without project type' do
+      log_user('admin', 'admin')
+
       assert_difference 'Project.count' do
         post projects_path, params: {
           project: {
@@ -97,7 +135,7 @@ module ProjectTypes
 
       assert ProjectCustomField.find(cf3_id).is_required
       assert project_type3.project_custom_field_ids.include? cf3_id
-
+      log_user('admin', 'admin')
       assert_difference 'Project.count' do
         post projects_path, params: {
           project: {
@@ -118,6 +156,7 @@ module ProjectTypes
 
     test 'should get copy for project type master' do
       orig = project_type(id: 4)
+      log_user('admin', 'admin')
       get copy_project_path(id: orig.id)
       assert_response :success
 
