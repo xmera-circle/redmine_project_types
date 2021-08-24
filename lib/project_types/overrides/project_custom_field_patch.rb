@@ -38,7 +38,7 @@ module ProjectTypes
         # Returns the error messages for the given value
         # or an empty array if value is a valid value for the custom field
         def validate_custom_value(custom_value)
-          return [] if new_project?(custom_value) || not_project_custom_field?(custom_value)
+          return [] if nothing_to_validate?(custom_value) || not_project_custom_field?(custom_value)
 
           super
         end

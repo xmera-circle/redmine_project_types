@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * project creation by project type master selection for non admin users (#480)
+* NoMethodError when creating project custom field (#481)
 
 ## 4.0.6 - 2021-07-13
 

@@ -48,6 +48,12 @@ module ProjectTypes
           !custom_value.customized.project_custom_field_ids.include?(custom_value.custom_field.id)
         end
 
+        def nothing_to_validate?(custom_value)
+          return true unless custom_value.customized
+
+          new_project?(custom_value)
+        end
+
         def new_project?(custom_value)
           custom_value.customized.id.nil?
         end
