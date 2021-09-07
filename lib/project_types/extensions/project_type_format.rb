@@ -38,7 +38,11 @@ module Redmine
       private
 
       def all_options_for_select(custom_field)
-        project_type_master_options | additional_projects_options(custom_field)
+        blank_project_type_master_line | project_type_master_options | additional_projects_options(custom_field)
+      end
+
+      def blank_project_type_master_line
+        ['', '']
       end
 
       def additional_projects_options(custom_field)
