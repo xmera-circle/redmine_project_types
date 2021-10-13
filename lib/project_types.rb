@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 # Extensions
+require 'project_types/extensions/issue_custom_field_patch'
 require 'project_types/extensions/project_custom_field_patch'
 require 'project_types/extensions/project_patch'
 require 'project_types/extensions/project_query_patch'
@@ -33,6 +34,8 @@ require 'project_types/hooks/view_projects_form_top_hook_listener'
 
 # Overrides
 require 'project_types/overrides/admin_controller_patch'
+require 'project_types/overrides/application_helper_patch'
+require 'project_types/overrides/principal_memberships_controller_patch'
 require 'project_types/overrides/project_custom_field_patch'
 require 'project_types/overrides/project_patch'
 require 'project_types/overrides/project_query_patch'

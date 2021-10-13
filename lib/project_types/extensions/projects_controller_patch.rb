@@ -59,22 +59,35 @@ module ProjectTypes
         #  Uses Project#copy what copies complex structures such that wikis,
         #  issues, versions, etc.
         #
-        def replicate(source, target)
-          if target.copy(source)
-            flash[:notice] = l(:notice_successful_create)
-            redirect_to settings_project_path(target)
-          elsif !target.new_record?
-            # Project was created
-            # But some objects were not copied due to validation failures
-            # (eg. issues from disabled trackers)
-            # TODO: inform about that
-            redirect_to settings_project_path(target)
+        def create_project_from_project_type_master(source, target)
+          respond_to do |format|
+            format.html do
+              if target.copy(source)
+                target.add_default_member(User.current) unless User.current.admin?
+                flash[:notice] = l(:notice_successful_create)
+                redirect_to settings_project_path(target)
+              elsif target.errors.present?
+                render action: 'new'
+              elsif !target.new_record?
+                # Project was created
+                # But some objects were not copied due to validation failures
+                # (eg. issues from disabled trackers)
+                # TODO: inform about that
+                redirect_to settings_project_path(target)
+              end
+            end
           end
         end
 
+        ##
+        # Explicitly delete attributes which should not be transfered to
+        # the target, most notably, 'is_project_type'.
+        #
         def target_project_params
           params[:project].delete('enabled_module_names')
           params[:project].delete('custom_field_values')
+          params[:project].delete('is_project_type')
+          params[:project].merge!(is_project_type: false)
           params[:project]
         end
 

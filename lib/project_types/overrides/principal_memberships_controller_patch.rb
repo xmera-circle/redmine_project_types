@@ -19,28 +19,31 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-##
-# Provides some helper methods usefull for Project instances which are
-# marked as :is_project_type.
-#
-module ProjectTypesHelper
-  ##
-  # Similar to ApplicationHelper#toogle_checkboxes_link but uses a text instead
-  # of the check icon.
-  #
-  def toggle_checkboxes_text_link(text, selector)
-    link_to_function text,
-                     "toggleCheckboxesBySelector('#{selector}')",
-                     title: "#{l(:button_check_all)} / #{l(:button_uncheck_all)}"
+module ProjectTypes
+  module Overrides
+    # Patches projects_controller.rb from Redmine Core
+    module PrincipalMembershipsControllerPatch
+      def self.prepended(base)
+        base.prepend(InstanceMethods)
+      end
+
+      module InstanceMethods
+        def new
+          @projects = Project.projects.active
+          @roles = Role.find_all_givable
+          respond_to do |format|
+            format.html
+            format.js
+          end
+        end
+      end
+    end
   end
+end
 
-  def number_of_assigned_projects(project)
-    return unless project.project_type_master?
-
-    l(:text_number_of_assigned_projects_to_project_type, count: Relatives.new(project).count).to_s
-  end
-
-  def project_type_master_by_params?
-    params[:project_type_master].to_i == 1
+# Apply patch
+Rails.configuration.to_prepare do
+  unless PrincipalMembershipsController.included_modules.include?(ProjectTypes::Overrides::PrincipalMembershipsControllerPatch)
+    PrincipalMembershipsController.prepend ProjectTypes::Overrides::PrincipalMembershipsControllerPatch
   end
 end

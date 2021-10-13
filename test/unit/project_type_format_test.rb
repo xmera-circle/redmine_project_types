@@ -32,64 +32,62 @@ class ProjectTypeFormatTest < ActiveSupport::TestCase
            :enabled_modules
 
   def setup
-    find_project_type(id: 4)
+    @master4 = find_project_type(id: 4)
+    @master6 = find_project_type(id: 6)
+    @project1 = Project.find(1)
+    @project1.update_attribute(:project_type_id, 4)
+    @field = IssueCustomField.new(name: 'Master project 1',
+                                  field_format: 'project_type_master',
+                                  multiple: true,
+                                  additional_projects: '4',
+                                  is_for_all: true,
+                                  trackers: Tracker.all)
     super
     User.current = nil
   end
 
   def test_create_project_type_master_field
-    field = IssueCustomField.new(name: 'Master project',
-                                 field_format: 'project_type_master')
-    assert field.save!
+    assert @field.save!
   end
 
   def test_existing_project_type_master_values_should_be_valid
-    field = IssueCustomField.create!(name: 'Master project',
-                                     field_format: 'project_type_master',
-                                     is_for_all: true,
-                                     trackers: Tracker.all)
+    @field.save!
     project = Project.generate!
-    master = ProjectType.find(4)
-    issue = Issue.generate!(project_id: project.id, tracker_id: 1,
-                            custom_field_values: { field.id => master.id })
+
+    issue = Issue.generate!(project_id: project.id, tracker_id: 1)
+    issue.custom_field_values = { @field.id => [@master6.id, @project1.id] }
+    issue.save!
+
     assert_include(
-      [master.name, master.id.to_s],
-      field.possible_custom_value_options(issue.custom_value_for(field))
+      [@master6.name, @master6.id.to_s],
+      @field.possible_custom_value_options(issue.custom_value_for(@field))
+    )
+
+    assert_include(
+      [@project1.name, @project1.id.to_s],
+      @field.possible_custom_value_options(issue.custom_value_for(@field))
     )
     assert issue.valid?
   end
 
   def test_not_existing_project_type_master_values_should_be_invalid
-    field = IssueCustomField.create!(name: 'Master project',
-                                     field_format: 'project_type_master',
-                                     is_for_all: true,
-                                     trackers: Tracker.all)
-    project = Project.generate!
-    master = Project.find(3)
+    @field.save!
+    project = Project.find(2)
+    issue = Issue.generate!(project_id: project.id, tracker_id: 1)
+    issue.custom_field_values = { @field.id => [99] }
     assert_raise 'Validation failed: Master project is not included in the list' do
-      Issue.generate!(project_id: project.id, tracker_id: 1,
-                      custom_field_values: { field.id => master.id })
+      issue.save!
     end
   end
 
   def test_possible_values_options_should_return_project_type_masters
-    field = IssueCustomField.create!(name: 'Master project',
-                                     field_format: 'project_type_master',
-                                     is_for_all: true,
-                                     trackers: Tracker.all)
-    project = Project.find(1)
-    expected = ProjectType.find(4).name
-
-    assert_equal [expected], field.possible_values_options(project).map(&:first)
+    expected = [@master6.name, @master4.name, @project1.name]
+    assert_equal expected, @field.possible_values_options(@field).map(&:first)
   end
 
   def test_query_filter_options_should_include_project_type_master
-    field = IssueCustomField.create!(name: 'Master project',
-                                     field_format: 'project_type_master',
-                                     is_for_all: true,
-                                     trackers: Tracker.all)
-    master = ProjectType.find(4)
+    @field.save!
     query = IssueQuery.new(project: Project.find(1))
-    assert_include master.name, field.query_filter_options(query)[:values].call.map(&:first)
+    assert_include @master4.name, @field.query_filter_options(query)[:values].call.map(&:first)
   end
 end

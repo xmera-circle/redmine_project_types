@@ -23,10 +23,34 @@ module Redmine
   module FieldFormat
     class ProjectTypeFormat < RecordList
       add 'project_type_master'
+      self.form_partial = 'custom_fields/formats/project_type'
       self.customized_class_names = %w[Issue]
+      field_attributes :additional_projects
 
-      def possible_values_options(_custom_field, _object = nil)
+      def possible_values_options(custom_field, _object = nil)
+        all_options_for_select(custom_field)
+      end
+
+      def project_type_master_options
         ProjectType.masters_for_select.map { |option| [option.name, option.id.to_s] }
+      end
+
+      private
+
+      def all_options_for_select(custom_field)
+        blank_project_type_master_line | project_type_master_options | additional_projects_options(custom_field)
+      end
+
+      def blank_project_type_master_line
+        ['', '']
+      end
+
+      def additional_projects_options(custom_field)
+        projects_of_project_type(custom_field.additional_projects).map { |option| [option.name, option.id.to_s] }
+      end
+
+      def projects_of_project_type(id)
+        Project.projects.where(project_type_id: id)
       end
     end
   end

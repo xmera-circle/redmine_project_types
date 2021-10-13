@@ -51,6 +51,30 @@ module ProjectTypes
       assert_select 'input[type=hidden][name=type][value=IssueCustomField]'
     end
 
+    test 'should create project custom field with default value' do
+      create_project_type(name: 'ProjectType2').relative_ids = [1]
+      create_project_type(name: 'ProjectType3').relative_ids = [2]
+      create_project_type(name: 'ProjectType4').relative_ids = [3]
+
+      post custom_fields_path, params: { type: 'ProjectCustomField',
+                                         custom_field: {
+                                           name: 'test_post_new_list',
+                                           default_value: '--Please select--',
+                                           min_length: '0',
+                                           searchable: '0',
+                                           regexp: '',
+                                           is_for_all: '1',
+                                           possible_values: "0.1\n0.2\n",
+                                           max_length: '0',
+                                           is_filter: '0',
+                                           is_required: '0',
+                                           field_format: 'list',
+                                           tracker_ids: ['1', '']
+                                         } }
+      assert_redirected_to custom_fields_path({ tab: 'ProjectCustomField' })
+      assert_equal 'test_post_new_list', ProjectCustomField.last.name
+    end
+
     test 'should render hidden issue custom field project ids for plain project' do
       project = Project.find(1)
       assert project.project_type_id.nil?
@@ -72,6 +96,5 @@ module ProjectTypes
       assert_response :success
       assert_select 'input[type=hidden][name=?][value=?]', 'custom_field[project_ids][]', '1'
     end
-
   end
 end

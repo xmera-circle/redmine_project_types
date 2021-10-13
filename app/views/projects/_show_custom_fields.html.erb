@@ -23,7 +23,7 @@
 
 <% project_name = @project.project_type_master? ? @project.name : @project.project_type&.name %>
 
-<% if render_custom_field_values(@project).any? || project_name != '-' %>
+<% if @project.visible_custom_field_values.any? || project_name != '-' %>
 <div class="custom-fields box">
   <h3 class="icon icon-custom-fields custom-fields"><%=l(:label_project_custom_field_plural)%></h3>
   <table class="list">

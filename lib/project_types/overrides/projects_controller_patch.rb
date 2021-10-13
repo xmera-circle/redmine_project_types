@@ -40,7 +40,7 @@ module ProjectTypes
         end
 
         ##
-        # Replicate the project type if and only if a type was selected.
+        # create_project_from_project_type_master if and only if a type was selected.
         #
         # @override ProjectsController#create.
         #
@@ -52,7 +52,7 @@ module ProjectTypes
           prepare_target_project
 
           if @source_project
-            replicate(@source_project, @project)
+            create_project_from_project_type_master(@source_project, @project)
           else
             flash[:warning] = l(:warning_project_type_is_missing)
             redirect_to settings_project_path(@project)

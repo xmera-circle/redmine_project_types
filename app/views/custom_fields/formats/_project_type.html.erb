@@ -1,0 +1,4 @@
+<p>
+  <%= f.select :additional_projects, @custom_field.format.project_type_master_options, { include_blank: true, label: :label_additional_projects } %>
+  <em class="info"><%= l(:text_additional_projects) %></em>
+</p>
