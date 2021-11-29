@@ -25,7 +25,7 @@ class ProjectTypeFormatTest < ActiveSupport::TestCase
   include ProjectTypes::ProjectTypeCreator
   extend ProjectTypes::LoadFixtures
 
-  fixtures :projects, :versions, :trackers,
+  fixtures :projects, :versions, :trackers,:projects_trackers,
            :roles, :users, :members, :member_roles, :issues,
            :issue_statuses, :issue_categories, :issue_relations, :workflows,
            :enumerations, :custom_fields, :custom_fields_trackers,
@@ -81,7 +81,7 @@ class ProjectTypeFormatTest < ActiveSupport::TestCase
   end
 
   def test_possible_values_options_should_return_project_type_masters
-    expected = [@master6.name, @master4.name, @project1.name]
+    expected = ['', @master6.name, @master4.name, @project1.name]
     assert_equal expected, @field.possible_values_options(@field).map(&:first)
   end
 
