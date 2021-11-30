@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * ProjectTypeFormatTest#test_possible_values_options_should_return_project_type_masters
 
+### Added
+
+* missing translations
+
 ## 4.1.0 - 2021-10-11
 
 ### Added
