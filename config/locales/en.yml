@@ -25,6 +25,7 @@ en:
   text_project_type_administration: To %{url} of project types.
   text_project_type_destroy_confirmation: Are you sure you want to delete this project type and related data?
   text_relatives_destroy_warning: "There are associated projects: %{value}."
+  text_additional_projects: Add all objects of one or several object class masters as selection.
 
   text_number_of_assigned_projects_to_project_type: 
     zero: 0 assigned projects to this project type
