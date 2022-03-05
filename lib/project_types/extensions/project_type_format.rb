@@ -46,7 +46,7 @@ module Redmine
       end
 
       def additional_projects_options(custom_field)
-        projects_of_project_type(custom_field.additional_projects).map { |option| [option.name, option.id.to_s] }
+        projects_of_project_type(custom_field&.additional_projects).map { |option| [option.name, option.id.to_s] }
       end
 
       def projects_of_project_type(id)
