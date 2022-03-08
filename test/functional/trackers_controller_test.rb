@@ -5,7 +5,7 @@
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
+# Copyright (C) 2017 - 2022 Liane Hampe <liaham@xmera.de>, xmera.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

@@ -3,7 +3,7 @@
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017-21 Liane Hampe <liaham@xmera.de>, xmera.
+# Copyright (C) 2017 - 2022 Liane Hampe <liaham@xmera.de>, xmera.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ module Redmine
       end
 
       def additional_projects_options(custom_field)
-        projects_of_project_type(custom_field.additional_projects).map { |option| [option.name, option.id.to_s] }
+        projects_of_project_type(custom_field&.additional_projects).map { |option| [option.name, option.id.to_s] }
       end
 
       def projects_of_project_type(id)
