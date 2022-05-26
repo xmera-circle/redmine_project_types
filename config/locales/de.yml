@@ -2,6 +2,7 @@
 de:
   # Permissions
   permission_manage_project_type_master: Projekttyp Master verwalten
+  permission_import_projects: Projekte importieren
   
   # Projektmodule
   project_module_project_types: Projekttyp
@@ -20,6 +21,7 @@ de:
   label_prefix_project_type_master_identifier: ptm-
   label_suffix_project_type_master_identifier: ' (ptm)'
   label_additional_projects: Weitere Projekte
+  label_import_projects: Pojekte importieren
   
   # Texts
   text_project_type_administration: Zur %{url} von Projekttypen.
@@ -34,6 +36,8 @@ de:
 
   # Error Messages
   error_project_type_master_can_not_have_project_type: Ein Projekt kann nicht Projekttyp Master sein und gleichzeitig einem Projekttypen zugeordnet sein.
+  error_no_project_type_given: Für den Import wird ein Projekttyp benötigt.
+  error_could_not_map_all_custom_fields: Kann nicht alle benutzerdefinierten Projektfelder finden.
   
   # Warnings
   warning_project_type_is_missing: Es gibt keinen Projekttypen.

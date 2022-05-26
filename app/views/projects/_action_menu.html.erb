@@ -1,0 +1,5 @@
+<% if User.current.allowed_to?(:import_projects, nil, global: true) %>
+  <%= actions_dropdown do %>
+    <%= link_to l(:button_import), new_projects_import_path, class: 'icon icon-import' %>
+  <% end %>
+<% end %>

@@ -40,6 +40,7 @@ end
 
 Redmine::AccessControl.map do |map|
   map.permission :manage_project_type_master, { projects: %i[new create edit update destroy] }, require: :loggedin
+  map.permission :import_projects, {}
 end
 
 ActiveSupport::Reloader.to_prepare do

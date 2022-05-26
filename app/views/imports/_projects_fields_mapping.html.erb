@@ -1,0 +1,41 @@
+<div class="splitcontent">
+  <div class="splitcontentleft">
+  <p>
+    <label for="import_mapping_name"><%= l(:field_name) %></label>
+    <%= mapping_select_tag @import, 'name', :required => true %>
+  </p>
+  <p>
+    <label for="import_mapping_description"><%= l(:field_description) %></label>
+    <%= mapping_select_tag @import, 'description', :required => true %>
+  </p>
+  <p>
+    <label for="import_mapping_identifier"><%= l(:field_identifier) %></label>
+    <%= mapping_select_tag @import, 'identifier', :required => true %>
+  </p>
+  <p>
+    <label for="import_mapping_is_public"><%= l(:field_is_public) %></label>
+    <%= mapping_select_tag @import, 'is_public' %>
+  </p>
+  <p>
+    <label for="import_mapping_parent"><%= l(:field_parent) %></label>
+    <%= mapping_select_tag @import, 'parent' %>
+  </p>
+  <p>
+    <label for="import_mapping_inherit_members"><%= l(:field_inherit_members) %></label>
+    <%= mapping_select_tag @import, 'inherit_members' %>
+  </p>
+  <p>
+    <label for="import_mapping_project_type_id"><%= l(:field_project_type) %></label>
+    <%= mapping_select_tag @import, 'project_type' %>
+  </p>
+  </div>
+
+  <div class="splitcontentright">
+  <% @custom_fields.each do |field| %>
+    <p>
+      <label for="import_mapping_cf_<%= field.id %>"><%= field.name %></label>
+      <%= mapping_select_tag @import, "cf_#{field.id}", :required => field.is_required? %>
+    </p>
+  <% end %>
+  </div>
+</div>

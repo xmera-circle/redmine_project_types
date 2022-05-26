@@ -3,7 +3,7 @@
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017 - 2022 Liane Hampe <liaham@xmera.de>, xmera.
+# Copyright (C) 2022 Liane Hampe <liaham@xmera.de>, xmera.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,19 +19,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# Plugin's routes
-# See: http://guides.rubyonrails.org/routing.html
-
-scope '/admin' do
-  resources :project_types do
-    member do
-      post 'archive'
-      post 'unarchive'
-    end
-  end
-end
-
-get '/projects/imports/new',
-    to: 'imports#new',
-    defaults: { type: 'ProjectImport' },
-    as: 'new_projects_import'
+# Target is Redmines app/views/projects/index.html.erb file
+Deface::Override.new(
+  virtual_path: 'projects/index',
+  name: 'add-action-menu',
+  insert_bottom: 'div.contextual',
+  partial: 'projects/action_menu',
+  original: '',
+  namespaced: true
+)
