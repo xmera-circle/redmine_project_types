@@ -36,21 +36,17 @@ module ProjectTypes
         def project_tree_options_for_select(projects, options = {})
           s = ''.html_safe
           if blank_text = options[:include_blank]
-            if blank_text == true
-              blank_text = '&nbsp;'.html_safe
-            end
-            s << content_tag('option', blank_text, :value => '')
+            blank_text = '&nbsp;'.html_safe if blank_text == true
+            s << content_tag('option', blank_text, value: '')
           end
           project_tree(projects) do |project, level|
-            name_prefix = (level > 0 ? '&nbsp;' * 2 * level + '&#187; ' : '').html_safe
+            name_prefix = (level.positive? ? "#{'&nbsp;' * 2 * level}&#187; " : '').html_safe
             name_suffix = project.is_project_type? ? l(:label_suffix_project_type_master_identifier) : ''
             tag_options = { value: project.id }
-            if project == options[:selected] || (options[:selected].respond_to?(:include?) &&
+            tag_options[:selected] = if project == options[:selected] || (options[:selected].respond_to?(:include?) &&
                 options[:selected].include?(project))
-              tag_options[:selected] = 'selected'
-            else
-              tag_options[:selected] = nil
-            end
+                                       'selected'
+                                     end
             tag_options.merge!(yield(project)) if block_given?
             s << content_tag('option', name_prefix + h(project) + name_suffix, tag_options)
           end

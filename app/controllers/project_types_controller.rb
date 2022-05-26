@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class ProjectTypesController < ApplicationController #:nodoc:
+class ProjectTypesController < ApplicationController # :nodoc:
   layout 'admin'
   self.main_menu = false
 

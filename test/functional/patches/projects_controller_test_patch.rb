@@ -52,10 +52,10 @@ class ProjectsControllerTest
     travel_to Time.current do
       post(
         :update,
-        :params => {
-          :id => 1,
-          :project => {
-            :custom_field_values => {'3' => 'Alpha'}
+        params: {
+          id: 1,
+          project: {
+            custom_field_values: { '3' => 'Alpha' }
           }
         }
       )

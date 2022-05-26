@@ -36,9 +36,7 @@ module ProjectTypes
              :attachments, :custom_fields, :time_entries,
              :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions
 
-    def setup
-      #
-    end
+    def setup; end
 
     test 'should create project with project type by non admin user' do
       project_type = ProjectType.create(name: 'Change Project',

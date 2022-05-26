@@ -71,23 +71,23 @@ module ProjectTypes
 
           if project_valid?
             respond_to do |format|
-              format.html {
+              format.html do
                 flash[:notice] = l(:notice_successful_update)
                 redirect_to settings_project_path(@project, params[:tab])
-              }
+              end
               format.api  { render_api_ok }
             end
           else
             respond_to do |format|
-              format.html {
+              format.html do
                 settings
-                render :action => 'settings'
-              }
-              format.api  { render_validation_errors(@project) }
+                render action: 'settings'
+              end
+              format.api { render_validation_errors(@project) }
             end
           end
         end
-        
+
         ##
         # @override ProjectsController#settings
         #

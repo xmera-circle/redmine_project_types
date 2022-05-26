@@ -1,0 +1,4 @@
+name;description;identifier;is_public;parent;inherit_members;project_type;development_status
+Order Transaction;Processing an order;p100;false;ecookbook;true;onlinestore;Stable
+Reporting;Rendering of accounts;p101;false;false;true;private-child;Beta
+Marketing;Corner the market;p102;true;ecookbook;false;project6;Alpha

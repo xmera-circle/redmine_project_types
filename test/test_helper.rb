@@ -29,23 +29,22 @@ require_relative 'authenticate_user'
 require_relative 'project_type_creator'
 
 # The gem minitest-reporters gives color to the command-line
-require 'minitest/reporters'
-Minitest::Reporters.use!
+# require 'minitest/reporters'
+# Minitest::Reporters.use!
 # require "minitest/rails/capybara"
 require 'minitest/unit'
 require 'mocha/minitest'
 
-# # Needed in order to include the plugin fixtures defined in the plugin tests.
-# class ProjectType::TestCase
+module ProjectTypes
+  class IntegrationTest < Redmine::IntegrationTest
+    extend ProjectTypes::LoadFixtures
+    include ProjectTypes::ProjectTypeCreator
+    include Redmine::I18n
+  end
 
-#   def self.create_fixtures(fixtures_directory, table_names, class_names ={})
-#     if ActiveRecord::VERSION::MAJOR >= 4
-#       ActiveRecord::FixtureSet.create_fixtures(fixtures_directory, table_names, class_names ={})
-#     else
-#       ActiveRecord::Fixtures.create_fixtures(fixtures_directory, table_names, class_names ={})
-#     end
-#   end
-
-# end
-
-# #require File.expand_path(File.dirname(__FILE__) + '/../test/functional/projects_controller_patch_test')
+  class UnitTest < ActiveSupport::TestCase
+    include Redmine::I18n
+    extend ProjectTypes::LoadFixtures
+    include ProjectTypes::ProjectTypeCreator
+  end
+end
