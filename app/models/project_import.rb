@@ -162,7 +162,7 @@ class ProjectImport < Import
   end
 
   def language_key(translation)
-    I18n.backend.translations[current_language].key(translation)
+    find_field(translation)
   end
 
   ##
@@ -183,10 +183,10 @@ class ProjectImport < Import
   def find_field(name)
     I18n
       .backend
-      .translations[:de]
+      .translations[current_language]
       .select { |_, value| value == name } # in case there are muliple keys for that translation name
       .keys
-      .select { |field| field.start_with? 'field' }
+      .find { |field| field.start_with? 'field' }
   end
 
   def extend_object(_row, _item, object)
