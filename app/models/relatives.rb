@@ -35,9 +35,7 @@ class Relatives
     project.new_record? ? project.relatives : project_type.relatives
   end
 
-  def count
-    all.count
-  end
+  delegate :count, to: :all
 
   private
 

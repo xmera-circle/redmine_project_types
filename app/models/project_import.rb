@@ -28,7 +28,7 @@ class ProjectImport < Import
     'parent' => 'field_parent',
     'inherit_members' => 'field_inherit_members',
     'project_type' => 'field_project_type'
-  }
+  }.freeze
 
   def self.authorized?(user)
     user.allowed_to?(:import_projects, nil, global: true)
@@ -156,8 +156,8 @@ class ProjectImport < Import
   #
   def pcf_columns_options
     @pcf_columns_options ||= columns_options.reject do |option, _index|
-      AUTO_MAPPABLE_FIELDS.values.include?(language_key(option).to_s) ||
-        AUTO_MAPPABLE_FIELDS.keys.include?(option.to_s)
+      AUTO_MAPPABLE_FIELDS.value?(language_key(option).to_s) ||
+        AUTO_MAPPABLE_FIELDS.key?(option.to_s)
     end
   end
 

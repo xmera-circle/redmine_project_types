@@ -87,7 +87,7 @@ module ProjectTypes
           params[:project].delete('enabled_module_names')
           params[:project].delete('custom_field_values')
           params[:project].delete('is_project_type')
-          params[:project].merge!(is_project_type: false)
+          params[:project][:is_project_type] = false
           params[:project]
         end
 
@@ -113,7 +113,7 @@ module ProjectTypes
         end
 
         def value_to_delete?(candidate_id)
-          !valid_ids.include?(candidate_id)
+          valid_ids.exclude?(candidate_id)
         end
 
         def valid_ids

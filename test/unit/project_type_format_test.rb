@@ -25,7 +25,7 @@ class ProjectTypeFormatTest < ActiveSupport::TestCase
   include ProjectTypes::ProjectTypeCreator
   extend ProjectTypes::LoadFixtures
 
-  fixtures :projects, :versions, :trackers,:projects_trackers,
+  fixtures :projects, :versions, :trackers, :projects_trackers,
            :roles, :users, :members, :member_roles, :issues,
            :issue_statuses, :issue_categories, :issue_relations, :workflows,
            :enumerations, :custom_fields, :custom_fields_trackers,

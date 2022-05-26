@@ -12,7 +12,7 @@ echo "Running tests: PLUGIN: ${PLUGIN}, CASE: ${CASE}"
 
 if [ -d "${DIR}" ]; then
   cd ${DIR};
-  make plugin_test CASE=${CASE} NAME=${PLUGIN}
+  make plugin_test CASE=${CASE} NAME=${PLUGIN} INTERACTIVE_TTY=${INTERACTIVE_TTY}
 else
   echo "Could not find xmera development kit"
   exit 1
