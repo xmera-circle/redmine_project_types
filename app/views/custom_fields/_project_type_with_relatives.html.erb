@@ -20,10 +20,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
 %>      
       
-<div id=<%= project_type.name %> class='project-type-item'>
+<%=tag.div id: project_type.name.parameterize(separator: '_'), class: 'project-type-item' do %>
   <%= tag.label do %>
   <%= check_box_tag('custom_field[project_ids][]', project_type.id, project_type_ids.include?(project_type.id)) + ' ' + h(project_type.name) %>
-  <%= toggle_checkboxes_text_link(' (+/-)', "##{project_type.name} input[type=checkbox]") if project_type.relatives.any? %>
+  <%= toggle_checkboxes_text_link(' (+/-)', "##{project_type.name.parameterize(separator: '_')} input[type=checkbox]") if project_type.relatives.any? %>
   <% end %>
   <% if project_type.relatives.any? %>
     <fieldset class="collapsible hide-when-print collapsed">
@@ -41,4 +41,4 @@
       </div>
     </fieldset>
   <% end %>
-</div>
+<% end %>
