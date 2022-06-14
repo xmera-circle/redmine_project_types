@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
 %>      
-      
+
 <%=tag.div id: project_type.name.parameterize(separator: '_'), class: 'project-type-item' do %>
   <%= tag.label do %>
   <%= check_box_tag('custom_field[project_ids][]', project_type.id, project_type_ids.include?(project_type.id)) + ' ' + h(project_type.name) %>
