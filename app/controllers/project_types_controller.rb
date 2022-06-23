@@ -33,7 +33,7 @@ class ProjectTypesController < ApplicationController # :nodoc:
   def index
     @status = params[:status] || 1
 
-    scope = ProjectType.masters_for_table
+    scope = ProjectType.masters_for_table(@status)
     scope = scope.like(params[:name]) if params[:name].present?
 
     @project_count = scope.count

@@ -38,8 +38,8 @@ class ProjectType < Project
     masters.active.select(:name, :id)
   end
 
-  def self.masters_for_table
-    ProjectType.masters.status(@status).sorted
+  def self.masters_for_table(status)
+    ProjectType.masters.status(status).sorted
   end
 
   def self.fields_for_order_statement(table = nil)
