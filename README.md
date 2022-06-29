@@ -2,7 +2,7 @@
 
 Define project types
 
-![Redmine Plugin Version](https://img.shields.io/badge/Redmine_Plugin-v4.1.2-red) ![Redmine Version](https://img.shields.io/badge/Redmine-v4.x.x-blue) ![Language Support](https://img.shields.io/badge/Languages-en,_de-green) ![Version Stage](https://img.shields.io/badge/Stage-release-important)
+![Redmine Plugin Version](https://img.shields.io/badge/Redmine_Plugin-v4.2.0-red) ![Redmine Version](https://img.shields.io/badge/Redmine-v4.x.x-blue) ![Language Support](https://img.shields.io/badge/Languages-en,_de-green) ![Version Stage](https://img.shields.io/badge/Stage-release-important)
 
 Redmine Project Types is a plugin which lets the administrator define project types each with its individual project settings.
 
