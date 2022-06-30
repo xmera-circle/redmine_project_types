@@ -43,7 +43,6 @@ end
 
 # Apply patch
 Rails.configuration.to_prepare do
-  unless PrincipalMembershipsController.included_modules.include?(ProjectTypes::Overrides::PrincipalMembershipsControllerPatch)
-    PrincipalMembershipsController.prepend ProjectTypes::Overrides::PrincipalMembershipsControllerPatch
-  end
+  patch = ProjectTypes::Overrides::PrincipalMembershipsControllerPatch
+  PrincipalMembershipsController.prepend patch unless PrincipalMembershipsController.included_modules.include?(patch)
 end

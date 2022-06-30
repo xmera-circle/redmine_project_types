@@ -45,7 +45,7 @@ module ProjectTypes
         private
 
         def not_project_custom_field?(custom_value)
-          !custom_value.customized.project_custom_field_ids.include?(custom_value.custom_field.id)
+          custom_value.customized.project_custom_field_ids.exclude?(custom_value.custom_field.id)
         end
 
         def nothing_to_validate?(custom_value)

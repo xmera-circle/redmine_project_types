@@ -38,11 +38,11 @@ class ProjectType < Project
     masters.active.select(:name, :id)
   end
 
-  def self.masters_for_table
-    ProjectType.masters.status(@status).sorted
+  def self.masters_for_table(status)
+    ProjectType.masters.status(status).sorted
   end
 
-  def self.fields_for_order_statement(table=nil)
+  def self.fields_for_order_statement(table = nil)
     table ||= table_name
     columns = ['name']
     columns.uniq.map { |field| "#{table}.#{field}" }
@@ -51,7 +51,7 @@ class ProjectType < Project
   private
 
   def nullify_project_type_id
-    return unless relatives.present?
+    return if relatives.blank?
 
     relatives.each { |relative| relative.update_attribute(:project_type_id, nil) }
   end
