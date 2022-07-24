@@ -50,6 +50,8 @@ class ProjectImport < Import
 
   def build_object(row, _item)
     find = finder_attributes(row)
+    return ImportErrorObject.new(identifier: false) unless find
+
     parent, project_type = found_objects(find)
     return ImportErrorObject.new(project_type: false) unless project_type
 
@@ -65,16 +67,36 @@ class ProjectImport < Import
   end
 
   def finder_attributes(row)
+    parent = check_identifier(row_value(row, 'parent'))
+    project_type = check_identifier(row_value(row, 'project_type'))
+
+    return unless parent && project_type
+
     {
-      parent: row_value(row, 'parent'),
-      project_type: row_value(row, 'project_type')
+      parent: parent,
+      project_type: project_type
     }
   end
 
+  ##
+  # Checks whether the identifier follows the rules for projects identifiers:
+  # downcase letters, digits, dashes but not digits only.
+  #
+  # @see Project.validates_format_of
+  #
+  def check_identifier(identifier)
+    result = identifier.match(/\A(?!\d+$)[a-z0-9\-_]*\z/)
+    result&.to_s
+  end
+
   def found_objects(attr)
-    parent = Project.find_by(identifier: attr[:parent])
+    parent = parent_project_find_by(identifier: attr[:parent])
     project_type = ProjectType.find_by(identifier: attr[:project_type])
     [parent, project_type]
+  end
+
+  def parent_project_find_by(identifier:)
+    Project.find_by(identifier: identifier)
   end
 
   def required_attributes(row)

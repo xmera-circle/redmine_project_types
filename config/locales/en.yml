@@ -38,6 +38,7 @@ en:
   error_project_type_master_can_not_have_project_type: A project cannot be a project type master and having assigned a project type at the same time.
   error_no_project_type_given: For importing a project type is required.
   error_could_not_map_all_custom_fields: Cannot find all of the project custom fields.
+  error_identifer_not_valid: "One or more identifiers are not correct: Length between 1 and 100 characters. Only lower case letters (a-z), numbers, dashes and underscores are allowed."
   
   # Warnings
   warning_project_type_is_missing: There is no project type.

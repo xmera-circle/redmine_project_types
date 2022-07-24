@@ -38,6 +38,7 @@ de:
   error_project_type_master_can_not_have_project_type: Ein Projekt kann nicht Projekttyp Master sein und gleichzeitig einem Projekttypen zugeordnet sein.
   error_no_project_type_given: Für den Import wird ein Projekttyp benötigt.
   error_could_not_map_all_custom_fields: Kann nicht alle benutzerdefinierten Projektfelder finden.
+  error_identifer_not_valid: "Die Kennung eines Projektes oder Projekttyp Masters ist nicht korrekt: Länge zwischen 1 und 100 Zeichen. Kleinbuchstaben (a-z), Ziffern, Binde- und Unterstriche erlaubt."
   
   # Warnings
   warning_project_type_is_missing: Es gibt keinen Projekttypen.
