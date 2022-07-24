@@ -23,13 +23,14 @@ class ImportErrorObject
   extend ActiveModel::Naming
   include Redmine::I18n
 
-  attr_accessor :project_type, :custom_fields
+  attr_accessor :project_type, :custom_fields, :identifier
   attr_reader :errors
 
-  def initialize(project_type: true, custom_fields: true)
+  def initialize(project_type: true, custom_fields: true, identifier: true)
     @errors = ActiveModel::Errors.new(self)
     self.project_type = project_type
     self.custom_fields = custom_fields
+    self.identifier = identifier
   end
 
   def id
@@ -44,6 +45,7 @@ class ImportErrorObject
   def validate!
     errors.add(:base, l(:error_no_project_type_given)) unless project_type
     errors.add(:base, l(:error_could_not_map_all_custom_fields)) unless custom_fields
+    errors.add(:base, l(:error_identifer_not_valid)) unless identifier
   end
 
   def persisted?
