@@ -60,6 +60,9 @@ module ProjectTypes
         rescue ActiveRecord::RecordNotFound
           # @source_project not found
           render_404
+        rescue ActiveModel::ValidationError => e
+          flash[:error] = e.model.errors.full_messages.join(', ')
+          redirect_to settings_project_path(@source_project)
         end
 
         ##
@@ -96,6 +99,13 @@ module ProjectTypes
           @project_custom_fields = ProjectCustomField.fields_for_select
           @project_custom_field_ids = @project.project_custom_field_ids
           super
+        end
+
+        def copy
+          super
+        rescue ActiveModel::ValidationError => e
+          flash[:error] = e.model.errors.full_messages.join(', ')
+          redirect_to settings_project_path(@source_project)
         end
       end
     end
