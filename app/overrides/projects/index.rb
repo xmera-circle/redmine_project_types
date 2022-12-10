@@ -25,6 +25,6 @@ Deface::Override.new(
   name: 'add-action-menu',
   insert_bottom: 'div.contextual',
   partial: 'projects/action_menu',
-  original: '',
+  original: '83089522c80708af237d5635c1e8fc5fb1466f27',
   namespaced: true
 )
