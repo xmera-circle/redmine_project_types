@@ -17,6 +17,7 @@ AllCops:
     - '**/test/**/*'
     - '**/db/migrate/*'
     - 'db/schema.rb'
+    - '**/*_patch.rb'
 
 require:
   - rubocop-performance
@@ -33,12 +34,10 @@ Style/FrozenStringLiteralComment:
 Metrics/AbcSize:
   Exclude:
     - 'test/**/*'
-    - 'lib/redmine_user_privacy/overrides/**'
 
 Metrics/MethodLength:
   Exclude:
     - 'test/**/*'
-    - 'lib/redmine_user_privacy/overrides/**'
 
 Layout/LineLength:
   Max: 120
@@ -54,3 +53,14 @@ Layout/TrailingWhitespace:
 
 Rails/ApplicationRecord:
   Enabled: false
+
+Naming/VariableNumber:
+  Exclude:
+    - 'test/**/*'
+  
+Rails/ActionControllerFlashBeforeRender:
+ Enabled:   false
+
+Rails/OutputSafety:
+  Exclude:
+    - 'app/presenters/**/*'
