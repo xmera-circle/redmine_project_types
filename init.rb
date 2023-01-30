@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-require_dependency 'project_types'
+require File.expand_path('lib/project_types', __dir__)
 
 Redmine::Plugin.register :redmine_project_types do
   name 'Redmine Project Types'
@@ -31,6 +31,7 @@ Redmine::Plugin.register :redmine_project_types do
 
   requires_redmine version_or_higher: '4.1.1'
   requires_redmine_plugin :redmine_base_deface, version_or_higher: '1.6.2'
+  requires_redmine_plugin :advanced_plugin_helper, version_or_higher: '0.2.0'
 
   menu :admin_menu, :project_types, { controller: 'project_types', action: 'index' },
        caption: :label_project_type_plural,
@@ -38,11 +39,4 @@ Redmine::Plugin.register :redmine_project_types do
        first: true
 end
 
-Redmine::AccessControl.map do |map|
-  map.permission :manage_project_type_master, { projects: %i[new create edit update destroy] }, require: :loggedin
-  map.permission :import_projects, {}
-end
-
-ActiveSupport::Reloader.to_prepare do
-  ApplicationController.helper :project_types
-end
+ProjectTypes.setup

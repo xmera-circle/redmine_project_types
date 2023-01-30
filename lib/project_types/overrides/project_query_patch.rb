@@ -61,10 +61,3 @@ module ProjectTypes
     end
   end
 end
-
-# Apply patch
-Rails.configuration.to_prepare do
-  unless ProjectQuery.included_modules.include?(ProjectTypes::Overrides::ProjectQueryPatch)
-    ProjectQuery.prepend ProjectTypes::Overrides::ProjectQueryPatch
-  end
-end

@@ -56,10 +56,3 @@ module ProjectTypes
     end
   end
 end
-
-# Apply patch
-Rails.configuration.to_prepare do
-  unless ApplicationHelper.included_modules.include?(ProjectTypes::Overrides::ApplicationHelperPatch)
-    ApplicationHelper.prepend ProjectTypes::Overrides::ApplicationHelperPatch
-  end
-end

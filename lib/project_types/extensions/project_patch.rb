@@ -102,10 +102,3 @@ module ProjectTypes
     end
   end
 end
-
-# Apply patch
-Rails.configuration.to_prepare do
-  unless Project.included_modules.include?(ProjectTypes::Extensions::ProjectPatch)
-    Project.include ProjectTypes::Extensions::ProjectPatch
-  end
-end

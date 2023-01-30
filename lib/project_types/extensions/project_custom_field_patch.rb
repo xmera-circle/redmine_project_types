@@ -61,10 +61,3 @@ module ProjectTypes
     end
   end
 end
-
-# Apply patch
-Rails.configuration.to_prepare do
-  unless ProjectCustomField.included_modules.include?(ProjectTypes::Extensions::ProjectCustomFieldPatch)
-    ProjectCustomField.include ProjectTypes::Extensions::ProjectCustomFieldPatch
-  end
-end

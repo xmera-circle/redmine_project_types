@@ -30,10 +30,3 @@ module ProjectTypes
     end
   end
 end
-
-# Apply patch
-Rails.configuration.to_prepare do
-  unless IssueCustomField.included_modules.include?(ProjectTypes::Extensions::IssueCustomFieldPatch)
-    IssueCustomField.include ProjectTypes::Extensions::IssueCustomFieldPatch
-  end
-end
