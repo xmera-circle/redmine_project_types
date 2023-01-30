@@ -50,10 +50,3 @@ module ProjectTypes
     end
   end
 end
-
-# Apply patch
-Rails.configuration.to_prepare do
-  unless AdminController.included_modules.include?(ProjectTypes::Overrides::AdminControllerPatch)
-    AdminController.prepend ProjectTypes::Overrides::AdminControllerPatch
-  end
-end

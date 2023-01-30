@@ -123,10 +123,3 @@ module ProjectTypes
     end
   end
 end
-
-# Apply patch
-Rails.configuration.to_prepare do
-  unless ProjectsController.included_modules.include?(ProjectTypes::Extensions::ProjectsControllerPatch)
-    ProjectsController.include ProjectTypes::Extensions::ProjectsControllerPatch
-  end
-end

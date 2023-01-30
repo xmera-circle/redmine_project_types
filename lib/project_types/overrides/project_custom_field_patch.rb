@@ -46,10 +46,3 @@ module ProjectTypes
     end
   end
 end
-
-# Apply patch
-Rails.configuration.to_prepare do
-  unless ProjectCustomField.included_modules.include?(ProjectTypes::Overrides::ProjectCustomFieldPatch)
-    ProjectCustomField.prepend ProjectTypes::Overrides::ProjectCustomFieldPatch
-  end
-end
