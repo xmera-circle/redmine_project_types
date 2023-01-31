@@ -59,7 +59,7 @@ module ProjectTypes
       end
       AdvancedPluginHelper::Patch.apply do
         { klass: ProjectTypes,
-          method: :add_helper }
+          method: :add_helpers }
       end
     end
 
@@ -144,7 +144,7 @@ module ProjectTypes
         strategy: :prepend }
     end
 
-    def add_helper
+    def add_helpers
       ProjectsController.helper(ProjectTypesHelper)
       CustomFieldsController.helper(ProjectTypesHelper)
       TrackersController.helper(ProjectTypesHelper)
