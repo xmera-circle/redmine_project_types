@@ -23,7 +23,7 @@ require File.expand_path('lib/project_types', __dir__)
 
 Redmine::Plugin.register :redmine_project_types do
   name 'Redmine Project Types'
-  author 'Liane Hampe, xmera'
+  author 'Liane Hampe, xmera Solutions GmbH'
   description 'This is a plugin for defining project types with individual project default settings.'
   version '4.2.3'
   url 'https://circle.xmera.de/projects/redmine-project-types'
@@ -31,7 +31,7 @@ Redmine::Plugin.register :redmine_project_types do
 
   requires_redmine version_or_higher: '4.1.1'
   requires_redmine_plugin :redmine_base_deface, version_or_higher: '1.6.2'
-  requires_redmine_plugin :advanced_plugin_helper, version_or_higher: '0.2.0'
+  requires_redmine_plugin :advanced_plugin_helper, version_or_higher: '0.4.0'
 
   menu :admin_menu, :project_types, { controller: 'project_types', action: 'index' },
        caption: :label_project_type_plural,
