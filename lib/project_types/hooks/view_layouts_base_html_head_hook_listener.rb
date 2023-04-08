@@ -20,8 +20,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 module ProjectTypes
-  class ViewLayoutsBaseHtmlHeadHookListener < Redmine::Hook::ViewListener
-    render_on :view_layouts_base_html_head,
-              partial: 'redmine_project_types/redmine_project_types_header_tags'
+  module Hooks
+    class ViewLayoutsBaseHtmlHeadHookListener < Redmine::Hook::ViewListener
+      render_on :view_layouts_base_html_head,
+                partial: 'redmine_project_types/redmine_project_types_header_tags'
+    end
   end
 end

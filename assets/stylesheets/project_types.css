@@ -49,6 +49,10 @@ label.required:after {
 .controller-custom_fields label a {
 	text-decoration: none;
 }
+
+.custom-fields.box .name {
+	text-align: left;
+}
 /* Nodata */
 .half-width {
 	margin: 0 auto;

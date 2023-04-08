@@ -19,11 +19,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class ViewCustomFieldsFormHookListener < Redmine::Hook::ViewListener
-  def view_custom_fields_form_project_custom_field(context = {})
-    context[:controller].send :render_to_string, {
-      partial: 'hooks/view_custom_fields_form',
-      locals: { custom_field: context[:custom_field], f: context[:form] }
-    }
+module ProjectTypes
+  module Hooks
+    class ViewCustomFieldsFormHookListener < Redmine::Hook::ViewListener
+      def view_custom_fields_form_project_custom_field(context = {})
+        context[:controller].send :render_to_string, {
+          partial: 'hooks/view_custom_fields_form',
+          locals: { custom_field: context[:custom_field], f: context[:form] }
+        }
+      end
+    end
   end
 end

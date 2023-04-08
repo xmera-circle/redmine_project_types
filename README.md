@@ -2,7 +2,8 @@
 
 Define standard projects with custom project types
 
-![Redmine Plugin Version](https://img.shields.io/badge/Redmine_Plugin-v4.2.2-red) ![Redmine Version](https://img.shields.io/badge/Redmine-v4.x.x-blue) ![Language Support](https://img.shields.io/badge/Languages-en,_de-green) ![Version Stage](https://img.shields.io/badge/Stage-release-important)
+![Redmine Plugin Version](https://img.shields.io/badge/Redmine_Plugin-v4.2.3-red) ![Redmine Version](https://img.shields.io/badge/Redmine-v5.0.z-blue) ![Language Support](https://img.shields.io/badge/Languages-en,_de-green) ![Version Stage](https://img.shields.io/badge/Stage-release-important) ![develop](https://github.com/xmera-circle/<plugin-name>/actions/workflows/5-0-stable.yml/badge.svg)
+
 
 Redmine Project Types is a plugin which lets the administrator define project types each with its individual project settings.
 
@@ -13,6 +14,14 @@ Redmine Project Types is a plugin which lets the administrator define project ty
 ## Usage example
 
 For more examples and usage, please refer to the [official documentation](https://circle.xmera.de/projects/redmine-project-types/wiki).
+
+### Dependencies
+
+To run the plugin you need the following dependencies installed:
+
+* [Redmine 5.0.z](https://github.com/redmine/redmine)
+* [Advanced Plugin Helper 0.4.z ](https://github.com/xmera-circle/advanced_plugin_helper)
+* [Redmine Base Deface master](https://github.com/jbbarth/redmine_base_deface)
 
 ## Installation
 

@@ -25,7 +25,6 @@ require_relative 'project_types/extensions/project_custom_field_patch'
 require_relative 'project_types/extensions/project_patch'
 require_relative 'project_types/extensions/project_query_patch'
 require_relative 'project_types/extensions/projects_controller_patch'
-require_relative 'project_types/extensions/project_type_format'
 
 # Plugin hook listener
 require_relative 'project_types/hooks/view_custom_fields_form_hook_listener'
@@ -40,6 +39,9 @@ require_relative 'project_types/overrides/project_custom_field_patch'
 require_relative 'project_types/overrides/project_patch'
 require_relative 'project_types/overrides/project_query_patch'
 require_relative 'project_types/overrides/projects_controller_patch'
+
+# Redmine field format
+require_relative 'redmine/field_format//project_type_format'
 
 ##
 # Initialize some plugin requirements and definitions.
@@ -59,7 +61,7 @@ module ProjectTypes
       end
       AdvancedPluginHelper::Patch.apply do
         { klass: ProjectTypes,
-          method: :add_helper }
+          method: :add_helpers }
       end
     end
 
@@ -144,7 +146,7 @@ module ProjectTypes
         strategy: :prepend }
     end
 
-    def add_helper
+    def add_helpers
       ProjectsController.helper(ProjectTypesHelper)
       CustomFieldsController.helper(ProjectTypesHelper)
       TrackersController.helper(ProjectTypesHelper)
