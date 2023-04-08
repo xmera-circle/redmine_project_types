@@ -75,7 +75,7 @@ module ProjectTypes
       project_type_master = Project.create(name: 'Project Type Master',
                                            identifier: 'project-type-master',
                                            is_project_type: true)
-      assert_equal 'ocm-project-type-master', project_type_master.identifier
+      assert_equal 'ptm-project-type-master', project_type_master.identifier
     end
 
     private
