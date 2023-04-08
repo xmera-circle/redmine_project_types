@@ -3,7 +3,7 @@
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017 - 2022 Liane Hampe <liaham@xmera.de>, xmera.
+# Copyright (C) 2017-2023 Liane Hampe <liaham@xmera.de>, xmera Solutions GmbH.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,7 +19,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-class ViewProjectsFormTopHookListener < Redmine::Hook::ViewListener
-  render_on :view_projects_form_top,
-            partial: 'hooks/view_projects_form_top'
+module ProjectTypes
+  module Hooks
+    class ViewProjectsFormTopHookListener < Redmine::Hook::ViewListener
+      render_on :view_projects_form_top,
+                partial: 'hooks/view_projects_form_top'
+    end
+  end
 end

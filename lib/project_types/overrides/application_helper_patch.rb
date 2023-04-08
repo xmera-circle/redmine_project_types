@@ -3,7 +3,7 @@
 #
 # Redmine plugin for xmera called Project Types Plugin.
 #
-# Copyright (C) 2017 - 2022 Liane Hampe <liaham@xmera.de>, xmera.
+# Copyright (C) 2017-2023 Liane Hampe <liaham@xmera.de>, xmera Solutions GmbH.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -54,12 +54,5 @@ module ProjectTypes
         end
       end
     end
-  end
-end
-
-# Apply patch
-Rails.configuration.to_prepare do
-  unless ApplicationHelper.included_modules.include?(ProjectTypes::Overrides::ApplicationHelperPatch)
-    ApplicationHelper.prepend ProjectTypes::Overrides::ApplicationHelperPatch
   end
 end
