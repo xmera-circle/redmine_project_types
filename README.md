@@ -2,7 +2,7 @@
 
 Define standard projects with custom project types
 
-![Redmine Plugin Version](https://img.shields.io/badge/Redmine_Plugin-v4.2.3-red) ![Redmine Version](https://img.shields.io/badge/Redmine-v5.0.z-blue) ![Language Support](https://img.shields.io/badge/Languages-en,_de-green) ![Version Stage](https://img.shields.io/badge/Stage-release-important) ![develop](https://github.com/xmera-circle/<plugin-name>/actions/workflows/5-0-stable.yml/badge.svg)
+![Redmine Plugin Version](https://img.shields.io/badge/Redmine_Plugin-v4.2.3-red) ![Redmine Version](https://img.shields.io/badge/Redmine-v5.0.z-blue) ![Language Support](https://img.shields.io/badge/Languages-en,_de-green) ![Version Stage](https://img.shields.io/badge/Stage-release-important) ![testing](https://github.com/xmera-circle/redmine_project_types/actions/workflows/5-0-stable.yml/badge.svg)
 
 
 Redmine Project Types is a plugin which lets the administrator define project types each with its individual project settings.
